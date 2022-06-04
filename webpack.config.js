@@ -1,7 +1,7 @@
 const path = require("path");
 
-module.exports = {
-  mode: "production",
+const config = {
+  mode: "development",
   entry: "./src/index.ts",
   devtool: "inline-source-map",
   module: {
@@ -27,4 +27,10 @@ module.exports = {
   externals: {
     "pixi.js": "PIXI",
   },
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === "development") config.watch = true;
+  if (argv.mode === "production") config.watch = false;
+  return config;
 };
