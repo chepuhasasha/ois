@@ -12,7 +12,67 @@
     <h1>MUUP!</h1>
     <div id="muup"></div>
     <script>
-      const app = new Muup.app(600, 600);
+      const app = new Muup.App({ width: 600, height: 600 });
+      const status = {
+        props: {
+          color: {
+            type: String,
+            default: "red",
+          },
+        },
+        setup() {
+          console.log(this.props);
+        },
+      };
+      const node = {
+        where: {
+          object_type: "node",
+        },
+        childsKey: "childs",
+        widgets: [
+          {
+            name: "Status",
+            map: {
+              color: "status.color",
+            },
+          },
+        ],
+      };
+
+      app.useWidget("Status", status);
+      app.useComponent("Node", node);
+
+      app.tree({
+        object_type: "node",
+        title: "Node",
+        subtitle: "node subtitle",
+        status: {
+          color: "red",
+          ranking: 0,
+        },
+        childs: [
+          {
+            object_type: "node",
+            title: "Node",
+            subtitle: "node subtitle",
+            status: {
+              color: "red",
+              ranking: 0,
+            },
+            childs: [],
+          },
+          {
+            object_type: "node",
+            title: "Node",
+            subtitle: "node subtitle",
+            status: {
+              color: "red",
+              ranking: 0,
+            },
+            childs: [],
+          },
+        ],
+      });
       app.mount("#muup");
     </script>
   </body>
