@@ -1,7 +1,7 @@
 import { Application, IApplicationOptions } from "pixi.js";
-import { Component, IComponentOptions } from "./component";
+import { Component, IComponentOptions } from "./helpers/component";
 import { compare } from "./helpers/compare";
-import { IWidgetOptions, Widget } from "./widget";
+import { IWidgetOptions, Widget } from "./helpers/widget";
 
 export interface MuupPlugin {
   install: (app: App) => void;
@@ -12,8 +12,8 @@ export class App {
   widgets: { [key: string]: IWidgetOptions };
   components: { [key: string]: IComponentOptions };
   list: Component[];
-  constructor(options: IApplicationOptions) {
-    this.app = new Application(options);
+  constructor() {
+    this.app = new Application({ backgroundColor: 0x0d1117, antialias: true });
     this.components = {};
     this.widgets = {};
     this.list = [];
@@ -42,7 +42,6 @@ export class App {
         this.tree(child, node.id, i);
       });
     }
-    console.log(this.list);
     return this.list;
   }
 
@@ -66,6 +65,12 @@ export class App {
     this.el = document.querySelector(selector);
     if (this.el) {
       this.el.appendChild(this.app.view);
+      this.app.view.width = this.el.getBoundingClientRect().width;
+      this.app.view.height = this.el.getBoundingClientRect().height;
+      // window.addEventListener("resize", () => {
+      //   this.app.view.width = this.el.getBoundingClientRect().width;
+      //   this.app.view.height = this.el.getBoundingClientRect().height;
+      // });
       this.list.forEach((component) => {
         this.app.stage.addChild(component.container);
         component.setup();

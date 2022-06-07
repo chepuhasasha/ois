@@ -9,10 +9,9 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>MUUP!</h1>
     <div id="muup"></div>
     <script>
-      const app = new Muup.App({ width: 600, height: 600 });
+      const app = new Muup.App();
       const status = {
         props: {
           color: {
@@ -22,30 +21,9 @@
         },
         setup() {
           const rect = new PIXI.Graphics();
-          rect.beginFill(0xde3249);
-          rect.drawRect(50, 50, 100, 100);
-          rect.endFill();
-          // console.log(rect);
+          rect.lineStyle(4, 0xff3300, 1);
+          rect.drawRect(0, 0, 40, 40);
           this.container.addChild(rect);
-          // console.log(this.props);
-        },
-      };
-      const test = {
-        props: {
-          color: {
-            type: String,
-            default: "red",
-          },
-        },
-        setup() {
-          const rect = new PIXI.Graphics();
-          rect.beginFill(0xde3249);
-
-          let a = 100;
-          rect.drawRect(200, 110, 100, 100);
-          rect.endFill();
-          this.container.addChild(rect);
-          // console.log(this.props);
         },
       };
       const node = {
@@ -64,17 +42,10 @@
               color: "status.color",
             },
           },
-          {
-            name: "Test",
-            map: {
-              color: "status.color",
-            },
-          },
         ],
       };
 
       app.useWidget("Status", status);
-      app.useWidget("Test", test);
       app.useComponent("Node", node);
 
       app.tree({
@@ -110,5 +81,16 @@
       });
       app.mount("#muup");
     </script>
+    <style>
+      body {
+        background: #141620;
+        /* padding: 40px; */
+        box-sizing: border-box;
+      }
+      #muup {
+        border: 1px solid #1b222c;
+        width: 100%;
+      }
+    </style>
   </body>
 </html>
