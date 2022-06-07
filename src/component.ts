@@ -2,22 +2,22 @@ import { Container } from "pixi.js";
 import { Widget } from "./widget";
 
 export interface IComponentOptions {
-  where: { [key: string]: unknown };
+  model: { [key: string]: unknown };
   childsKey: string;
   widgets: { name: string; map: Record<string, string> }[];
 }
 
 export class Component {
   model: Record<string, unknown>;
-  where: { [key: string]: unknown };
+  data: Record<string, unknown>;
   childsKey: string;
   widgets: Widget[];
   parent?: string;
   id?: string;
   container: Container;
-  constructor(options: IComponentOptions, model: Record<string, unknown>) {
-    this.model = model;
-    this.where = options.where;
+  constructor(options: IComponentOptions, data: Record<string, unknown>) {
+    this.data = data;
+    this.model = options.model;
     this.childsKey = options.childsKey;
     this.widgets = [];
     this.container = new Container();
@@ -28,8 +28,5 @@ export class Component {
       this.container.addChild(w.container);
       w.setup();
     });
-
-    console.log(this.container);
-    console.log(this.widgets);
   }
 }

@@ -25,9 +25,9 @@
           rect.beginFill(0xde3249);
           rect.drawRect(50, 50, 100, 100);
           rect.endFill();
-          console.log(rect);
+          // console.log(rect);
           this.container.addChild(rect);
-          console.log(this.props);
+          // console.log(this.props);
         },
       };
       const test = {
@@ -45,12 +45,16 @@
           rect.drawRect(200, 110, 100, 100);
           rect.endFill();
           this.container.addChild(rect);
-          console.log(this.props);
+          // console.log(this.props);
         },
       };
       const node = {
-        where: {
+        model: {
           object_type: "node",
+          title: /^("Node #)([0-9]*")/,
+          status: {
+            color: [String],
+          },
         },
         childsKey: "childs",
         widgets: [
@@ -75,7 +79,7 @@
 
       app.tree({
         object_type: "node",
-        title: "Node",
+        title: "Node #1",
         subtitle: "node subtitle",
         status: {
           color: "red",
@@ -84,7 +88,7 @@
         childs: [
           {
             object_type: "node",
-            title: "Node",
+            title: "Node #2",
             subtitle: "node subtitle",
             status: {
               color: "red",
@@ -94,7 +98,7 @@
           },
           {
             object_type: "node",
-            title: "Node",
+            title: "Node #3",
             subtitle: "node subtitle",
             status: {
               color: "red",

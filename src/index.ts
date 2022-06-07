@@ -1,5 +1,6 @@
 import { Application, IApplicationOptions } from "pixi.js";
 import { Component, IComponentOptions } from "./component";
+import { compare } from "./helpers/compare";
 import { IWidgetOptions, Widget } from "./widget";
 
 export interface MuupPlugin {
@@ -36,26 +37,19 @@ export class App {
       node.id = `${parent}:${i}`;
       node.parent = `${parent}`;
       this.list.push(node);
-      const childs = node.model[node.childsKey] as Record<string, unknown>[];
+      const childs = node.data[node.childsKey] as Record<string, unknown>[];
       childs.forEach((child, i) => {
         this.tree(child, node.id, i);
       });
     }
+    console.log(this.list);
     return this.list;
   }
 
   getComponent(obj: Record<string, unknown>): null | Component {
     let result = null;
     Object.keys(this.components).forEach((name) => {
-      let valid = false;
-      Object.keys(this.components[name].where).forEach((key) => {
-        valid = obj[key] && obj[key] === this.components[name].where[key];
-      });
-      if (
-        valid &&
-        obj[this.components[name].childsKey] &&
-        Array.isArray(obj[this.components[name].childsKey])
-      ) {
+      if (compare(this.components[name].model, obj)) {
         let component = new Component(this.components[name], obj);
         this.components[name].widgets.forEach((widget) => {
           component.widgets.push(
