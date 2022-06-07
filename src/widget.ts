@@ -1,3 +1,5 @@
+import { Container } from "pixi.js";
+
 export interface IWidgetOptions {
   props: {
     [key: string]: {
@@ -7,7 +9,6 @@ export interface IWidgetOptions {
   };
   setup: () => void;
 }
-
 export class Widget {
   map: Record<string, string>;
   props: {
@@ -16,10 +17,12 @@ export class Widget {
       default: unknown;
     };
   };
+  container: Container;
   setup: () => void;
   constructor(options: IWidgetOptions, map: Record<string, string>) {
     this.props = options.props;
     this.setup = options.setup;
     this.map = map;
+    this.container = new Container();
   }
 }

@@ -72,7 +72,10 @@ export class App {
     this.el = document.querySelector(selector);
     if (this.el) {
       this.el.appendChild(this.app.view);
-      this.list.forEach((component) => component.setup());
+      this.list.forEach((component) => {
+        this.app.stage.addChild(component.container);
+        component.setup();
+      });
     }
   }
 }
