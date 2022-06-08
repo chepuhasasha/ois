@@ -4,51 +4,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="./dist/muup.js"></script>
     <title>Document</title>
   </head>
   <body>
     <div id="muup"></div>
     <script>
-      const app = new Muup.App();
-      const status = {
-        props: {
-          color: {
-            type: String,
-            default: "red",
-          },
-        },
-        setup() {
-          const rect = new PIXI.Graphics();
-          rect.lineStyle(4, 0xff3300, 1);
-          rect.drawRect(0, 0, 40, 40);
-          this.container.addChild(rect);
-        },
-      };
-      const node = {
-        model: {
-          object_type: "node",
-          title: /^("Node #)([0-9]*")/,
-          status: {
-            color: [String],
-          },
-        },
-        childsKey: "childs",
-        widgets: [
-          {
-            name: "Status",
-            map: {
-              color: "status.color",
-            },
-          },
-        ],
-      };
-
-      app.useWidget("Status", status);
-      app.useComponent("Node", node);
-
-      app.tree({
+      const muup = Muup.createApp();
+      muup.tree = {
         object_type: "node",
         title: "Node #1",
         subtitle: "node subtitle",
@@ -78,13 +41,41 @@
             childs: [],
           },
         ],
-      });
-      app.mount("#muup");
+      };
+      const status = {
+        props: { color: "red" },
+        render: () => {
+          return muup.el("div", { style: { background: this.state.color } }, [
+            muup.el("span", { attrs: { innerText: "test" } }),
+          ]);
+        },
+      };
+      const node = {
+        model: {
+          object_type: "node",
+          title: /^("Node #)([0-9]*")/,
+          status: {
+            color: [String],
+          },
+        },
+        key: "childs",
+        widgets: [
+          {
+            name: "Status",
+            map: {
+              color: "status.color",
+            },
+          },
+        ],
+      };
+      muup.useWidget("Status", status);
+      muup.useElement("Node", node);
+      console.log(muup);
+      muup.mount("#muup");
     </script>
     <style>
       body {
         background: #141620;
-        /* padding: 40px; */
         box-sizing: border-box;
       }
       #muup {
