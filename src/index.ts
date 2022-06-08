@@ -6,6 +6,11 @@ import { IWidgetOptions, Widget } from "./helpers/widget";
 export interface MuupPlugin {
   install: (app: App) => void;
 }
+declare global {
+  interface Window {
+    muupApp: App;
+  }
+}
 export class App {
   el: HTMLElement;
   app: Application;
@@ -17,18 +22,7 @@ export class App {
     this.components = {};
     this.widgets = {};
     this.list = [];
-  }
-
-  useWidget(name: string, widget: IWidgetOptions) {
-    this.widgets[name] = widget;
-  }
-
-  useComponent(name: string, component: IComponentOptions) {
-    this.components[name] = component;
-  }
-
-  usePlugin(plugin: MuupPlugin) {
-    plugin.install(this);
+    window.muupApp = this;
   }
 
   tree(data: Record<string, unknown>, parent: string = "0", i: number = 0) {
@@ -67,14 +61,26 @@ export class App {
       this.el.appendChild(this.app.view);
       this.app.view.width = this.el.getBoundingClientRect().width;
       this.app.view.height = this.el.getBoundingClientRect().height;
-      // window.addEventListener("resize", () => {
-      //   this.app.view.width = this.el.getBoundingClientRect().width;
-      //   this.app.view.height = this.el.getBoundingClientRect().height;
-      // });
-      this.list.forEach((component) => {
-        this.app.stage.addChild(component.container);
-        component.setup();
-      });
     }
+    this.render();
+  }
+
+  render() {
+    this.list.forEach((component) => {
+      this.app.stage.addChild(component.container);
+      component.setup();
+    });
+  }
+
+  useWidget(name: string, widget: IWidgetOptions) {
+    this.widgets[name] = widget;
+  }
+
+  useComponent(name: string, component: IComponentOptions) {
+    this.components[name] = component;
+  }
+
+  usePlugin(plugin: MuupPlugin) {
+    plugin.install(this);
   }
 }
