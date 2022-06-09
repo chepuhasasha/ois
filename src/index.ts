@@ -2,7 +2,7 @@ import "./style/style.scss";
 import { compare } from "./helpers/compare";
 import { INodeOptions, node } from "./helpers/node";
 import { IWidgetOptions } from "./helpers/widget";
-import { infra } from "./libs/infra";
+import { base } from "./libs/base";
 import { el } from "./helpers/el";
 export interface IMuupListItem {
   id: string;
@@ -112,6 +112,6 @@ export class app {
 
 export function createApp(selector: string) {
   const muup = new app(selector);
-  muup.use(infra);
+  muup.use(base);
   return muup;
 }

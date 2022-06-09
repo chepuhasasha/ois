@@ -23,7 +23,13 @@ export class node {
   render(data: Record<string, unknown>) {
     this.frame.innerHTML = "";
     this.widgets.forEach((w) => {
-      const W = new widget(this.widgetsLib[w.name], data);
+      const W = new widget(this.widgetsLib[w.name]);
+      for (let key in w.map) {
+        const path = w.map[key].split(".");
+        W.props[key] = path.reduce((acc, val) => {
+          return acc[val];
+        }, data);
+      }
       this.frame.appendChild(W.render());
     });
   }
