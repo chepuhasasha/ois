@@ -22,11 +22,9 @@ export class node {
 
   render(data: Record<string, unknown>) {
     this.frame.innerHTML = "";
-    const text = document.createTextNode(JSON.stringify(data));
     this.widgets.forEach((w) => {
       const W = new widget(this.widgetsLib[w.name], data);
       this.frame.appendChild(W.render());
-      this.frame.appendChild(text);
     });
   }
 }

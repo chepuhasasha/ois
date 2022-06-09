@@ -19,13 +19,24 @@ export class app {
   }
 
   tree(tree: Record<string, unknown>) {
-    this.convertToList(tree);
-    this.proxying();
+    this.list = this.proxying(this.convertToList(tree));
     this.mount();
   }
-  update(tree: Record<string, unknown>) {}
+  update(tree: Record<string, unknown>) {
+    const newList = this.convertToList(tree);
+    newList.forEach((item, i) => {
+      if (JSON.stringify(item) != JSON.stringify(this.list[i])) {
+        this.list[i].data = item.data;
+      }
+    });
+  }
 
-  convertToList(data: Record<string, unknown>, i: number = 0, parent?: string) {
+  convertToList(
+    data: Record<string, unknown>,
+    i: number = 0,
+    list: IMuupListItem[] = [],
+    parent?: string
+  ) {
     const node = this.getNodeName(data);
     if (node) {
       const listItem = {
@@ -34,13 +45,13 @@ export class app {
         node,
         data,
       };
-      this.list.push(listItem);
+      list.push(listItem);
       const childs = data[listItem.node.key] as Record<string, unknown>[];
       childs.forEach((child, i) => {
-        this.convertToList(child, i, listItem.id);
+        this.convertToList(child, i, list, listItem.id);
       });
     }
-    return this.list;
+    return list;
   }
 
   getNodeName(obj: Record<string, unknown>) {
@@ -52,8 +63,8 @@ export class app {
     return null;
   }
 
-  proxying() {
-    this.list = this.list.map((node) => {
+  proxying(list: IMuupListItem[]) {
+    return list.map((node) => {
       return new Proxy(node, {
         set: (target, p: "id", value) => {
           target[p] = value;

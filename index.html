@@ -14,7 +14,7 @@
       const status = {
         props: { color: "red" },
         render() {
-          return document.createTextNode(JSON.stringify(this.state));
+          return document.createTextNode(JSON.stringify(this.state.status));
           // return muup.el("div", { style: { background: this.state.color } }, [
           //   muup.el("span", { attrs: { innerText: "test" } }),
           // ]);
@@ -25,7 +25,7 @@
           object_type: "node",
           title: /^("Node #)([0-9]*")/,
           status: {
-            color: [String],
+            color: [String, Number],
           },
         },
         key: "childs",
@@ -72,7 +72,37 @@
         ],
       });
       setInterval(() => {
-        muup.list[0].data = { test: Math.random() };
+        muup.update({
+          object_type: "node",
+          title: "Node #1",
+          subtitle: "node subtitle",
+          status: {
+            color: Math.random(),
+            ranking: 0,
+          },
+          childs: [
+            {
+              object_type: "node",
+              title: "Node #2",
+              subtitle: "node subtitle",
+              status: {
+                color: "red",
+                ranking: 0,
+              },
+              childs: [],
+            },
+            {
+              object_type: "node",
+              title: "Node #3",
+              subtitle: "node subtitle",
+              status: {
+                color: "red",
+                ranking: 0,
+              },
+              childs: [],
+            },
+          ],
+        });
       }, 1000);
     </script>
     <style>
