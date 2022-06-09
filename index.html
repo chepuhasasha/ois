@@ -10,8 +10,8 @@
   <body>
     <div id="muup"></div>
     <script>
-      const muup = Muup.createApp();
-      muup.tree = {
+      const muup = new Muup.app("#muup");
+      muup.tree({
         object_type: "node",
         title: "Node #1",
         subtitle: "node subtitle",
@@ -41,7 +41,7 @@
             childs: [],
           },
         ],
-      };
+      });
       const status = {
         props: { color: "red" },
         render: () => {
@@ -69,9 +69,8 @@
         ],
       };
       muup.useWidget("Status", status);
-      muup.useElement("Node", node);
+      muup.useNode("Node", node);
       console.log(muup);
-      muup.mount("#muup");
     </script>
     <style>
       body {
