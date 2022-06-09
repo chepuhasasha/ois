@@ -22,16 +22,25 @@
         key: "childs",
         widgets: [
           {
-            name: "Title",
+            name: "Status",
             map: {
-              title: "title",
-              subtitle: "subtitle",
+              color: "#status.color",
             },
           },
           {
-            name: "Status",
+            name: "Title",
             map: {
-              color: "status.color",
+              title: "#title",
+              subtitle: "#subtitle",
+            },
+          },
+          {
+            name: "TwoRows",
+            map: {
+              title_a: "CPU",
+              title_b: "RAM",
+              value_a: "#cpu",
+              value_b: "#ram",
             },
           },
         ],
@@ -41,6 +50,8 @@
         object_type: "node",
         title: "Node #1",
         subtitle: "node subtitle",
+        cpu: 10,
+        ram: 10,
         status: {
           color: "red",
           ranking: 0,
@@ -50,6 +61,8 @@
             object_type: "node",
             title: "Node #2",
             subtitle: "node subtitle",
+            cpu: 10,
+            ram: 10,
             status: {
               color: "red",
               ranking: 0,
@@ -60,6 +73,8 @@
             object_type: "node",
             title: "Node #3",
             subtitle: "node subtitle",
+            cpu: 10,
+            ram: 10,
             status: {
               color: "red",
               ranking: 0,
@@ -73,8 +88,10 @@
           object_type: "node",
           title: "Node #1",
           subtitle: "node subtitle",
+          cpu: Math.floor(Math.random() * 100),
+          ram: Math.floor(Math.random() * 100),
           status: {
-            color: Math.random(),
+            color: Math.random() > 0.5 ? "lightgreen" : "red",
             ranking: 0,
           },
           childs: [
@@ -82,6 +99,8 @@
               object_type: "node",
               title: "Node #2",
               subtitle: "node subtitle",
+              cpu: Math.floor(Math.random() * 100),
+              ram: Math.floor(Math.random() * 100),
               status: {
                 color: "red",
                 ranking: 0,
@@ -92,8 +111,10 @@
               object_type: "node",
               title: "Node #3",
               subtitle: "node subtitle",
+              cpu: Math.floor(Math.random() * 100),
+              ram: Math.floor(Math.random() * 100),
               status: {
-                color: Math.random(),
+                color: Math.random() > 0.5 ? "lightgreen" : "red",
                 ranking: 0,
               },
               childs: [],

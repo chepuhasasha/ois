@@ -25,10 +25,16 @@ export class node {
     this.widgets.forEach((w) => {
       const W = new widget(this.widgetsLib[w.name]);
       for (let key in w.map) {
-        const path = w.map[key].split(".");
-        W.props[key] = path.reduce((acc, val) => {
-          return acc[val];
-        }, data);
+        if (w.map[key][0] === "#") {
+          W.props[key] = w.map[key]
+            .slice(1)
+            .split(".")
+            .reduce((acc, val) => {
+              return acc[val];
+            }, data);
+        } else {
+          W.props[key] = w.map[key];
+        }
       }
       this.frame.appendChild(W.render());
     });

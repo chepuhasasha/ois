@@ -2,14 +2,32 @@
   &_title {
     display: flex;
     flex-direction: column;
-    color: #979CAF;
     font-family: 'Arial';
     &_title {
       text-transform: uppercase;
+      color: #bac0da;
       font-size: 14px;
     }
     &_subtitle {
-      font-size: 10px;
+      color: #8e93a7;
+      font-size: 11px;
+    }
+  }
+  &_status {
+    width: 4px;
+    height: 100%;
+    min-height: 20px;
+    border-radius: 2px;
+  }
+  &_tworows {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &_item {
+      font-family: 'Arial';
+      font-size: 12px;
+      color: #979CAF;
+
     }
   }
 }
