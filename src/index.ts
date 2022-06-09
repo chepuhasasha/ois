@@ -3,6 +3,7 @@ import { compare } from "./helpers/compare";
 import { INodeOptions, node } from "./helpers/node";
 import { IWidgetOptions } from "./helpers/widget";
 import { infra } from "./libs/infra";
+import { el } from "./helpers/el";
 export interface IMuupListItem {
   id: string;
   parent: string | null;
@@ -14,6 +15,7 @@ export class app {
   private list: IMuupListItem[] = [];
   private widgets: Record<string, IWidgetOptions> = {};
   private nodes: Record<string, INodeOptions> = {};
+  el = el;
   constructor(selector: string) {
     this.container = document.querySelector(selector);
     if (!this.container) console.error("[MUUP]: Контейнер не найден!");

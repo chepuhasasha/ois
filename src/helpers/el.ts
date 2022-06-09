@@ -19,7 +19,7 @@ export function el(
     }
     if (options.attrs) {
       for (let key in options.attrs) {
-        // element[key] = options[key];
+        element[key as "innerText"] = options.attrs[key as "innerText"];
       }
     }
   }
