@@ -1,3 +1,5 @@
+import { IWidgetOptions } from "./widget";
+
 export interface INodeOptions {
   key: string;
   model: Record<string, unknown>;
@@ -5,15 +7,16 @@ export interface INodeOptions {
 }
 
 export class node {
-  frame: HTMLDivElement;
+  private frame: HTMLDivElement = document.createElement("div");
+  private widgetsLib: Record<string, IWidgetOptions> = {};
   model: INodeOptions["model"];
   widgets: INodeOptions["widgets"];
   key: INodeOptions["key"];
-  constructor(options: INodeOptions) {
+  constructor(options: INodeOptions, widgets: Record<string, IWidgetOptions>) {
     this.key = options.key;
     this.model = options.model;
     this.widgets = options.widgets;
-    this.frame = document.createElement("div");
+    this.widgetsLib = widgets;
     this.frame.className = "muup_node";
   }
 

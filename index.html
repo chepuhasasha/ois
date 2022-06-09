@@ -11,6 +11,34 @@
     <div id="muup"></div>
     <script>
       const muup = new Muup.app("#muup");
+      const status = {
+        props: { color: "red" },
+        render: () => {
+          return muup.el("div", { style: { background: this.state.color } }, [
+            muup.el("span", { attrs: { innerText: "test" } }),
+          ]);
+        },
+      };
+      const node = {
+        model: {
+          object_type: "node",
+          title: /^("Node #)([0-9]*")/,
+          status: {
+            color: [String],
+          },
+        },
+        key: "childs",
+        widgets: [
+          {
+            name: "Status",
+            map: {
+              color: "status.color",
+            },
+          },
+        ],
+      };
+      muup.useWidget("Status", status);
+      muup.useNode("Node", node);
       muup.tree({
         object_type: "node",
         title: "Node #1",
@@ -42,34 +70,6 @@
           },
         ],
       });
-      const status = {
-        props: { color: "red" },
-        render: () => {
-          return muup.el("div", { style: { background: this.state.color } }, [
-            muup.el("span", { attrs: { innerText: "test" } }),
-          ]);
-        },
-      };
-      const node = {
-        model: {
-          object_type: "node",
-          title: /^("Node #)([0-9]*")/,
-          status: {
-            color: [String],
-          },
-        },
-        key: "childs",
-        widgets: [
-          {
-            name: "Status",
-            map: {
-              color: "status.color",
-            },
-          },
-        ],
-      };
-      muup.useWidget("Status", status);
-      muup.useNode("Node", node);
       console.log(muup);
     </script>
     <style>

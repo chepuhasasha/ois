@@ -4,54 +4,71 @@ import { IWidgetOptions, widget } from "./helpers/widget";
 
 export class app {
   container: HTMLElement;
-  muupTree: Record<string, unknown>;
+  private muupTree: Record<string, unknown> = {};
+  private muupList: {
+    node: Record<string, unknown>;
+    data: Record<string, unknown>;
+  }[] = [];
   private widgets: Record<string, IWidgetOptions> = {};
   private nodes: Record<string, INodeOptions> = {};
   constructor(selector: string) {
-    this.muupTree = {};
     this.container = document.querySelector(selector);
     if (!this.container) console.error("[MUUP]: Контейнер не найден!");
   }
 
   tree(tree: Record<string, unknown>) {
-    this.muupTree = this.proxying(this.parse(tree));
+    this.convertToList(tree);
+    this.proxying();
+    console.log(this.muupList);
   }
+  update(tree: Record<string, unknown>) {}
 
-  parse(tree: Record<string, unknown>) {
-    return tree;
+  convertToList(data: Record<string, unknown>, i: number = 0, parent?: string) {
+    const node = this.getNodeName(data);
+    if (node) {
+      node.id = `${parent ? parent + ":" : ""}${i}`;
+      node.parent = parent ? parent : null;
+      const newData = { ...data };
+      delete newData[node.node.key];
+      this.muupList.push({ node, data: newData });
+      const childs = data[node.node.key] as Record<string, unknown>[];
+      childs.forEach((child, i) => {
+        this.convertToList(child, i, node.id);
+      });
+    }
+    return this.muupList;
   }
 
   getNodeName(obj: Record<string, unknown>) {
     for (let name in this.nodes) {
       if (compare(this.nodes[name].model, obj)) {
-        return name;
+        return {
+          id: "0",
+          parent: "0",
+          node: this.nodes[name],
+          data: {},
+        };
       }
     }
+    return null;
   }
 
-  proxying(data: Record<string, unknown>) {
-    if (typeof data === "object") {
-      for (let key in data) {
-        data[key] = this.proxying(data[key] as Record<string, unknown>);
-      }
-      return new Proxy(data, {
-        get: (target, p) => {
-          return target[p as string];
-        },
-        set: (target, p, value) => {
-          if (typeof value === "object") {
-            target[p as string] = this.proxying(value);
+  proxying() {
+    this.muupList = this.muupList.map((node) => {
+      return {
+        node: node.node,
+        data: new Proxy(node.data, {
+          get: (target, p) => {
+            return target[p as string];
+          },
+          set: (target, p, value) => {
+            target[p as string] = value;
             return true;
-          }
-          target[p as string] = value;
-          return true;
-        },
-      });
-    }
-    return data;
+          },
+        }),
+      };
+    });
   }
-
-  update(tree: Record<string, unknown>) {}
 
   /**
    * Регистрация виджетов
