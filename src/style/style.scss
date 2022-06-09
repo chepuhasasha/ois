@@ -1,6 +1,21 @@
 .muup {
+  display: grid;
+  grid-gap: 100px;
+  grid-row-gap: 10px;
+  grid-auto-columns: minmax(max-content, max-content);
+  background: #141620;
+  padding: 40px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+      background: none;
+      width: 10px;
+      height: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: #292A38;
+    }
   &_node {
-    // position: absolute;
     transition: all 0.3s ease;
     background: #1E1F29;
     padding: 10px;

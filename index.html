@@ -79,7 +79,20 @@
               color: "red",
               ranking: 0,
             },
-            childs: [],
+            childs: [
+              {
+                object_type: "node",
+                title: "Node #3",
+                subtitle: "node subtitle",
+                cpu: Math.floor(Math.random() * 100),
+                ram: Math.floor(Math.random() * 100),
+                status: {
+                  color: Math.random() > 0.5 ? "lightgreen" : "red",
+                  ranking: 0,
+                },
+                childs: [],
+              },
+            ],
           },
         ],
       });
@@ -117,22 +130,32 @@
                 color: Math.random() > 0.5 ? "lightgreen" : "red",
                 ranking: 0,
               },
-              childs: [],
+              childs: [
+                {
+                  object_type: "node",
+                  title: "Node #3",
+                  subtitle: "node subtitle",
+                  cpu: Math.floor(Math.random() * 100),
+                  ram: Math.floor(Math.random() * 100),
+                  status: {
+                    color: Math.random() > 0.5 ? "lightgreen" : "red",
+                    ranking: 0,
+                  },
+                  childs: [],
+                },
+              ],
             },
           ],
         });
       }, 1000);
-      console.log(muup);
+      console.log(muup.list);
     </script>
     <style>
       body {
-        background: #141620;
+        background: #1e1f29;
         box-sizing: border-box;
-        color: white;
-      }
-      #muup {
-        border: 1px solid #1b222c;
-        width: 100%;
+        padding: 0;
+        margin: 0;
       }
     </style>
   </body>

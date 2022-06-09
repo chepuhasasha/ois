@@ -5,9 +5,8 @@ import { IWidgetOptions } from "./helpers/widget";
 import { base } from "./libs/base";
 import { el } from "./helpers/el";
 export interface IMuupListItem {
-  id: string;
-  parent: string | null;
   node: node;
+  area: string;
   data: Record<string, unknown>;
 }
 export class app {
@@ -19,6 +18,7 @@ export class app {
   constructor(selector: string) {
     this.container = document.querySelector(selector);
     if (!this.container) console.error("[MUUP]: Контейнер не найден!");
+    else this.container.className = "muup";
   }
 
   tree(tree: Record<string, unknown>) {
@@ -36,22 +36,30 @@ export class app {
 
   convertToList(
     data: Record<string, unknown>,
-    i: number = 0,
     list: IMuupListItem[] = [],
-    parent?: string
+    area: { y: number; x: number; _y: number; _x: number } = {
+      y: 1,
+      x: 1,
+      _y: 2,
+      _x: 2,
+    }
   ) {
     const node = this.getNode(data);
     if (node) {
       const listItem = {
-        id: `${parent ? parent + ":" : ""}${i}`,
-        parent: parent ? parent : null,
+        area: `${area.y}/${area.x}/${area._y}/${area._x}`,
         node,
         data,
       };
       list.push(listItem);
       const childs = data[listItem.node.key] as Record<string, unknown>[];
       childs.forEach((child, i) => {
-        this.convertToList(child, i, list, listItem.id);
+        this.convertToList(child, list, {
+          y: area.y + i,
+          x: area.x + 1,
+          _y: area.y + i + 1,
+          _x: area.x + 2,
+        });
       });
     }
     return list;
@@ -79,9 +87,20 @@ export class app {
   }
 
   mount() {
-    this.list.forEach((node) => {
-      this.container.appendChild(node.node.frame);
+    this.list.forEach((node, i) => {
       node.node.render(node.data);
+      this.container.appendChild(node.node.frame);
+      node.node.frame.style.gridArea = node.area;
+      // if (node.parent) {
+      //   const parent = this.list.find((el) => el.id === node.parent);
+      //   const rect = parent.node.frame.getBoundingClientRect();
+      //   node.node.frame.style.left = rect.width + rect.x + 50 + "px";
+      //   if (this.list[i - 1].parent === node.parent) {
+      //     const rect = this.list[i - 1].node.frame.getBoundingClientRect();
+      //     node.node.frame.style.top = rect.height + rect.y + 50 + "px";
+      //   }
+      // }
+      // console.log(node.node.frame.getBoundingClientRect());
     });
   }
 
