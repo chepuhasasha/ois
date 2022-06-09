@@ -7,7 +7,7 @@ export interface INodeOptions {
 }
 
 export class node {
-  private frame: HTMLDivElement = document.createElement("div");
+  frame: HTMLDivElement = document.createElement("div");
   private widgetsLib: Record<string, IWidgetOptions> = {};
   model: INodeOptions["model"];
   widgets: INodeOptions["widgets"];
@@ -20,5 +20,9 @@ export class node {
     this.frame.className = "muup_node";
   }
 
-  render(data: Record<string, unknown>) {}
+  render(data: Record<string, unknown>) {
+    this.frame.innerHTML = "";
+    const text = document.createTextNode(JSON.stringify(data));
+    this.frame.appendChild(text);
+  }
 }

@@ -70,12 +70,15 @@
           },
         ],
       });
-      console.log(muup);
+      setInterval(() => {
+        muup.list[0].data = { test: Math.random() };
+      }, 1000);
     </script>
     <style>
       body {
         background: #141620;
         box-sizing: border-box;
+        color: white;
       }
       #muup {
         border: 1px solid #1b222c;

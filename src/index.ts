@@ -2,13 +2,15 @@ import { compare } from "./helpers/compare";
 import { INodeOptions, node } from "./helpers/node";
 import { IWidgetOptions, widget } from "./helpers/widget";
 
+export interface IMuupListItem {
+  id: string;
+  parent: string | null;
+  node: node;
+  data: Record<string, unknown>;
+}
 export class app {
   container: HTMLElement;
-  private muupTree: Record<string, unknown> = {};
-  private muupList: {
-    node: Record<string, unknown>;
-    data: Record<string, unknown>;
-  }[] = [];
+  private list: IMuupListItem[] = [];
   private widgets: Record<string, IWidgetOptions> = {};
   private nodes: Record<string, INodeOptions> = {};
   constructor(selector: string) {
@@ -19,54 +21,53 @@ export class app {
   tree(tree: Record<string, unknown>) {
     this.convertToList(tree);
     this.proxying();
-    console.log(this.muupList);
+    this.mount();
   }
   update(tree: Record<string, unknown>) {}
 
   convertToList(data: Record<string, unknown>, i: number = 0, parent?: string) {
     const node = this.getNodeName(data);
     if (node) {
-      node.id = `${parent ? parent + ":" : ""}${i}`;
-      node.parent = parent ? parent : null;
-      const newData = { ...data };
-      delete newData[node.node.key];
-      this.muupList.push({ node, data: newData });
-      const childs = data[node.node.key] as Record<string, unknown>[];
+      const listItem = {
+        id: `${parent ? parent + ":" : ""}${i}`,
+        parent: parent ? parent : null,
+        node,
+        data,
+      };
+      this.list.push(listItem);
+      const childs = data[listItem.node.key] as Record<string, unknown>[];
       childs.forEach((child, i) => {
-        this.convertToList(child, i, node.id);
+        this.convertToList(child, i, listItem.id);
       });
     }
-    return this.muupList;
+    return this.list;
   }
 
   getNodeName(obj: Record<string, unknown>) {
     for (let name in this.nodes) {
       if (compare(this.nodes[name].model, obj)) {
-        return {
-          id: "0",
-          parent: "0",
-          node: this.nodes[name],
-          data: {},
-        };
+        return new node(this.nodes[name], this.widgets);
       }
     }
     return null;
   }
 
   proxying() {
-    this.muupList = this.muupList.map((node) => {
-      return {
-        node: node.node,
-        data: new Proxy(node.data, {
-          get: (target, p) => {
-            return target[p as string];
-          },
-          set: (target, p, value) => {
-            target[p as string] = value;
-            return true;
-          },
-        }),
-      };
+    this.list = this.list.map((node) => {
+      return new Proxy(node, {
+        set: (target, p: "id", value) => {
+          target[p] = value;
+          target.node.render(target.data);
+          return true;
+        },
+      });
+    });
+  }
+
+  mount() {
+    this.list.forEach((node) => {
+      this.container.appendChild(node.node.frame);
+      node.node.render(node.data);
     });
   }
 
