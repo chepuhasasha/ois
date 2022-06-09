@@ -10,16 +10,7 @@
   <body>
     <div id="muup"></div>
     <script>
-      const muup = new Muup.app("#muup");
-      const status = {
-        props: { color: "red" },
-        render() {
-          return document.createTextNode(JSON.stringify(this.state.status));
-          // return muup.el("div", { style: { background: this.state.color } }, [
-          //   muup.el("span", { attrs: { innerText: "test" } }),
-          // ]);
-        },
-      };
+      const muup = Muup.createApp("#muup");
       const node = {
         model: {
           object_type: "node",
@@ -38,7 +29,7 @@
           },
         ],
       };
-      muup.useWidget("Status", status);
+
       muup.useNode("Node", node);
       muup.tree({
         object_type: "node",
@@ -96,7 +87,7 @@
               title: "Node #3",
               subtitle: "node subtitle",
               status: {
-                color: "red",
+                color: Math.random(),
                 ranking: 0,
               },
               childs: [],

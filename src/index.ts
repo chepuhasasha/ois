@@ -2,6 +2,7 @@ import "./style/style.scss";
 import { compare } from "./helpers/compare";
 import { INodeOptions, node } from "./helpers/node";
 import { IWidgetOptions } from "./helpers/widget";
+import { infra } from "./libs/infra";
 export interface IMuupListItem {
   id: string;
   parent: string | null;
@@ -37,7 +38,7 @@ export class app {
     list: IMuupListItem[] = [],
     parent?: string
   ) {
-    const node = this.getNodeName(data);
+    const node = this.getNode(data);
     if (node) {
       const listItem = {
         id: `${parent ? parent + ":" : ""}${i}`,
@@ -54,7 +55,7 @@ export class app {
     return list;
   }
 
-  getNodeName(obj: Record<string, unknown>) {
+  getNode(obj: Record<string, unknown>) {
     for (let name in this.nodes) {
       if (compare(this.nodes[name].model, obj)) {
         return new node(this.nodes[name], this.widgets);
@@ -105,4 +106,10 @@ export class app {
   use(plugin: (app: app) => void) {
     plugin(this);
   }
+}
+
+export function createApp(selector: string) {
+  const muup = new app(selector);
+  muup.use(infra);
+  return muup;
 }

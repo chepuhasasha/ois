@@ -1,6 +1,6 @@
 export interface IWidgetOptions {
   props: Record<string, unknown>;
-  render: () => HTMLElement;
+  render: () => HTMLElement | Text;
 }
 
 export class widget {
