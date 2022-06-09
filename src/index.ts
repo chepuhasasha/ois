@@ -1,7 +1,7 @@
+import "./style/style.scss";
 import { compare } from "./helpers/compare";
 import { INodeOptions, node } from "./helpers/node";
-import { IWidgetOptions, widget } from "./helpers/widget";
-import "./style/style.scss";
+import { IWidgetOptions } from "./helpers/widget";
 export interface IMuupListItem {
   id: string;
   parent: string | null;

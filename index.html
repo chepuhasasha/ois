@@ -13,10 +13,11 @@
       const muup = new Muup.app("#muup");
       const status = {
         props: { color: "red" },
-        render: () => {
-          return muup.el("div", { style: { background: this.state.color } }, [
-            muup.el("span", { attrs: { innerText: "test" } }),
-          ]);
+        render() {
+          return document.createTextNode(JSON.stringify(this.state));
+          // return muup.el("div", { style: { background: this.state.color } }, [
+          //   muup.el("span", { attrs: { innerText: "test" } }),
+          // ]);
         },
       };
       const node = {

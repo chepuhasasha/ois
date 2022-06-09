@@ -6,8 +6,11 @@ export interface IWidgetOptions {
 export class widget {
   props: IWidgetOptions["props"];
   render: IWidgetOptions["render"];
-  constructor(options: IWidgetOptions) {
+  state: Record<string, unknown>;
+  constructor(options: IWidgetOptions, data: Record<string, unknown>) {
+    this.state = data;
     this.props = options.props;
     this.render = options.render;
+    this.render.bind(this);
   }
 }
