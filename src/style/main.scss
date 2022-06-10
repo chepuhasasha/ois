@@ -1,0 +1,13 @@
+@import './component.scss';
+@import './block.scss';
+
+.muup {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  background: #141620;
+  * {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}

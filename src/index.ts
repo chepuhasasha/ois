@@ -1,136 +1,86 @@
-import "./style/style.scss";
+import { IWidgetOptions } from "./services/widget.service";
+import "./style/main.scss";
+import {
+  Component,
+  IComponentData,
+  IComponentOptions,
+} from "./services/component.service";
+import { Block, IBlockGroup } from "./services/block.service";
+import { ITree, Tree } from "./services/tree.service";
 import { compare } from "./helpers/compare";
-import { INodeOptions, node } from "./helpers/node";
-import { IWidgetOptions } from "./helpers/widget";
 import { base } from "./libs/base";
-import { el } from "./helpers/el";
-export interface IMuupListItem {
-  node: node;
-  area: string;
-  data: Record<string, unknown>;
-}
-export class app {
-  container: HTMLElement;
-  private list: IMuupListItem[] = [];
-  private widgets: Record<string, IWidgetOptions> = {};
-  private nodes: Record<string, INodeOptions> = {};
-  el = el;
+
+export class App {
+  container: HTMLDivElement;
+  widgets: Record<string, IWidgetOptions> = {};
+  components: Record<string, IComponentOptions> = {};
+  gridLayout: { el: Block | Tree | Component; area: string }[];
   constructor(selector: string) {
     this.container = document.querySelector(selector);
-    if (!this.container) console.error("[MUUP]: Контейнер не найден!");
-    else this.container.className = "muup";
-  }
-
-  tree(tree: Record<string, unknown>) {
-    this.list = this.proxying(this.convertToList(tree));
-    this.mount();
-  }
-  update(tree: Record<string, unknown>) {
-    const newList = this.convertToList(tree);
-    newList.forEach((item, i) => {
-      if (JSON.stringify(item) != JSON.stringify(this.list[i])) {
-        this.list[i].data = item.data;
-      }
-    });
-  }
-
-  convertToList(
-    data: Record<string, unknown>,
-    list: IMuupListItem[] = [],
-    area: { y: number; x: number; _y: number; _x: number } = {
-      y: 1,
-      x: 1,
-      _y: 2,
-      _x: 2,
-    }
-  ) {
-    const node = this.getNode(data);
-    if (node) {
-      const listItem = {
-        area: `${area.y}/${area.x}/${area._y}/${area._x}`,
-        node,
-        data,
-      };
-      list.push(listItem);
-      const childs = data[listItem.node.key] as Record<string, unknown>[];
-      childs.forEach((child, i) => {
-        this.convertToList(child, list, {
-          y: area.y + i,
-          x: area.x + 1,
-          _y: area.y + i + 1,
-          _x: area.x + 2,
-        });
-      });
-    }
-    return list;
-  }
-
-  getNode(obj: Record<string, unknown>) {
-    for (let name in this.nodes) {
-      if (compare(this.nodes[name].model, obj)) {
-        return new node(this.nodes[name], this.widgets);
-      }
-    }
-    return null;
-  }
-
-  proxying(list: IMuupListItem[]) {
-    return list.map((node) => {
-      return new Proxy(node, {
-        set: (target, p: "id", value) => {
-          target[p] = value;
-          target.node.render(target.data);
-          return true;
-        },
-      });
-    });
-  }
-
-  mount() {
-    this.list.forEach((node, i) => {
-      node.node.render(node.data);
-      this.container.appendChild(node.node.frame);
-      node.node.frame.style.gridArea = node.area;
-      // if (node.parent) {
-      //   const parent = this.list.find((el) => el.id === node.parent);
-      //   const rect = parent.node.frame.getBoundingClientRect();
-      //   node.node.frame.style.left = rect.width + rect.x + 50 + "px";
-      //   if (this.list[i - 1].parent === node.parent) {
-      //     const rect = this.list[i - 1].node.frame.getBoundingClientRect();
-      //     node.node.frame.style.top = rect.height + rect.y + 50 + "px";
-      //   }
-      // }
-      // console.log(node.node.frame.getBoundingClientRect());
-    });
+    if (!this.container) {
+      this.container = document.createElement("div");
+      document.body.appendChild(this.container);
+    } else this.container.className = "muup";
   }
 
   /**
-   * Регистрация виджетов
+   * Регистрация виджета
    * @param {string} name - Название виджета
    * @param {IWidgetOptions} widget - Конфигурация виджета
+   * ```
+   * muup.useWidget('Status', {...})
+   * ```
    */
   useWidget(name: string, widget: IWidgetOptions) {
     this.widgets[name] = widget;
+    return this;
   }
   /**
-   * Регистрация узлов
-   * @param {string} name - Название узла
-   * @param {INodeOptions} widget - Конфигурация узла
+   * Регистрация компонента
+   * @param {string} name - Название компонента
+   * @param {IComponentOptions} component - Конфигурация компонента
+   * ```
+   * muup.useComponent('Node', {...})
+   * ```
    */
-  useNode(name: string, element: INodeOptions) {
-    this.nodes[name] = element;
+  useComponent(name: string, component: IComponentOptions) {
+    this.components[name] = component;
+    return this;
   }
-  /**
-   * Регистрация плагина
-   * @param {(app: app) => void} plugin - Плагин
-   */
-  use(plugin: (app: app) => void) {
+  use(plugin: (muup: App, options?: unknown) => void) {
     plugin(this);
+  }
+
+  component(name: string) {
+    return new Component(this.components[name]);
+  }
+
+  block(title: string) {
+    return new Block(title);
+  }
+
+  tree() {
+    return new Tree();
+  }
+
+  grid(
+    layout: { el: Block | Tree | Component; area: string }[],
+    rows: number,
+    cols: number
+  ) {
+    this.gridLayout = layout;
+    this.container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    this.container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    this.gridLayout.forEach((node) => {
+      node.el.container.style.gridArea = node.area;
+      this.container.appendChild(node.el.container);
+    });
+    return;
   }
 }
 
 export function createApp(selector: string) {
-  const muup = new app(selector);
-  muup.use(base);
-  return muup;
+  window.muup = new App(selector);
+  window.muup.use(base);
+  return window.muup;
 }

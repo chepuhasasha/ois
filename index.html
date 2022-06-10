@@ -10,23 +10,16 @@
   <body>
     <div id="muup"></div>
     <script>
-      const muup = Muup.createApp("#muup");
       const node = {
         model: {
           object_type: "node",
           title: /^("Node #)([0-9]*")/,
+          subtitle: [String],
           status: {
-            color: [String, Number],
+            color: [String],
           },
         },
-        key: "childs",
         widgets: [
-          {
-            name: "Status",
-            map: {
-              color: "#status.color",
-            },
-          },
           {
             name: "Title",
             map: {
@@ -34,121 +27,84 @@
               subtitle: "#subtitle",
             },
           },
-          {
-            name: "TwoRows",
-            map: {
-              title_a: "CPU",
-              title_b: "RAM",
-              value_a: "#cpu",
-              value_b: "#ram",
-            },
-          },
         ],
       };
-      muup.useNode("Node", node);
-      muup.tree({
+
+      const muup = Muup.createApp("#muup").useComponent("Node", node);
+
+      const node1 = muup.component("Node");
+      const node2 = muup.component("Node");
+      node1.data.value = {
         object_type: "node",
         title: "Node #1",
-        subtitle: "node subtitle",
-        cpu: 10,
-        ram: 10,
+        subtitle: "node 1",
         status: {
           color: "red",
-          ranking: 0,
         },
-        childs: [
-          {
-            object_type: "node",
-            title: "Node #2",
-            subtitle: "node subtitle",
-            cpu: 10,
-            ram: 10,
-            status: {
-              color: "red",
-              ranking: 0,
-            },
-            childs: [],
+      };
+      node2.data.value = {
+        object_type: "node",
+        title: "Node #2",
+        subtitle: "node 2",
+        status: {
+          color: "red",
+        },
+      };
+      const block = muup.block();
+      // const tree = muup.tree({});
+
+      muup.grid(
+        [
+          { el: node1, area: "5/5/6/6" },
+          { el: node2, area: "2/2/3/3" },
+          { el: block, area: "1/6/10/10" },
+        ],
+        10,
+        10
+      );
+
+      setInterval(() => {
+        // console.log(node1);
+        node1.data.value = {
+          object_type: "node",
+          title: "Node #1",
+          subtitle: `${Math.floor(Math.random() * 100)}`,
+          status: {
+            color: "red",
           },
+        };
+        node2.data.value = {
+          object_type: "node",
+          title: "Node #2",
+          subtitle: "node 2",
+          status: {
+            color: "red",
+          },
+        };
+        block.data.value = [
           {
-            object_type: "node",
-            title: "Node #3",
-            subtitle: "node subtitle",
-            cpu: 10,
-            ram: 10,
-            status: {
-              color: "red",
-              ranking: 0,
-            },
-            childs: [
+            name: "group #1",
+            components: [
               {
                 object_type: "node",
-                title: "Node #3",
-                subtitle: "node subtitle",
-                cpu: Math.floor(Math.random() * 100),
-                ram: Math.floor(Math.random() * 100),
+                title: "Node #1",
+                subtitle: `node 1`,
                 status: {
-                  color: Math.random() > 0.5 ? "lightgreen" : "red",
-                  ranking: 0,
+                  color: "red",
                 },
-                childs: [],
+              },
+              {
+                object_type: "node",
+                title: "Node #2",
+                subtitle: `${Math.floor(Math.random() * 100)}`,
+                status: {
+                  color: "red",
+                },
               },
             ],
           },
-        ],
-      });
-      setInterval(() => {
-        muup.update({
-          object_type: "node",
-          title: "Node #1",
-          subtitle: "node subtitle",
-          cpu: Math.floor(Math.random() * 100),
-          ram: Math.floor(Math.random() * 100),
-          status: {
-            color: Math.random() > 0.5 ? "lightgreen" : "red",
-            ranking: 0,
-          },
-          childs: [
-            {
-              object_type: "node",
-              title: "Node #2",
-              subtitle: "node subtitle",
-              cpu: Math.floor(Math.random() * 100),
-              ram: Math.floor(Math.random() * 100),
-              status: {
-                color: "red",
-                ranking: 0,
-              },
-              childs: [],
-            },
-            {
-              object_type: "node",
-              title: "Node #3",
-              subtitle: "node subtitle",
-              cpu: Math.floor(Math.random() * 100),
-              ram: Math.floor(Math.random() * 100),
-              status: {
-                color: Math.random() > 0.5 ? "lightgreen" : "red",
-                ranking: 0,
-              },
-              childs: [
-                {
-                  object_type: "node",
-                  title: "Node #3",
-                  subtitle: "node subtitle",
-                  cpu: Math.floor(Math.random() * 100),
-                  ram: Math.floor(Math.random() * 100),
-                  status: {
-                    color: Math.random() > 0.5 ? "lightgreen" : "red",
-                    ranking: 0,
-                  },
-                  childs: [],
-                },
-              ],
-            },
-          ],
-        });
+        ];
       }, 1000);
-      console.log(muup.list);
     </script>
     <style>
       body {

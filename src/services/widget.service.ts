@@ -3,7 +3,7 @@ export interface IWidgetOptions {
   render: () => HTMLElement | Text;
 }
 
-export class widget {
+export class Widget {
   props: IWidgetOptions["props"];
   render: IWidgetOptions["render"];
   state: Record<string, unknown>;
