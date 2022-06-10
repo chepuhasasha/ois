@@ -6,6 +6,8 @@
   "scripts": {
     "build": "npx webpack --mode=production",
     "dev": "npx webpack --mode=development",
+    "lint": "eslint --ext .ts,.tsx",
+    "lint:fix": "npm run lint -- --fix",
     "lint:style": "npx stylelint \"**/*.scss\" --fix"
   },
   "repository": {
@@ -22,6 +24,9 @@
   },
   "homepage": "https://github.com/chepuhasasha/muup#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint-webpack-plugin": "^3.1.1",
     "css-loader": "^6.7.1",
     "sass": "^1.52.3",
     "sass-loader": "^13.0.0",

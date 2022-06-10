@@ -7,8 +7,4 @@ export class Tree {
   constructor() {
     this.container.className = "muup_tree";
   }
-
-  proxy() {}
-
-  mount() {}
 }

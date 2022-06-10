@@ -13,12 +13,12 @@ export function el(
   const element = document.createElement(tag);
   if (options) {
     if (options.style) {
-      for (let key in options.style) {
+      for (const key in options.style) {
         element.style[key] = options.style[key];
       }
     }
     if (options.attrs) {
-      for (let key in options.attrs) {
+      for (const key in options.attrs) {
         element[key as "innerText"] = options.attrs[key as "innerText"];
       }
     }

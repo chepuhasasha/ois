@@ -1,13 +1,8 @@
 import { IWidgetOptions } from "./services/widget.service";
 import "./style/main.scss";
-import {
-  Component,
-  IComponentData,
-  IComponentOptions,
-} from "./services/component.service";
-import { Block, IBlockGroup } from "./services/block.service";
-import { ITree, Tree } from "./services/tree.service";
-import { compare } from "./helpers/compare";
+import { Component, IComponentOptions } from "./services/component.service";
+import { Block } from "./services/block.service";
+import { Tree } from "./services/tree.service";
 import { base } from "./libs/base";
 
 export class App {
@@ -35,6 +30,7 @@ export class App {
     this.widgets[name] = widget;
     return this;
   }
+
   /**
    * Регистрация компонента
    * @param {string} name - Название компонента
@@ -47,6 +43,7 @@ export class App {
     this.components[name] = component;
     return this;
   }
+
   use(plugin: (muup: App, options?: unknown) => void) {
     plugin(this);
   }

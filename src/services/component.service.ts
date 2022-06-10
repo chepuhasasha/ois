@@ -1,4 +1,4 @@
-import { IWidgetOptions, Widget } from "./widget.service";
+import { Widget } from "./widget.service";
 
 export interface IComponentOptions {
   model: Record<string, unknown>;
@@ -22,7 +22,7 @@ export class Component {
     this.container.innerHTML = "";
     this.widgets.forEach((w) => {
       const W = new Widget(window.muup.widgets[w.name]);
-      for (let key in w.map) {
+      for (const key in w.map) {
         if (w.map[key][0] === "#") {
           W.props[key] = w.map[key]
             .slice(1)

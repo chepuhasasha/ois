@@ -16,12 +16,12 @@ export const compare = (
           return result;
 
         case RegExp:
-          let r = model[key] as RegExp;
+          const r = model[key] as RegExp;
           result = r.test(JSON.stringify(data[key]));
           return result;
 
         case Array:
-          let arr = model[key] as (() => void)[];
+          const arr = model[key] as (() => void)[];
           arr.forEach((t) => {
             if (t === data[key].constructor) {
               result = true;

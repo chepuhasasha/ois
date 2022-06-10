@@ -14,7 +14,7 @@ export class Block {
   container: HTMLDivElement = document.createElement("div");
   body: HTMLElement = document.createElement("div");
   header: HTMLElement = document.createElement("div");
-  constructor(title: string = "Untitled") {
+  constructor(title = "Untitled") {
     this.data = this.proxy({ value: [] });
     this.header.innerText = title;
     this.layout();
@@ -45,7 +45,7 @@ export class Block {
   }
 
   getComponent(data: Record<string, unknown>) {
-    for (let name in window.muup.components) {
+    for (const name in window.muup.components) {
       if (compare(window.muup.components[name].model, data)) {
         return new Component(window.muup.components[name]);
       }
@@ -62,6 +62,4 @@ export class Block {
       },
     });
   }
-
-  mount() {}
 }
