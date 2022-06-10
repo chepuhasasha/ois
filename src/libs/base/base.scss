@@ -2,12 +2,14 @@
   &_title {
     display: flex;
     flex-direction: column;
-    font-family: 'Arial';
+    font-family: Arial, Helvetica, sans-serif;
+
     &_title {
-      text-transform: uppercase;
       color: #bac0da;
       font-size: 14px;
+      text-transform: uppercase;
     }
+
     &_subtitle {
       color: #8e93a7;
       font-size: 11px;
