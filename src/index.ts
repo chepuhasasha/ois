@@ -21,7 +21,10 @@ export class App extends Application {
     [key: string]: Component;
   } = {};
   constructor(selector: string, options: IApplicationOptions) {
-    super(options);
+    super({
+      backgroundColor: 0x0a0c13,
+      ...options,
+    });
     const container = document.querySelector(selector);
     if (!container) document.body.appendChild(this.view);
     else container.appendChild(this.view);
@@ -61,5 +64,6 @@ create("#muup", {
     lines: [],
   });
   muup.refs["server #1"].setStatus("ok");
+  muup.refs["server #2"].setStatus("ok");
 });
 

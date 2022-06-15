@@ -37,13 +37,7 @@ export class Component {
 
   getTextures(status: IComponentStatus) {
     const textures = [];
-    for (let i = 0; i <= 7; i++) {
-      const texture = Texture.from(
-        `${this.options.component}_${status}${i}.png`
-      );
-      textures.push(texture);
-    }
-    for (let i = 7; i > 0; i--) {
+    for (let i = 0; i <= 3; i++) {
       const texture = Texture.from(
         `${this.options.component}_${status}${i}.png`
       );
