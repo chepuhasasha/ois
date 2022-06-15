@@ -48,7 +48,10 @@ export function create(selector: string, options: IApplicationOptions) {
   return window.muup;
 }
 
-create("#muup", {}).load((muup) => {
+create("#muup", {
+  width: innerWidth,
+  height: innerHeight,
+}).load((muup) => {
   muup.setScheme({
     components: [
       { ref: "server #1", component: "server", x: 100, y: 300 },
