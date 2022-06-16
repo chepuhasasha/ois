@@ -12,7 +12,7 @@ export interface ISchemeLine {
   points: { x: number; y: number }[];
   width: number;
   dashed: boolean;
-  color: string;
+  color: number;
 }
 
 export interface IScheme {

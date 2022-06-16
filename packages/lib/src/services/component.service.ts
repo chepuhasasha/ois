@@ -10,8 +10,6 @@ interface MuupSprite extends AnimatedSprite {
   on: (name: string, cb: (e: any) => void) => MuupSprite;
 }
 export class Component {
-  data: any = {};
-  dragging: boolean = false;
   sprite: MuupSprite | null = null;
   options: ISchemeComponent;
   constructor(options: ISchemeComponent) {

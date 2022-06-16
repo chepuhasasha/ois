@@ -1,41 +1,9 @@
 {
 	"frames": {
-		"server_default0.png": {
-			"frame": {
-				"x": 0,
-				"y": 210,
-				"w": 100,
-				"h": 210
-			}
-		},
-		"server_default1.png": {
-			"frame": {
-				"x": 100,
-				"y": 210,
-				"w": 100,
-				"h": 210
-			}
-		},
-		"server_default2.png": {
-			"frame": {
-				"x": 200,
-				"y": 210,
-				"w": 100,
-				"h": 210
-			}
-		},
-		"server_default3.png": {
-			"frame": {
-				"x": 300,
-				"y": 210,
-				"w": 100,
-				"h": 210
-			}
-		},
 		"server_ok0.png": {
 			"frame": {
 				"x": 0,
-				"y": 0,
+				"y": 210,
 				"w": 100,
 				"h": 210
 			}
@@ -43,7 +11,7 @@
 		"server_ok1.png": {
 			"frame": {
 				"x": 100,
-				"y": 0,
+				"y": 210,
 				"w": 100,
 				"h": 210
 			}
@@ -51,12 +19,44 @@
 		"server_ok2.png": {
 			"frame": {
 				"x": 200,
-				"y": 0,
+				"y": 210,
 				"w": 100,
 				"h": 210
 			}
 		},
 		"server_ok3.png": {
+			"frame": {
+				"x": 300,
+				"y": 210,
+				"w": 100,
+				"h": 210
+			}
+		},
+		"server_default0.png": {
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 100,
+				"h": 210
+			}
+		},
+		"server_default1.png": {
+			"frame": {
+				"x": 100,
+				"y": 0,
+				"w": 100,
+				"h": 210
+			}
+		},
+		"server_default2.png": {
+			"frame": {
+				"x": 200,
+				"y": 0,
+				"w": 100,
+				"h": 210
+			}
+		},
+		"server_default3.png": {
 			"frame": {
 				"x": 300,
 				"y": 0,
