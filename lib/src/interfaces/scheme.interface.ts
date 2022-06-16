@@ -1,6 +1,7 @@
 import { Component } from "../services/component.service";
 
 export interface ISchemeComponent {
+  label: string;
   ref: string;
   component: string;
   x: number;

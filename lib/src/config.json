@@ -1,0 +1,26 @@
+{
+  "components": [
+    {
+      "label": "ABC-ABCD",
+      "ref": "server #1",
+      "component": "server",
+      "x": 100,
+      "y": 300
+    },
+    {
+      "label": "ABC-ABCD",
+      "ref": "server #2",
+      "component": "server",
+      "x": 200,
+      "y": 300
+    },
+    {
+      "label": "ABC-ABCD",
+      "ref": "server #3",
+      "component": "server",
+      "x": 300,
+      "y": 300
+    }
+  ],
+  "lines": []
+}

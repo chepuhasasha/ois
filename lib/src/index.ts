@@ -1,12 +1,6 @@
-import {
-  Application,
-  Loader,
-  Texture,
-  AnimatedSprite,
-  IApplicationOptions,
-  Sprite,
-  LoaderResource,
-} from "pixi.js";
+import config from "./config.json";
+
+import { Application, Loader, IApplicationOptions } from "pixi.js";
 import { IScheme } from "./interfaces/scheme.interface";
 import { Component } from "./services/component.service";
 import { Line } from "./services/line.service";
@@ -63,33 +57,12 @@ create("#muup", {
   width: innerWidth,
   height: innerHeight,
 }).load((muup) => {
-  muup.setScheme({
-    components: [
-      { ref: "server #1", component: "server", x: 100, y: 300 },
-      { ref: "server #2", component: "server", x: 200, y: 300 },
-      { ref: "server #3", component: "server", x: 300, y: 300 },
-    ],
-    lines: [
-      {
-        ref: "line #1",
-        points: [
-          { x: 100, y: 100 },
-          { x: 200, y: 200 },
-          { x: 300, y: 100 },
-        ],
-        color: 0xff0000,
-        width: 2,
-        dashed: false,
-      },
-    ],
-  });
-  muup.refs["server #1"].setStatus("ok");
-  muup.refs["server #2"].setStatus("ok");
+  muup.setScheme(config);
   setInterval(() => {
     if (Math.random() > 0.5) {
-      muup.refs["server #3"].setStatus("ok");
+      muup.refs["server #1"].color = 0x8fff00;
     } else {
-      muup.refs["server #3"].setStatus("default");
+      muup.refs["server #1"].color = 0xff0000;
     }
   }, 1000);
 });

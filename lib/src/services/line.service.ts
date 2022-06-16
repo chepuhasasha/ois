@@ -7,6 +7,7 @@ export class Line {
   options: ISchemeLine;
   line: Graphics = new Graphics();
   points: Graphics[] = [];
+  color: number = 0xffffff;
   constructor(options: ISchemeLine) {
     this.options = options;
     this.setup();
@@ -33,6 +34,4 @@ export class Line {
     });
     window.muup.stage.addChild(this.line);
   }
-
-  setStatus(status: IComponentStatus) {}
 }
