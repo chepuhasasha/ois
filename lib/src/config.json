@@ -5,21 +5,21 @@
       "ref": "server #1",
       "component": "server",
       "x": 100,
-      "y": 300
+      "y": 60
     },
     {
       "label": "ABC-ABCD",
       "ref": "server #2",
       "component": "server",
       "x": 200,
-      "y": 300
+      "y": 120
     },
     {
       "label": "ABC-ABCD",
       "ref": "server #3",
       "component": "server",
       "x": 300,
-      "y": 300
+      "y": 180
     }
   ],
   "lines": []

@@ -1,6 +1,12 @@
 import config from "./config.json";
 
-import { Application, Loader, IApplicationOptions } from "pixi.js";
+import {
+  Application,
+  Loader,
+  IApplicationOptions,
+  Texture,
+  TilingSprite,
+} from "pixi.js";
 import { IScheme } from "./interfaces/scheme.interface";
 import { Component } from "./services/component.service";
 import { Line } from "./services/line.service";
@@ -33,10 +39,18 @@ export class App extends Application {
 
   load(cb: (muup: App) => void) {
     this.loader.add("./assets/spritesheet.json").load(() => {
+      this.setup();
       cb(this);
     });
   }
-  setup() {}
+  setup() {
+    const bg = new TilingSprite(
+      Texture.from("bg.png"),
+      this.screen.width,
+      this.screen.height
+    );
+    this.stage.addChild(bg);
+  }
 
   setScheme(scheme: IScheme) {
     scheme.lines.forEach((line) => {
