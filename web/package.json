@@ -10,7 +10,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chepuhasasha/muup.git",
-    "directory": "packages/web"
+    "directory": "web"
   },
   "author": {
     "name": "Sergey Batukov",
