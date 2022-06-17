@@ -72,11 +72,14 @@ create("#muup", {
   height: innerHeight,
 }).load((muup) => {
   muup.setScheme(config);
+  muup.refs["line #2"].color = 0xff0000;
   setInterval(() => {
     if (Math.random() > 0.5) {
       muup.refs["server #1"].color = 0x8fff00;
+      muup.refs["line #1"].color = 0x8fff00;
     } else {
       muup.refs["server #1"].color = 0xff0000;
+      muup.refs["line #1"].color = 0xff0000;
     }
   }, 1000);
 });
