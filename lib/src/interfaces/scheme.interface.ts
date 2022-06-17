@@ -11,9 +11,9 @@ export interface ISchemeComponent {
 export interface ISchemeLine {
   ref: string;
   points: { x: number; y: number }[];
-  width: number;
-  dashed: boolean;
-  color: number;
+  width?: number;
+  dashed?: boolean;
+  color?: number;
 }
 
 export interface IScheme {

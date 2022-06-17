@@ -13,17 +13,17 @@ export function onDragEnd() {
 export function onDragMove() {
   if (this.dragging) {
     const newPosition = this.data.getLocalPosition(this.parent);
-    // this.x = newPosition.x;
-    // this.y = newPosition.y;
+    this.x = newPosition.x;
+    this.y = newPosition.y;
     if (newPosition.x - this.x >= 50) {
-      this.x = this.x + 30;
+      this.x += 30;
     } else if (newPosition.x - this.x <= -50) {
-      this.x = this.x - 30;
+      this.x -= 30;
     }
     if (newPosition.y - this.y >= 30) {
-      this.y = this.y + 30;
+      this.y += 30;
     } else if (newPosition.y - this.y <= -30) {
-      this.y = this.y - 30;
+      this.y -= 30;
     }
   }
 }

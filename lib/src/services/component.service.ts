@@ -2,6 +2,7 @@ import { Texture, Sprite, Container, Graphics, Text, TextStyle } from "pixi.js";
 import { ISchemeComponent } from "../interfaces/scheme.interface";
 import { onDragStart, onDragEnd, onDragMove } from "./move.service";
 
+// @ts-ignore
 interface MuupContainer extends Container {
   interactive: boolean;
   buttonMode: boolean;
