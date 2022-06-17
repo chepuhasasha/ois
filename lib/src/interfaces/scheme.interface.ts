@@ -3,6 +3,7 @@ import { Component } from "../services/component.service";
 export interface ISchemeComponent {
   label: string;
   ref: string;
+  color?: string;
   component: string;
   x: number;
   y: number;
