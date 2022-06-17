@@ -42,7 +42,9 @@ export class Component {
   setup() {
     this.LABEL = new Label(this._label, this._color);
     this.SPRITE = new MuupSprite(Texture.from(`${this._component}.png`));
+    this.SPRITE.pivot.set(this.SPRITE.width / 2, 0);
     this.SPRITE.position.y = this.LABEL.height + 10;
+    this.SPRITE.position.x = this.LABEL.width / 2;
     this.SPRITE.zIndex = 2;
 
     this.container.addChild(this.LABEL);
@@ -72,7 +74,7 @@ export class Component {
         rad = 0;
       }
       rad += d / 2;
-      let opacity = (this._width - rad) / this._width;
+      let opacity = (this.SPRITE.width - rad) / this.SPRITE.width;
       circle.clear();
       circle.lineStyle(2, this._color, opacity);
       circle.beginFill(this._color, opacity - 0.1);
