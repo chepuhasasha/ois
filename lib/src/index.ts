@@ -39,23 +39,20 @@ export class App extends Application {
     return this;
   }
 
-  load(libs: string[], cb: (muup: App) => void) {
+  setup(libs: string[], config: IScheme, cb: (refs: App["refs"]) => void) {
     libs.forEach((path) => {
       this.loader.add(path);
     });
     this.loader.load(() => {
-      this.setup();
-      cb(this);
+      const bg = new TilingSprite(
+        Texture.from("bg.png"),
+        this.screen.width,
+        this.screen.height
+      );
+      this.stage.addChild(bg);
+      this.scheme = config;
+      cb(this.refs);
     });
-  }
-
-  setup() {
-    const bg = new TilingSprite(
-      Texture.from("bg.png"),
-      this.screen.width,
-      this.screen.height
-    );
-    this.stage.addChild(bg);
   }
 
   set scheme(scheme: IScheme) {
@@ -81,16 +78,14 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).load(["./assets/spritesheet.json"], (muup) => {
-  muup.scheme = config;
-  muup.refs["line #2"].color = 0xff0000;
+}).setup(["./assets/spritesheet.json"], config, (refs) => {
   setInterval(() => {
     if (Math.random() > 0.5) {
-      muup.refs["server #1"].color = 0x8fff00;
-      muup.refs["line #1"].color = 0x8fff00;
+      refs["server #1"].color = "#8fff00";
+      refs["line #1"].color = "#8fff00";
     } else {
-      muup.refs["server #1"].color = 0xff0000;
-      muup.refs["line #1"].color = 0xff0000;
+      refs["server #1"].color = "#ff0000";
+      refs["line #1"].color = "#ff0000";
     }
   }, 1000);
 });

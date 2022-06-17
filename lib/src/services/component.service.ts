@@ -1,4 +1,12 @@
-import { Texture, Sprite, Container, Graphics, Text, TextStyle } from "pixi.js";
+import {
+  Texture,
+  Sprite,
+  Container,
+  Graphics,
+  Text,
+  TextStyle,
+  utils,
+} from "pixi.js";
 import { ISchemeComponent } from "../interfaces/scheme.interface";
 import { onDragStart, onDragEnd, onDragMove } from "./move.service";
 
@@ -12,7 +20,7 @@ export class Component {
   sprite: Sprite | null = null;
   container = new Container() as MuupContainer;
   options: ISchemeComponent;
-  color: number = 0xff0000;
+  private _color: number = 0xff0000;
   constructor(options: ISchemeComponent) {
     this.options = options;
     this.setup();
@@ -75,7 +83,7 @@ export class Component {
 
     window.muup.ticker.add(() => {
       label.clear();
-      label.beginFill(this.color);
+      label.beginFill(this._color);
       label.drawRect(0, 0, 100, 4);
       label.endFill();
       label.lineStyle(1, 0xffffff, 0.1);
@@ -95,8 +103,8 @@ export class Component {
       rad += d / 2;
       let opacity = (100 - rad) / 100;
       circle.clear();
-      circle.lineStyle(2, this.color, opacity);
-      circle.beginFill(this.color, opacity - 0.1);
+      circle.lineStyle(2, this._color, opacity);
+      circle.beginFill(this._color, opacity - 0.1);
       circle.drawEllipse(x, y, rad, rad / 1.6);
     });
     circle.zIndex = 0;
@@ -116,5 +124,9 @@ export class Component {
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
       .on("pointermove", onDragMove);
+  }
+
+  set color(color: string) {
+    this._color = utils.string2hex(color);
   }
 }

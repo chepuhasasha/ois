@@ -1,4 +1,4 @@
-import { Graphics } from "pixi.js";
+import { Graphics, utils } from "pixi.js";
 import { ISchemeLine } from "../interfaces/scheme.interface";
 export class Line {
   private line: Graphics = new Graphics();
@@ -11,7 +11,7 @@ export class Line {
   }
   private setup({ points, width, color }: ISchemeLine) {
     if (width) this._width = width;
-    if (color) this._color = color;
+    if (color) this._color = utils.string2hex(color);
     this._points = points;
     this.draw();
     // this.addPoints(this.options.points);
@@ -89,8 +89,8 @@ export class Line {
       window.muup.stage.addChild(p);
     });
   }
-  set color(color: number) {
-    this._color = color;
+  set color(color: string) {
+    this._color = utils.string2hex(color);
     this.draw();
   }
   set width(width: number) {
