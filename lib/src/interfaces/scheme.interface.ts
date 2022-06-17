@@ -16,6 +16,7 @@ export interface ISchemeLine {
 }
 
 export interface IScheme {
+  libs: string[];
   components: ISchemeComponent[];
   lines: ISchemeLine[];
 }

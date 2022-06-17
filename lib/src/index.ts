@@ -39,8 +39,8 @@ export class App extends Application {
     return this;
   }
 
-  setup(libs: string[], config: IScheme, cb: (refs: App["refs"]) => void) {
-    libs.forEach((path) => {
+  setup(config: IScheme, cb: (refs: App["refs"]) => void) {
+    config.libs.forEach((path) => {
       this.loader.add(path);
     });
     this.loader.load(() => {
@@ -53,15 +53,29 @@ export class App extends Application {
       this.scheme = config;
       cb(this.refs);
     });
+    return this;
   }
 
   set scheme(scheme: IScheme) {
     this.refs = {};
     scheme.lines.forEach((line) => {
-      this.refs[line.ref] = new Line(line);
+      if (!this.refs[line.ref]) this.refs[line.ref] = new Line(line);
+      else
+        console.error(
+          `In schema configuration link "${
+            line.ref
+          } is duplicated. ${JSON.stringify(line, null, 2)}"`
+        );
     });
     scheme.components.forEach((component) => {
-      this.refs[component.ref] = new Component(component);
+      if (!this.refs[component.ref])
+        this.refs[component.ref] = new Component(component);
+      else
+        console.error(
+          `In schema configuration link "${
+            component.ref
+          }" is duplicated. ${JSON.stringify(component, null, 2)}"`
+        );
     });
   }
 
@@ -78,7 +92,7 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).setup(["./assets/spritesheet.json"], config, (refs) => {
+}).setup(config, (refs) => {
   setInterval(() => {
     if (Math.random() > 0.5) {
       refs["server #1"].color = "#8fff00";
