@@ -24,6 +24,8 @@ export class App extends Application {
   refs: {
     [key: string]: Component | Line;
   } = {};
+  [key: string]: unknown;
+
   constructor(selector: string, options: IApplicationOptions) {
     super({
       antialias: true,
@@ -37,12 +39,16 @@ export class App extends Application {
     return this;
   }
 
-  load(cb: (muup: App) => void) {
-    this.loader.add("./assets/spritesheet.json").load(() => {
+  load(libs: string[], cb: (muup: App) => void) {
+    libs.forEach((path) => {
+      this.loader.add(path);
+    });
+    this.loader.load(() => {
       this.setup();
       cb(this);
     });
   }
+
   setup() {
     const bg = new TilingSprite(
       Texture.from("bg.png"),
@@ -52,13 +58,18 @@ export class App extends Application {
     this.stage.addChild(bg);
   }
 
-  setScheme(scheme: IScheme) {
+  set scheme(scheme: IScheme) {
+    this.refs = {};
     scheme.lines.forEach((line) => {
       this.refs[line.ref] = new Line(line);
     });
     scheme.components.forEach((component) => {
       this.refs[component.ref] = new Component(component);
     });
+  }
+
+  use(plugin: (muup: App) => void) {
+    plugin(this);
   }
 }
 
@@ -70,8 +81,8 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).load((muup) => {
-  muup.setScheme(config);
+}).load(["./assets/spritesheet.json"], (muup) => {
+  muup.scheme = config;
   muup.refs["line #2"].color = 0xff0000;
   setInterval(() => {
     if (Math.random() > 0.5) {
