@@ -70,7 +70,7 @@ export class Component {
     const circle = new Graphics();
     let rad = offset;
     window.muup.ticker.add((d) => {
-      if (rad >= this._width) {
+      if (rad >= this.SPRITE.width) {
         rad = 0;
       }
       rad += d / 2;
