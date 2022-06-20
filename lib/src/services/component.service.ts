@@ -13,13 +13,8 @@ import { onDragStart, onDragEnd, onDragMoveStep } from "./move.service";
 import { MuupSprite } from "./sprite.service";
 
 // @ts-ignore
-interface MuupContainer extends Container {
-  interactive: boolean;
-  buttonMode: boolean;
-  on: (name: string, cb: (e: any) => void) => MuupContainer;
-}
 export class Component {
-  container = new Container() as MuupContainer;
+  container = new Container() as Container;
   public ref: string;
   private _x: number;
   private _y: number;

@@ -8,16 +8,17 @@ import {
   TilingSprite,
   Container,
 } from "pixi.js";
-import { IScheme } from "./interfaces/scheme.interface";
+import {
+  IScheme,
+  ISchemeComponent,
+  ISchemeLine,
+  ISchemePlane,
+  ISchemeText,
+} from "./interfaces/scheme.interface";
 import { Component } from "./services/component.service";
 import { Line } from "./services/line.service";
 import { Plane } from "./services/plane.service";
-import {
-  onDragStart,
-  onDragEnd,
-  onDragMove,
-  onDragMoveMap,
-} from "./services/move.service";
+import { onDragStart, onDragEnd, onDragMoveMap } from "./services/move.service";
 import { MuupText } from "./services/text.service";
 declare global {
   interface Window {
@@ -80,42 +81,58 @@ export class App extends Application {
   set scheme(scheme: IScheme) {
     this.refs = {};
     scheme.planes.forEach((plane) => {
-      if (!this.refs[plane.ref]) this.refs[plane.ref] = new Plane(plane);
-      else
-        console.error(
-          `In schema configuration link "${
-            plane.ref
-          }" is duplicated. ${JSON.stringify(plane, null, 2)}"`
-        );
+      this.add("plane", plane);
     });
     scheme.lines.forEach((line) => {
-      if (!this.refs[line.ref]) this.refs[line.ref] = new Line(line);
-      else
-        console.error(
-          `In schema configuration link "${
-            line.ref
-          } is duplicated. ${JSON.stringify(line, null, 2)}"`
-        );
+      this.add("line", line);
     });
     scheme.components.forEach((component) => {
-      if (!this.refs[component.ref])
-        this.refs[component.ref] = new Component(component);
-      else
-        console.error(
-          `In schema configuration link "${
-            component.ref
-          }" is duplicated. ${JSON.stringify(component, null, 2)}"`
-        );
+      this.add("component", component);
     });
     scheme.texts.forEach((text) => {
-      if (!this.refs[text.ref]) this.refs[text.ref] = new MuupText(text);
-      else
-        console.error(
-          `In schema configuration link "${
-            text.ref
-          }" is duplicated. ${JSON.stringify(text, null, 2)}"`
-        );
+      this.add("text", text);
     });
+  }
+
+  add(type: "line", config: ISchemeLine): void;
+  add(type: "component", config: ISchemeComponent): void;
+  add(type: "text", config: ISchemeText): void;
+  add(type: "plane", config: ISchemePlane): void;
+  add(
+    type: "component" | "line" | "text" | "plane",
+    config: ISchemeComponent | ISchemeLine | ISchemeText | ISchemePlane
+  ) {
+    if (!this.refs[config.ref])
+      switch (type) {
+        case "component":
+          this.refs[config.ref] = new Component(config as ISchemeComponent);
+          break;
+        case "line":
+          this.refs[config.ref] = new Line(config as ISchemeLine);
+          break;
+        case "text":
+          this.refs[config.ref] = new MuupText(config as ISchemeText);
+          break;
+        case "plane":
+          this.refs[config.ref] = new Plane(config as ISchemePlane);
+          break;
+
+        default:
+          break;
+      }
+    else
+      console.error(
+        `In schema configuration link "${
+          config.ref
+        }" is duplicated. ${JSON.stringify(config, null, 2)}"`
+      );
+  }
+
+  remove(ref: string) {
+    if (this.refs[ref]) {
+      this.container.removeChild(this.refs[ref].container);
+      delete this.refs[ref];
+    }
   }
 
   use(plugin: (muup: App) => void) {

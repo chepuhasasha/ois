@@ -4,6 +4,7 @@ import { onDragStart, onDragEnd, onDragMove } from "./move.service";
 
 export class MuupText extends Container {
   private Text: Text;
+  container = new Container();
 
   constructor({ text, x, y, color, fontSize }: ISchemeText) {
     super();
@@ -16,8 +17,8 @@ export class MuupText extends Container {
     this.Text.interactive = true;
     this.Text.buttonMode = true;
     this.dragging();
-    this.addChild(this.Text);
-    window.muup.container.addChild(this);
+    this.container.addChild(this.Text);
+    window.muup.container.addChild(this.container);
   }
   setup() {}
   private dragging() {
@@ -32,10 +33,10 @@ export class MuupText extends Container {
   }
 
   set x(x: number) {
-    this.position.x = x;
+    this.container.position.x = x;
   }
   set y(y: number) {
-    this.position.y = y;
+    this.container.position.y = y;
   }
   set color(color: string) {
     this.Text.style.fill = utils.string2hex(color);

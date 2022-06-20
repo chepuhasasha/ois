@@ -1,13 +1,15 @@
-import { Graphics, utils } from "pixi.js";
+import { Container, Graphics, utils } from "pixi.js";
 import { ISchemeLine } from "../interfaces/scheme.interface";
 export class Line {
+  container = new Container() as Container;
   private line: Graphics = new Graphics();
   private _points: { x: number; y: number }[];
   private _color: number = 0x33343e;
   private _width: number = 3;
   constructor(options: ISchemeLine) {
+    this.container.addChild(this.line);
     this.setup(options);
-    window.muup.container.addChild(this.line);
+    window.muup.container.addChild(this.container);
   }
   private setup({ points, width, color }: ISchemeLine) {
     if (width) this._width = width;

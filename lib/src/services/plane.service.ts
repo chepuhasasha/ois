@@ -1,7 +1,8 @@
-import { Graphics, utils } from "pixi.js";
+import { Container, Graphics, utils } from "pixi.js";
 import { ISchemePlane } from "../interfaces/scheme.interface";
 import { onDragStart, onDragEnd, onDragMoveStep } from "./move.service";
 export class Plane {
+  container = new Container();
   private plane: Graphics = new Graphics();
   private _color: number;
   private _x: number;
@@ -10,7 +11,8 @@ export class Plane {
   private _h: number;
   constructor(options: ISchemePlane) {
     this.setup(options);
-    window.muup.container.addChild(this.plane);
+    this.container.addChild(this.plane);
+    window.muup.container.addChild(this.container);
   }
   private setup({ x, y, w, h, color }: ISchemePlane) {
     this.color = color;
