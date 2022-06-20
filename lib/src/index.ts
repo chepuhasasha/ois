@@ -17,6 +17,7 @@ import {
   onDragMove,
   onDragMoveMap,
 } from "./services/move.service";
+import { MuupText } from "./services/text.service";
 declare global {
   interface Window {
     muup: App;
@@ -30,7 +31,7 @@ export class App extends Application {
   loader: Loader;
   container = new Container();
   refs: {
-    [key: string]: Component | Line;
+    [key: string]: Component | Line | MuupText;
   } = {};
   [key: string]: unknown;
 
@@ -94,6 +95,15 @@ export class App extends Application {
           `In schema configuration link "${
             component.ref
           }" is duplicated. ${JSON.stringify(component, null, 2)}"`
+        );
+    });
+    scheme.texts.forEach((text) => {
+      if (!this.refs[text.ref]) this.refs[text.ref] = new MuupText(text);
+      else
+        console.error(
+          `In schema configuration link "${
+            text.ref
+          }" is duplicated. ${JSON.stringify(text, null, 2)}"`
         );
     });
   }

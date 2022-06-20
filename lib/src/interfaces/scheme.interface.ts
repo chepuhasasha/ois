@@ -15,9 +15,18 @@ export interface ISchemeLine {
   width?: number;
   color?: string;
 }
+export interface ISchemeText {
+  ref: string;
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  fontSize: number;
+}
 
 export interface IScheme {
   libs: string[];
   components: ISchemeComponent[];
   lines: ISchemeLine[];
+  texts: ISchemeText[];
 }

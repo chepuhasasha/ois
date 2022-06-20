@@ -14,6 +14,13 @@ export function onDragEnd() {
 export function onDragMove() {
   if (this.dragging) {
     const newPosition = this.data.getLocalPosition(this.parent);
+    this.x = newPosition.x;
+    this.y = newPosition.y;
+  }
+}
+export function onDragMoveStep() {
+  if (this.dragging) {
+    const newPosition = this.data.getLocalPosition(this.parent);
     if (newPosition.x - this.x >= 50) {
       this.x += 50;
     } else if (newPosition.x - this.x <= -50) {

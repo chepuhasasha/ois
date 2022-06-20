@@ -9,7 +9,7 @@ import {
 } from "pixi.js";
 import { ISchemeComponent } from "../interfaces/scheme.interface";
 import { Label } from "./label.service";
-import { onDragStart, onDragEnd, onDragMove } from "./move.service";
+import { onDragStart, onDragEnd, onDragMoveStep } from "./move.service";
 import { MuupSprite } from "./sprite.service";
 
 // @ts-ignore
@@ -83,7 +83,7 @@ export class Component {
       .on("pointerdown", onDragStart)
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMove);
+      .on("pointermove", onDragMoveStep);
   }
 
   set x(x: number) {

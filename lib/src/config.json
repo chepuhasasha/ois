@@ -63,5 +63,15 @@
         }
       ]
     }
+  ],
+  "texts": [
+    {
+      "ref": "Text #1",
+      "x": 200,
+      "y": 120,
+      "text": "Test SCHEME #1",
+      "fontSize": 40,
+      "color": "#FAFFff"
+    }
   ]
 }
