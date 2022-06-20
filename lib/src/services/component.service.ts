@@ -73,19 +73,34 @@ export class Component {
       .on("pointermove", onDragMoveStep);
   }
 
+  get x() {
+    return this.container.position.x;
+  }
   set x(x: number) {
     this._x = x;
   }
+  get y() {
+    return this.container.position.y;
+  }
   set y(y: number) {
     this._y = y;
+  }
+  get label() {
+    return this._label;
   }
   set label(label: string) {
     this._label = label;
     if (this.LABEL) this.LABEL.text = label;
   }
+  get color() {
+    return utils.hex2string(this._color);
+  }
   set color(color: string) {
     this._color = utils.string2hex(color);
     if (this.LABEL) this.LABEL.color = this._color;
+  }
+  get component() {
+    return this._component;
   }
   set component(name: string) {
     this._component = name;

@@ -32,6 +32,12 @@ declare global {
 export class App extends Application {
   editable: boolean = false;
   _selected: Component | Line | MuupText | Plane | null;
+  private _scheme: {
+    components: Component[];
+    lines: Line[];
+    planes: Plane[];
+    texts: MuupText[];
+  } = { components: [], lines: [], texts: [], planes: [] };
   loader: Loader;
   container = new Container();
   refs: {
@@ -52,31 +58,34 @@ export class App extends Application {
     return this;
   }
 
-  setup(config: IScheme, cb: (muup: App) => void) {
+  setup(config: IScheme, cb: (muup: App) => void, editable?: boolean) {
+    if (editable) {
+      this.editable = true;
+    }
     config.libs.forEach((path) => {
       this.loader.add(path);
     });
     this.loader.load(() => {
-      cb(this);
       const bg = new TilingSprite(
         Texture.from("bg.png"),
         this.screen.width,
         this.screen.height
       );
       bg.interactive = true;
+      this.scheme = config;
       bg.on("pointerdown", onDragStart)
         .on("pointerup", onDragEnd)
         .on("pointerupoutside", onDragEnd)
         .on("pointermove", onDragMoveMap);
       this.stage.addChild(bg);
       this.stage.addChild(this.container);
-      this.scheme = config;
       this.ticker.add(() => {
         if (this.container.position.x != bg.tilePosition.x) {
           this.container.position.x = bg.tilePosition.x;
           this.container.position.y = bg.tilePosition.y;
         }
       });
+      cb(this);
     });
     return this;
   }
@@ -107,16 +116,24 @@ export class App extends Application {
     if (!this.refs[config.ref])
       switch (type) {
         case "component":
-          this.refs[config.ref] = new Component(config as ISchemeComponent);
+          const comp = new Component(config as ISchemeComponent);
+          this._scheme.components.push(comp);
+          this.refs[config.ref] = comp;
           break;
         case "line":
-          this.refs[config.ref] = new Line(config as ISchemeLine);
+          const line = new Line(config as ISchemeLine);
+          this._scheme.lines.push(line);
+          this.refs[config.ref] = line;
           break;
         case "text":
-          this.refs[config.ref] = new MuupText(config as ISchemeText);
+          const text = new MuupText(config as ISchemeText);
+          this._scheme.texts.push(text);
+          this.refs[config.ref] = text;
           break;
         case "plane":
-          this.refs[config.ref] = new Plane(config as ISchemePlane);
+          const plane = new Plane(config as ISchemePlane);
+          this._scheme.planes.push(plane);
+          this.refs[config.ref] = plane;
           break;
 
         default:
@@ -141,6 +158,27 @@ export class App extends Application {
     plugin(this);
   }
 
+  makeConfig() {
+    const result: IScheme = {
+      components: [],
+      lines: [],
+      libs: [],
+      texts: [],
+      planes: [],
+    };
+    this._scheme.components.forEach((c) => {
+      result.components.push({
+        ref: c.ref,
+        component: c.component,
+        label: c.label,
+        x: c.x,
+        y: c.y,
+        color: c.color,
+      });
+    });
+    console.log(result);
+  }
+
   set selected(el: Component | Line | MuupText | Plane | null) {
     this._selected = el;
     console.log(this._selected);
@@ -155,16 +193,20 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).setup(config, (muup) => {
-  muup.editable = true;
-  setInterval(() => {
-    if (Math.random() > 0.5) {
-      muup.refs["server #1"].color = "#8fff00";
-      muup.refs["line #1"].color = "#8fff00";
-    } else {
-      muup.refs["server #1"].color = "#ff0000";
-      muup.refs["line #1"].color = "#ff0000";
-    }
-  }, 1000);
-});
+}).setup(
+  config,
+  (muup) => {
+    // muup.makeConfig();
+    setInterval(() => {
+      if (Math.random() > 0.5) {
+        muup.refs["server #1"].color = "#8fff00";
+        muup.refs["line #1"].color = "#8fff00";
+      } else {
+        muup.refs["server #1"].color = "#ff0000";
+        muup.refs["line #1"].color = "#ff0000";
+      }
+    }, 1000);
+  },
+  true
+);
 
