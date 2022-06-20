@@ -21,15 +21,15 @@ export function onDragMove() {
 export function onDragMoveStep() {
   if (this.dragging) {
     const newPosition = this.data.getLocalPosition(this.parent);
-    if (newPosition.x - this.x >= 50) {
-      this.x += 50;
-    } else if (newPosition.x - this.x <= -50) {
-      this.x -= 50;
+    if (newPosition.x - this.x >= 25) {
+      this.x += 25;
+    } else if (newPosition.x - this.x <= -25) {
+      this.x -= 25;
     }
-    if (newPosition.y - this.y >= 30) {
-      this.y += 30;
-    } else if (newPosition.y - this.y <= -30) {
-      this.y -= 30;
+    if (newPosition.y - this.y >= 15) {
+      this.y += 15;
+    } else if (newPosition.y - this.y <= -15) {
+      this.y -= 15;
     }
   }
 }
