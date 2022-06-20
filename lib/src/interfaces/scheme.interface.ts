@@ -23,10 +23,19 @@ export interface ISchemeText {
   color: string;
   fontSize: number;
 }
+export interface ISchemePlane {
+  ref: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  color: string;
+}
 
 export interface IScheme {
   libs: string[];
   components: ISchemeComponent[];
   lines: ISchemeLine[];
   texts: ISchemeText[];
+  planes: ISchemePlane[];
 }

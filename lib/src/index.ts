@@ -11,6 +11,7 @@ import {
 import { IScheme } from "./interfaces/scheme.interface";
 import { Component } from "./services/component.service";
 import { Line } from "./services/line.service";
+import { Plane } from "./services/plane.service";
 import {
   onDragStart,
   onDragEnd,
@@ -31,7 +32,7 @@ export class App extends Application {
   loader: Loader;
   container = new Container();
   refs: {
-    [key: string]: Component | Line | MuupText;
+    [key: string]: Component | Line | MuupText | Plane;
   } = {};
   [key: string]: unknown;
 
@@ -78,6 +79,15 @@ export class App extends Application {
   }
   set scheme(scheme: IScheme) {
     this.refs = {};
+    scheme.planes.forEach((plane) => {
+      if (!this.refs[plane.ref]) this.refs[plane.ref] = new Plane(plane);
+      else
+        console.error(
+          `In schema configuration link "${
+            plane.ref
+          }" is duplicated. ${JSON.stringify(plane, null, 2)}"`
+        );
+    });
     scheme.lines.forEach((line) => {
       if (!this.refs[line.ref]) this.refs[line.ref] = new Line(line);
       else
