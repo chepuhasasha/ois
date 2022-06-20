@@ -47,7 +47,7 @@ export class App extends Application {
     return this;
   }
 
-  setup(config: IScheme, cb: (refs: App["refs"]) => void) {
+  setup(config: IScheme, cb: (muup: App) => void) {
     config.libs.forEach((path) => {
       this.loader.add(path);
     });
@@ -57,21 +57,21 @@ export class App extends Application {
         this.screen.width,
         this.screen.height
       );
-      this.stage.addChild(bg);
-      this.stage.addChild(this.container);
-      this.scheme = config;
       bg.interactive = true;
       bg.on("pointerdown", onDragStart)
         .on("pointerup", onDragEnd)
         .on("pointerupoutside", onDragEnd)
         .on("pointermove", onDragMoveMap);
+      this.stage.addChild(bg);
+      this.stage.addChild(this.container);
+      this.scheme = config;
       this.ticker.add(() => {
         if (this.container.position.x != bg.tilePosition.x) {
           this.container.position.x = bg.tilePosition.x;
           this.container.position.y = bg.tilePosition.y;
         }
       });
-      cb(this.refs);
+      cb(this);
     });
     return this;
   }
@@ -111,14 +111,14 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).setup(config, (refs) => {
+}).setup(config, (muup) => {
   setInterval(() => {
     if (Math.random() > 0.5) {
-      refs["server #1"].color = "#8fff00";
-      refs["line #1"].color = "#8fff00";
+      muup.refs["server #1"].color = "#8fff00";
+      muup.refs["line #1"].color = "#8fff00";
     } else {
-      refs["server #1"].color = "#ff0000";
-      refs["line #1"].color = "#ff0000";
+      muup.refs["server #1"].color = "#ff0000";
+      muup.refs["line #1"].color = "#ff0000";
     }
   }, 1000);
 });

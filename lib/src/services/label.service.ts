@@ -18,8 +18,8 @@ export class Label extends Container {
     this._labelText = new Text(this._text, this._style);
     this.color = color;
     this.text = text;
-    this._labelText.x = 4;
-    this._labelText.y = 10;
+    this._labelText.x = 8;
+    this._labelText.y = 4;
     this.addChild(this._label);
     this.addChild(this._labelText);
     this.draw();
@@ -28,13 +28,13 @@ export class Label extends Container {
   draw() {
     this._label.clear();
     this._label.beginFill(this._color);
-    this._label.drawRect(0, 0, this._labelText.width + 10, 4);
+    this._label.drawRect(0, 0, 4, this._labelText.height + 10);
     this._label.endFill();
     this._label.lineStyle(1, 0xffffff, 0.1);
     this._label.beginFill(0x11121b, 0.5);
     this._label.drawRect(
-      0,
       4,
+      0,
       this._labelText.width + 10,
       this._labelText.height + 10
     );
@@ -46,6 +46,7 @@ export class Label extends Container {
     this.draw();
   }
   set text(text: string) {
+    this._text = "";
     let acc = 0;
     text.split("").forEach((s) => {
       if (acc < 20) {
