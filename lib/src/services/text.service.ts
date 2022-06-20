@@ -1,4 +1,11 @@
-import { Graphics, TextStyle, utils, Text, Container } from "pixi.js";
+import {
+  Graphics,
+  TextStyle,
+  utils,
+  Text,
+  Container,
+  TextStyleFontWeight,
+} from "pixi.js";
 import { ISchemeText } from "../interfaces/scheme.interface";
 import { onDragStart, onDragEnd, onDragMove } from "./move.service";
 
@@ -10,11 +17,9 @@ export class MuupText extends Container {
     super();
     this.Text = new Text(text);
     if (skew) {
-      this.Text.skew.set(-1, (31 * Math.PI) / 180);
+      this.Text.skew.set(-1.03, (31 * Math.PI) / 180);
     }
-    if (fontWidth) {
-      this.Text.style.fontWeight = fontWidth;
-    }
+    this.Text.style.fontWeight = fontWidth as TextStyleFontWeight;
     this.x = x;
     this.y = y;
     this.color = color;

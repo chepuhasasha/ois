@@ -67,11 +67,11 @@
   "texts": [
     {
       "ref": "Text #1",
-      "x": 100,
-      "y": 100,
-      "text": "Test SCHEME #1",
-      "fontSize": 60,
-      "color": "#FAFFff",
+      "x": 350,
+      "y": 420,
+      "text": "SCHEME #1",
+      "fontSize": 100,
+      "color": "#C9D1D9",
       "skew": true,
       "fontWidth": "bold"
     },
@@ -81,7 +81,9 @@
       "y": 160,
       "text": "Test test test test test test test test test test \n test test test test test test test test test \n test test test test test test test test test \n test test test test test test test test test \n test test test test test test test test test",
       "fontSize": 14,
-      "color": "#c4c4c4"
+      "color": "#c4c4c4",
+      "skew": false,
+      "fontWidth": "normal"
     }
   ],
   "planes": [
