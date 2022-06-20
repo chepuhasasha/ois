@@ -69,17 +69,17 @@
       "ref": "Text #1",
       "x": 350,
       "y": 420,
-      "text": "ЦОД SPB",
-      "fontSize": 50,
+      "text": "ЦОД",
+      "fontSize": 100,
       "color": "#C9D1D9",
       "skew": true,
       "fontWidth": "bold"
     },
     {
       "ref": "Text #2",
-      "x": 290,
-      "y": 460,
-      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam",
+      "x": 550,
+      "y": 560,
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et \ndolore magna aliqua. Ut enim ad minim veniam",
       "fontSize": 14,
       "color": "#c4c4c4",
       "skew": true,
@@ -93,7 +93,7 @@
       "y": 420,
       "w": 580,
       "h": 174,
-      "color": "#615DFF"
+      "color": "#ffffff"
     }
   ]
 }
