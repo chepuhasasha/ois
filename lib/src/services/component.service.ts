@@ -1,12 +1,4 @@
-import {
-  Texture,
-  Sprite,
-  Container,
-  Graphics,
-  Text,
-  TextStyle,
-  utils,
-} from "pixi.js";
+import { Texture, Container, Graphics, utils } from "pixi.js";
 import { ISchemeComponent } from "../interfaces/scheme.interface";
 import { Label } from "./label.service";
 import { onDragStart, onDragEnd, onDragMoveStep } from "./move.service";
