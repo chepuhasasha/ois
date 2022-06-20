@@ -6,10 +6,17 @@ import {
   IApplicationOptions,
   Texture,
   TilingSprite,
+  Container,
 } from "pixi.js";
 import { IScheme } from "./interfaces/scheme.interface";
 import { Component } from "./services/component.service";
 import { Line } from "./services/line.service";
+import {
+  onDragStart,
+  onDragEnd,
+  onDragMove,
+  onDragMoveMap,
+} from "./services/move.service";
 declare global {
   interface Window {
     muup: App;
@@ -21,6 +28,7 @@ declare global {
 
 export class App extends Application {
   loader: Loader;
+  container = new Container();
   refs: {
     [key: string]: Component | Line;
   } = {};
@@ -50,12 +58,23 @@ export class App extends Application {
         this.screen.height
       );
       this.stage.addChild(bg);
+      this.stage.addChild(this.container);
       this.scheme = config;
+      bg.interactive = true;
+      bg.on("pointerdown", onDragStart)
+        .on("pointerup", onDragEnd)
+        .on("pointerupoutside", onDragEnd)
+        .on("pointermove", onDragMoveMap);
+      this.ticker.add(() => {
+        if (this.container.position.x != bg.tilePosition.x) {
+          this.container.position.x = bg.tilePosition.x;
+          this.container.position.y = bg.tilePosition.y;
+        }
+      });
       cb(this.refs);
     });
     return this;
   }
-
   set scheme(scheme: IScheme) {
     this.refs = {};
     scheme.lines.forEach((line) => {

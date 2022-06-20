@@ -7,7 +7,7 @@ export class Line {
   private _width: number = 3;
   constructor(options: ISchemeLine) {
     this.setup(options);
-    window.muup.stage.addChild(this.line);
+    window.muup.container.addChild(this.line);
   }
   private setup({ points, width, color }: ISchemeLine) {
     if (width) this._width = width;

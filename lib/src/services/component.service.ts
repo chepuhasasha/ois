@@ -57,7 +57,7 @@ export class Component {
     this.circle(0, this.container.height + 20, this.SPRITE.width / 4);
     this.circle(0, this.container.height + 20, this.SPRITE.width / 2);
 
-    window.muup.stage.addChild(this.container);
+    window.muup.container.addChild(this.container);
   }
 
   private circle(x: number, y: number, offset: number = 0) {
