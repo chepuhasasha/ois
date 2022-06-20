@@ -30,6 +30,8 @@ declare global {
 }
 
 export class App extends Application {
+  editable: boolean = false;
+  _selected: Component | Line | MuupText | Plane | null;
   loader: Loader;
   container = new Container();
   refs: {
@@ -55,6 +57,7 @@ export class App extends Application {
       this.loader.add(path);
     });
     this.loader.load(() => {
+      cb(this);
       const bg = new TilingSprite(
         Texture.from("bg.png"),
         this.screen.width,
@@ -74,7 +77,6 @@ export class App extends Application {
           this.container.position.y = bg.tilePosition.y;
         }
       });
-      cb(this);
     });
     return this;
   }
@@ -138,6 +140,11 @@ export class App extends Application {
   use(plugin: (muup: App) => void) {
     plugin(this);
   }
+
+  set selected(el: Component | Line | MuupText | Plane | null) {
+    this._selected = el;
+    console.log(this._selected);
+  }
 }
 
 export function create(selector: string, options: IApplicationOptions) {
@@ -149,6 +156,7 @@ create("#muup", {
   width: innerWidth,
   height: innerHeight,
 }).setup(config, (muup) => {
+  // muup.editable = true;
   setInterval(() => {
     if (Math.random() > 0.5) {
       muup.refs["server #1"].color = "#8fff00";

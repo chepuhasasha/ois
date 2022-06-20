@@ -34,7 +34,6 @@ export class Component {
     this.container.addChild(this.LABEL);
     this.container.addChild(this.SPRITE);
 
-    this.dragging();
     this.container.interactive = true;
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
@@ -43,7 +42,8 @@ export class Component {
     this.circle(0, this.container.height + 20);
     this.circle(0, this.container.height + 20, this.SPRITE.width / 4);
     this.circle(0, this.container.height + 20, this.SPRITE.width / 2);
-
+    this.container.on("pointerdown", () => (window.muup.selected = this));
+    if (window.muup.editable) this.dragging();
     window.muup.container.addChild(this.container);
   }
 

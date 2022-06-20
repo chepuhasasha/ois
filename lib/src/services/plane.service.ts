@@ -21,7 +21,7 @@ export class Plane {
     this.w = w;
     this.h = h;
     this.draw();
-    this.dragging();
+    if (window.muup.editable) this.dragging();
   }
   private draw() {
     const rad = (31 * Math.PI) / 180;

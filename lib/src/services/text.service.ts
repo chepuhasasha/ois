@@ -16,7 +16,7 @@ export class MuupText extends Container {
     this.text = text;
     this.Text.interactive = true;
     this.Text.buttonMode = true;
-    this.dragging();
+    if (window.muup.editable) this.dragging();
     this.container.addChild(this.Text);
     window.muup.container.addChild(this.container);
   }
