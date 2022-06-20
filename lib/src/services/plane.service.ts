@@ -22,10 +22,11 @@ export class Plane {
     this.dragging();
   }
   private draw() {
-    const a = this._h * Math.sin(0.52359);
-    const b = this._h * Math.cos(0.52359);
-    const A = this._w * Math.sin(0.52359);
-    const B = this._w * Math.cos(0.52359);
+    const rad = (31 * Math.PI) / 180;
+    const a = this._h * Math.sin(rad);
+    const b = this._h * Math.cos(rad);
+    const A = this._w * Math.sin(rad);
+    const B = this._w * Math.cos(rad);
     this.plane.clear();
     this.plane.beginFill(this._color, 0.1);
     this.plane.lineStyle(2, this._color, 0.5);
