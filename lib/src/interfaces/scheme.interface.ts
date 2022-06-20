@@ -1,3 +1,4 @@
+import { TextStyleFontWeight } from "pixi.js";
 import { Component } from "../services/component.service";
 
 export interface ISchemeComponent {
@@ -22,6 +23,8 @@ export interface ISchemeText {
   text: string;
   color: string;
   fontSize: number;
+  skew?: boolean;
+  fontWidth?: TextStyleFontWeight;
 }
 export interface ISchemePlane {
   ref: string;

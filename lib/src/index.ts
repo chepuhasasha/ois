@@ -156,7 +156,7 @@ create("#muup", {
   width: innerWidth,
   height: innerHeight,
 }).setup(config, (muup) => {
-  // muup.editable = true;
+  muup.editable = true;
   setInterval(() => {
     if (Math.random() > 0.5) {
       muup.refs["server #1"].color = "#8fff00";

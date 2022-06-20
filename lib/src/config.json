@@ -70,8 +70,10 @@
       "x": 100,
       "y": 100,
       "text": "Test SCHEME #1",
-      "fontSize": 40,
-      "color": "#FAFFff"
+      "fontSize": 60,
+      "color": "#FAFFff",
+      "skew": true,
+      "fontWidth": "bold"
     },
     {
       "ref": "Text #2",

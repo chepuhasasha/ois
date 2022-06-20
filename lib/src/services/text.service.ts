@@ -6,9 +6,15 @@ export class MuupText extends Container {
   private Text: Text;
   container = new Container();
 
-  constructor({ text, x, y, color, fontSize }: ISchemeText) {
+  constructor({ text, x, y, color, fontSize, skew, fontWidth }: ISchemeText) {
     super();
     this.Text = new Text(text);
+    if (skew) {
+      this.Text.skew.set(-1, (31 * Math.PI) / 180);
+    }
+    if (fontWidth) {
+      this.Text.style.fontWeight = fontWidth;
+    }
     this.x = x;
     this.y = y;
     this.color = color;
