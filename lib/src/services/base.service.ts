@@ -13,6 +13,7 @@ export class Base {
   container = new Container();
   ref: string;
   _color: number;
+  [key: string]: unknown;
   constructor({ ref, color, x, y }: BaseOptions) {
     this.x = x;
     this.y = y;
