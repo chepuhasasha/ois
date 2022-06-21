@@ -1,5 +1,6 @@
 import { Container, Graphics, utils } from "pixi.js";
 import { ISchemeLine } from "../interfaces/scheme.interface";
+import { onDragEnd, onDragMoveStep, onDragStart } from "./move.service";
 export class Line {
   container = new Container() as Container;
   private line: Graphics = new Graphics();
@@ -8,6 +9,9 @@ export class Line {
   private _width: number = 3;
   constructor(options: ISchemeLine) {
     this.container.addChild(this.line);
+    this.container.interactive = true;
+    this.container.buttonMode = true;
+    this.container.on("pointerup", () => (window.muup.selected = this));
     this.setup(options);
     window.muup.container.addChild(this.container);
   }
@@ -15,6 +19,8 @@ export class Line {
     if (width) this._width = width;
     if (color) this._color = utils.string2hex(color);
     this._points = points;
+
+    if (window.muup.editable) this.dragging();
     this.draw();
     // this.addPoints(this.options.points);
   }
@@ -90,6 +96,17 @@ export class Line {
       p.buttonMode = true;
       window.muup.stage.addChild(p);
     });
+  }
+  private dragging() {
+    this.container.interactive = true;
+    this.container
+      .on("pointerdown", onDragStart)
+      .on("pointerup", onDragEnd)
+      .on("pointerupoutside", onDragEnd)
+      .on("pointermove", onDragMoveStep);
+  }
+  select() {
+    window.muup.selected = this;
   }
   set color(color: string) {
     this._color = utils.string2hex(color);

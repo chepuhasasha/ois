@@ -20,6 +20,7 @@ import { Line } from "./services/line.service";
 import { Plane } from "./services/plane.service";
 import { onDragStart, onDragEnd, onDragMoveMap } from "./services/move.service";
 import { MuupText } from "./services/text.service";
+import { BaseContainer } from "./services/baseContainer.service";
 declare global {
   interface Window {
     muup: App;
@@ -30,20 +31,21 @@ declare global {
 }
 
 export class App extends Application {
-  editable: boolean = false;
-  _selected: Component | Line | MuupText | Plane | null;
   private _scheme: {
     components: Component[];
     lines: Line[];
     planes: Plane[];
     texts: MuupText[];
   } = { components: [], lines: [], texts: [], planes: [] };
-  loader: Loader;
-  container = new Container();
-  refs: {
+  private _selected: Component | Line | MuupText | Plane | null | BaseContainer;
+  private offset: { x: number; y: number } = { x: 0, y: 0 };
+  public bg: TilingSprite;
+  public loader: Loader;
+  public editable: boolean = false;
+  public container = new Container();
+  public refs: {
     [key: string]: Component | Line | MuupText | Plane;
   } = {};
-  [key: string]: unknown;
 
   constructor(selector: string, options: IApplicationOptions) {
     super({
@@ -57,8 +59,33 @@ export class App extends Application {
     this.loader = Loader.shared;
     return this;
   }
+  setup() {
+    this.bg = new TilingSprite(
+      Texture.from("bg.png"),
+      this.screen.width,
+      this.screen.height
+    );
+    this.bg.interactive = true;
+    this.bg
+      .on("pointerdown", () => {
+        this.selected = null;
+      })
+      .on("pointerdown", onDragStart)
+      .on("pointerup", onDragEnd)
+      .on("pointerupoutside", onDragEnd)
+      .on("pointermove", onDragMoveMap);
+    this.stage.addChild(this.bg);
+    this.stage.addChild(this.container);
+    this.ticker.add((d) => {
+      this.scrollToSelected(d);
+      if (this.container.position.x != this.bg.tilePosition.x) {
+        this.container.position.x = this.bg.tilePosition.x;
+        this.container.position.y = this.bg.tilePosition.y;
+      }
+    });
+  }
 
-  setup(config: IScheme, cb: (muup: App) => void, editable?: boolean) {
+  load(config: IScheme, cb: (muup: App) => void, editable?: boolean) {
     if (editable) {
       this.editable = true;
     }
@@ -66,25 +93,8 @@ export class App extends Application {
       this.loader.add(path);
     });
     this.loader.load(() => {
-      const bg = new TilingSprite(
-        Texture.from("bg.png"),
-        this.screen.width,
-        this.screen.height
-      );
-      bg.interactive = true;
       this.scheme = config;
-      bg.on("pointerdown", onDragStart)
-        .on("pointerup", onDragEnd)
-        .on("pointerupoutside", onDragEnd)
-        .on("pointermove", onDragMoveMap);
-      this.stage.addChild(bg);
-      this.stage.addChild(this.container);
-      this.ticker.add(() => {
-        if (this.container.position.x != bg.tilePosition.x) {
-          this.container.position.x = bg.tilePosition.x;
-          this.container.position.y = bg.tilePosition.y;
-        }
-      });
+      this.setup();
       cb(this);
     });
     return this;
@@ -103,6 +113,28 @@ export class App extends Application {
     scheme.texts.forEach((text) => {
       this.add("text", text);
     });
+  }
+  private scrollToSelected(d: number) {
+    if (this._selected && this.bg.tilePosition.x > this.offset.x) {
+      this.bg.tilePosition.x -= d * 20;
+      if (this.bg.tilePosition.x < this.offset.x)
+        this.bg.tilePosition.x = this.offset.x;
+    }
+    if (this._selected && this.bg.tilePosition.x < this.offset.x) {
+      this.bg.tilePosition.x += d * 20;
+      if (this.bg.tilePosition.x > this.offset.x)
+        this.bg.tilePosition.x = this.offset.x;
+    }
+    if (this._selected && this.bg.tilePosition.y > this.offset.y) {
+      this.bg.tilePosition.y -= d * 20;
+      if (this.bg.tilePosition.y < this.offset.y)
+        this.bg.tilePosition.y = this.offset.y;
+    }
+    if (this._selected && this.bg.tilePosition.y < this.offset.y) {
+      this.bg.tilePosition.y += d * 20;
+      if (this.bg.tilePosition.y > this.offset.y)
+        this.bg.tilePosition.y = this.offset.y;
+    }
   }
 
   add(type: "line", config: ISchemeLine): void;
@@ -179,9 +211,14 @@ export class App extends Application {
     console.log(result);
   }
 
-  set selected(el: Component | Line | MuupText | Plane | null) {
-    this._selected = el;
-    console.log(this._selected);
+  set selected(el: Component | Line | MuupText | Plane | null | BaseContainer) {
+    if (el) {
+      this._selected = el;
+      this.offset = {
+        x: this.screen.width / 2 - el.container.position.x,
+        y: this.screen.height / 2 - el.container.position.y,
+      };
+    } else this._selected = null;
   }
 }
 
@@ -193,16 +230,18 @@ export function create(selector: string, options: IApplicationOptions) {
 create("#muup", {
   width: innerWidth,
   height: innerHeight,
-}).setup(
+}).load(
   config,
   (muup) => {
     // muup.makeConfig();
     setInterval(() => {
       if (Math.random() > 0.5) {
         muup.refs["server #1"].color = "#8fff00";
+        // muup.refs["server #1"].select();
         muup.refs["line #1"].color = "#8fff00";
       } else {
         muup.refs["server #1"].color = "#ff0000";
+        // muup.refs["plane #1"].select();
         muup.refs["line #1"].color = "#ff0000";
       }
     }, 1000);

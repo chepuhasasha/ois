@@ -38,6 +38,9 @@ export class MuupText extends Container {
       .on("pointerupoutside", onDragEnd)
       .on("pointermove", onDragMove);
   }
+  select() {
+    window.muup.selected = this;
+  }
 
   set text(text: string) {
     this.Text.text = text;

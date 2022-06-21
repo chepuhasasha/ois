@@ -12,6 +12,7 @@ export class Plane {
   constructor(options: ISchemePlane) {
     this.setup(options);
     this.container.addChild(this.plane);
+    this.container.on("pointerup", () => (window.muup.selected = this));
     window.muup.container.addChild(this.container);
   }
   private setup({ x, y, w, h, color }: ISchemePlane) {
@@ -40,12 +41,15 @@ export class Plane {
     this.plane.endFill();
   }
   private dragging() {
-    this.plane.interactive = true;
-    this.plane
+    this.container.interactive = true;
+    this.container
       .on("pointerdown", onDragStart)
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
       .on("pointermove", onDragMoveStep);
+  }
+  select() {
+    window.muup.selected = this;
   }
   set color(color: string) {
     this._color = utils.string2hex(color);
@@ -61,13 +65,13 @@ export class Plane {
   }
   set x(x: number) {
     this._x = x;
-    this.plane.position.x = x;
+    this.container.position.x = x;
 
     this.draw();
   }
   set y(y: number) {
     this._y = y;
-    this.plane.position.y = y;
+    this.container.position.y = y;
     this.draw();
   }
 }
