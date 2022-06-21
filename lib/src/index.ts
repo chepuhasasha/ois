@@ -8,7 +8,11 @@ import {
   TilingSprite,
   Container,
 } from "pixi.js";
-import { onDragStart, onDragEnd, onDragMoveMap } from "./services/move.service";
+import {
+  onDragStart,
+  onDragEnd,
+  onDragMoveMap,
+} from "./services/mouse.service";
 import { Component, ComponentConfig } from "./services/component.service";
 import { LINE, LineConfig } from "./services/line.service";
 import { PLANE, PlaneConfig } from "./services/plane.service";

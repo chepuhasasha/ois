@@ -1,4 +1,5 @@
 export function onDragStart(event: any) {
+  this.scale.set(0.95, 0.95);
   this.data = event.data;
   this.start = this.data.getLocalPosition(this.parent);
   this.alpha = 0.8;
@@ -6,6 +7,7 @@ export function onDragStart(event: any) {
 }
 
 export function onDragEnd() {
+  this.scale.set(1, 1);
   this.alpha = 1;
   this.dragging = false;
   this.data = null;

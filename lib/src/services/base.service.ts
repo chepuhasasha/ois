@@ -1,5 +1,5 @@
 import { Container, utils } from "pixi.js";
-import { onDragEnd, onDragMoveStep, onDragStart } from "./move.service";
+import { onDragEnd, onDragMoveStep, onDragStart } from "./mouse.service";
 
 export interface BaseOptions {
   ref: string;
