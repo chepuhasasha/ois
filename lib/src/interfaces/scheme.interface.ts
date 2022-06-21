@@ -1,10 +1,13 @@
 export interface ISchemeComponent {
-  label: string;
+  selected: boolean;
   ref: string;
-  color?: string;
-  component: string;
+  color: string;
   x: number;
   y: number;
+  props: {
+    label: string;
+    component: string;
+  };
 }
 
 export interface ISchemeLine {

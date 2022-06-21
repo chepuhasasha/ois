@@ -1,11 +1,11 @@
 import { Graphics, TextStyle, utils, Text, Container } from "pixi.js";
 
-export class Label extends Container {
+export class LABEL extends Container {
   private _color: number;
   private _text: string = "";
   private _labelText: Text;
-  _label = new Graphics();
-  _style = new TextStyle({
+  private _label = new Graphics();
+  private _style = new TextStyle({
     letterSpacing: 1,
     fontSize: 14,
     fill: "#A2A3A7",
@@ -13,11 +13,9 @@ export class Label extends Container {
     wordWrapWidth: 100,
     lineJoin: "round",
   });
-  constructor(text: string, color: number) {
+  constructor() {
     super();
-    this._labelText = new Text(this._text, this._style);
-    this.color = color;
-    this.text = text;
+    this._labelText = new Text("", this._style);
     this._labelText.x = 8;
     this._labelText.y = 4;
     this.addChild(this._label);
@@ -25,7 +23,7 @@ export class Label extends Container {
     this.draw();
   }
 
-  draw() {
+  private draw() {
     this._label.clear();
     this._label.beginFill(this._color);
     this._label.drawRect(0, 0, 4, this._labelText.height + 10);

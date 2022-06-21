@@ -4,96 +4,130 @@
   ],
   "components": [
     {
-      "label": "ABC-ABCDFEWFKWOPKWPDOKQWPDOKQWPDOKQWPDOKQWPODKPOK",
       "ref": "server #1",
-      "component": "server",
+      "color": "#c4c4c4",
+      "selected": false,
       "x": 500,
-      "y": 420
+      "y": 420,
+      "props": {
+        "label": "ABC-ABCDFEWFKWOPKWPDOKQWPDOKQWPDOKQWPDOKQWPODKPOK",
+        "name": "server"
+      }
     },
     {
-      "label": "ABC-ABCD",
       "ref": "server #2",
       "color": "#FAFF00",
-      "component": "server",
+      "selected": true,
       "x": 800,
-      "y": 600
+      "y": 600,
+      "props": {
+        "label": "ABC-ABCD",
+        "name": "server"
+      }
     },
     {
-      "label": "ABC-ABCD",
       "ref": "server #3",
       "color": "#ff0000",
-      "component": "cod",
+      "selected": false,
       "x": 1100,
-      "y": 420
+      "y": 420,
+      "props": {
+        "label": "ABC-ABCD",
+        "name": "cod"
+      }
     }
   ],
   "lines": [
     {
       "ref": "line #1",
-      "points": [
-        {
-          "x": 500,
-          "y": 420
-        },
-        {
-          "x": 800,
-          "y": 600
-        }
-      ]
+      "selected": false,
+      "color": "#c4c4c4",
+      "x": 500,
+      "y": 420,
+      "props": {
+        "points": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 300,
+            "y": 180
+          }
+        ],
+        "width": 3,
+        "radius": 20
+      }
     },
     {
       "ref": "line #2",
+      "selected": false,
       "color": "#ff0000",
-      "points": [
-        {
-          "x": 1100,
-          "y": 420
-        },
-        {
-          "x": 1300,
-          "y": 540
-        },
-        {
-          "x": 1100,
-          "y": 660
-        },
-        {
-          "x": 1300,
-          "y": 780
-        }
-      ]
+      "x": 1100,
+      "y": 420,
+      "props": {
+        "points": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 200,
+            "y": 120
+          },
+          {
+            "x": 0,
+            "y": 240
+          },
+          {
+            "x": 200,
+            "y": 360
+          }
+        ],
+        "width": 4,
+        "radius": 40
+      }
     }
   ],
   "texts": [
     {
-      "ref": "Text #1",
+      "ref": "text #1",
+      "color": "#c4c4c4",
+      "selected": false,
       "x": 350,
       "y": 420,
-      "text": "ЦОД",
-      "fontSize": 100,
-      "color": "#C9D1D9",
-      "skew": true,
-      "fontWidth": "bold"
+      "props": {
+        "fontWidth": "bold",
+        "fontSize": 100,
+        "skew": true,
+        "text": "ЦОД"
+      }
     },
     {
-      "ref": "Text #2",
-      "x": 550,
-      "y": 560,
-      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et \ndolore magna aliqua. Ut enim ad minim veniam",
-      "fontSize": 14,
+      "ref": "text #2",
       "color": "#c4c4c4",
-      "skew": true,
-      "fontWidth": "normal"
+      "selected": false,
+      "x": 250,
+      "y": 485,
+      "props": {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et \ndolore magna aliqua. Ut enim ad minim veniam",
+        "fontSize": 14,
+        "fontWidth": "normal",
+        "skew": true
+      }
     }
   ],
   "planes": [
     {
       "ref": "plane #1",
+      "color": "#ffffff",
+      "selected": false,
       "x": 350,
       "y": 420,
-      "w": 580,
-      "h": 174,
-      "color": "#ffffff"
+      "props": {
+        "w": 580,
+        "h": 174
+      }
     }
   ]
 }

@@ -8,19 +8,12 @@ import {
   TilingSprite,
   Container,
 } from "pixi.js";
-import {
-  IScheme,
-  ISchemeComponent,
-  ISchemeLine,
-  ISchemePlane,
-  ISchemeText,
-} from "./interfaces/scheme.interface";
-import { Component } from "./services/component.service";
-import { Line } from "./services/line.service";
-import { Plane } from "./services/plane.service";
 import { onDragStart, onDragEnd, onDragMoveMap } from "./services/move.service";
-import { MuupText } from "./services/text.service";
-import { BaseContainer } from "./services/baseContainer.service";
+import { Component, ComponentConfig } from "./services/component.service";
+import { LINE, LineConfig } from "./services/line.service";
+import { PLANE, PlaneConfig } from "./services/plane.service";
+import { TEXT, TextConfig } from "./services/text.service";
+import { Base, BaseOptions } from "./services/base.service";
 declare global {
   interface Window {
     muup: App;
@@ -30,21 +23,22 @@ declare global {
   }
 }
 
+export interface Config {
+  libs: string[];
+  components: ComponentConfig[];
+  texts: TextConfig[];
+  planes: PlaneConfig[];
+  lines: LineConfig[];
+}
 export class App extends Application {
-  private _scheme: {
-    components: Component[];
-    lines: Line[];
-    planes: Plane[];
-    texts: MuupText[];
-  } = { components: [], lines: [], texts: [], planes: [] };
-  private _selected: Component | Line | MuupText | Plane | null | BaseContainer;
+  private _selected: Base;
   private offset: { x: number; y: number } = { x: 0, y: 0 };
   public bg: TilingSprite;
   public loader: Loader;
   public editable: boolean = false;
   public container = new Container();
   public refs: {
-    [key: string]: Component | Line | MuupText | Plane;
+    [key: string]: Component | LINE | TEXT | PLANE;
   } = {};
 
   constructor(selector: string, options: IApplicationOptions) {
@@ -85,7 +79,7 @@ export class App extends Application {
     });
   }
 
-  load(config: IScheme, cb: (muup: App) => void, editable?: boolean) {
+  load(config: Config, cb: (muup: App) => void, editable?: boolean) {
     if (editable) {
       this.editable = true;
     }
@@ -93,25 +87,25 @@ export class App extends Application {
       this.loader.add(path);
     });
     this.loader.load(() => {
-      this.scheme = config;
+      this.config = config;
       this.setup();
       cb(this);
     });
     return this;
   }
-  set scheme(scheme: IScheme) {
+  set config(config: Config) {
     this.refs = {};
-    scheme.planes.forEach((plane) => {
-      this.add("plane", plane);
+    config.planes.forEach((plane) => {
+      this.add("plane", plane).props = plane.props;
     });
-    scheme.lines.forEach((line) => {
-      this.add("line", line);
+    config.lines.forEach((line) => {
+      this.add("line", line).props = line.props;
     });
-    scheme.components.forEach((component) => {
-      this.add("component", component);
+    config.components.forEach((component) => {
+      this.add("component", component).props = component.props;
     });
-    scheme.texts.forEach((text) => {
-      this.add("text", text);
+    config.texts.forEach((text) => {
+      this.add("text", text).props = text.props;
     });
   }
   private scrollToSelected(d: number) {
@@ -137,46 +131,40 @@ export class App extends Application {
     }
   }
 
-  add(type: "line", config: ISchemeLine): void;
-  add(type: "component", config: ISchemeComponent): void;
-  add(type: "text", config: ISchemeText): void;
-  add(type: "plane", config: ISchemePlane): void;
-  add(
-    type: "component" | "line" | "text" | "plane",
-    config: ISchemeComponent | ISchemeLine | ISchemeText | ISchemePlane
-  ) {
-    if (!this.refs[config.ref])
+  add(type: string, config: BaseOptions) {
+    if (!this.refs[config.ref]) {
       switch (type) {
         case "component":
-          const comp = new Component(config as ISchemeComponent);
-          this._scheme.components.push(comp);
+          const comp = new Component(config);
+          // this._scheme.components.push(comp);
           this.refs[config.ref] = comp;
-          break;
-        case "line":
-          const line = new Line(config as ISchemeLine);
-          this._scheme.lines.push(line);
-          this.refs[config.ref] = line;
-          break;
+          return comp;
         case "text":
-          const text = new MuupText(config as ISchemeText);
-          this._scheme.texts.push(text);
+          const text = new TEXT(config);
+          // this._scheme.texts.push(text);
           this.refs[config.ref] = text;
-          break;
+          return text;
         case "plane":
-          const plane = new Plane(config as ISchemePlane);
-          this._scheme.planes.push(plane);
+          const plane = new PLANE(config);
+          // this._scheme.texts.push(text);
           this.refs[config.ref] = plane;
-          break;
+          return plane;
+        case "line":
+          const line = new LINE(config);
+          // this._scheme.texts.push(text);
+          this.refs[config.ref] = line;
+          return line;
 
         default:
           break;
       }
-    else
+    } else {
       console.error(
         `In schema configuration link "${
           config.ref
         }" is duplicated. ${JSON.stringify(config, null, 2)}"`
       );
+    }
   }
 
   remove(ref: string) {
@@ -191,27 +179,27 @@ export class App extends Application {
   }
 
   makeConfig() {
-    const result: IScheme = {
-      components: [],
-      lines: [],
-      libs: [],
-      texts: [],
-      planes: [],
-    };
-    this._scheme.components.forEach((c) => {
-      result.components.push({
-        ref: c.ref,
-        component: c.component,
-        label: c.label,
-        x: c.x,
-        y: c.y,
-        color: c.color,
-      });
-    });
-    console.log(result);
+    // const result: IScheme = {
+    //   components: [],
+    //   lines: [],
+    //   libs: [],
+    //   texts: [],
+    //   planes: [],
+    // };
+    // this._scheme.components.forEach((c) => {
+    //   result.components.push({
+    //     ref: c.ref,
+    //     component: c.component,
+    //     label: c.label,
+    //     x: c.x,
+    //     y: c.y,
+    //     color: c.color,
+    //   });
+    // });
+    // console.log(result);
   }
 
-  set selected(el: Component | Line | MuupText | Plane | null | BaseContainer) {
+  set selected(el: Base) {
     if (el) {
       this._selected = el;
       this.offset = {
@@ -237,12 +225,18 @@ create("#muup", {
     setInterval(() => {
       if (Math.random() > 0.5) {
         muup.refs["server #1"].color = "#8fff00";
-        // muup.refs["server #1"].select();
+        muup.refs["plane #1"].color = "#8fff00";
         muup.refs["line #1"].color = "#8fff00";
+        // muup.refs["server #3"].select();
+        muup.refs["text #1"].color = "#8fff00";
+        // muup.refs["text #1"].text = "UP";
       } else {
         muup.refs["server #1"].color = "#ff0000";
-        // muup.refs["plane #1"].select();
+        muup.refs["plane #1"].color = "#ff0000";
         muup.refs["line #1"].color = "#ff0000";
+
+        // muup.refs["text #1"].text = "DOWN";
+        muup.refs["text #1"].color = "#ff0000";
       }
     }, 1000);
   },

@@ -1,48 +1,34 @@
-import { Container, Graphics, utils } from "pixi.js";
-import { ISchemeLine } from "../interfaces/scheme.interface";
-import { onDragEnd, onDragMoveStep, onDragStart } from "./move.service";
-export class Line {
-  container = new Container() as Container;
-  private line: Graphics = new Graphics();
-  private _points: { x: number; y: number }[];
-  private _color: number = 0x33343e;
-  private _width: number = 3;
-  constructor(options: ISchemeLine) {
-    this.container.addChild(this.line);
-    this.container.interactive = true;
-    this.container.buttonMode = true;
-    this.container.on("pointerup", () => (window.muup.selected = this));
-    this.setup(options);
-    window.muup.container.addChild(this.container);
-  }
-  private setup({ points, width, color }: ISchemeLine) {
-    if (width) this._width = width;
-    if (color) this._color = utils.string2hex(color);
-    this._points = points;
+import { Graphics, utils } from "pixi.js";
+import { Base, BaseOptions } from "./base.service";
 
-    if (window.muup.editable) this.dragging();
-    this.draw();
-    // this.addPoints(this.options.points);
+export interface LineProps {
+  width: number;
+  radius: number;
+  points: { x: number; y: number }[];
+}
+export interface LineConfig extends BaseOptions {
+  props: LineProps;
+}
+export class LINE extends Base {
+  private _line: Graphics = new Graphics();
+  private _props: LineProps;
+  constructor(options: BaseOptions) {
+    super(options);
+    this.container.addChild(this._line);
   }
-  private draw() {
-    this.line.clear();
-    this.line.lineStyle(this._width, this._color, 1);
-    this.segments(this._points, 20).forEach((segment) => {
-      if (!segment.bazier) {
-        this.line.moveTo(segment.start.x, segment.start.y);
-        this.line.lineTo(segment.end.x, segment.end.y);
-        return;
-      }
-      this.line.bezierCurveTo(
-        segment.start.x,
-        segment.start.y,
-        segment.bazier.x,
-        segment.bazier.y,
-        segment.end.x,
-        segment.end.y
-      );
-    });
+
+  private pointInLine(
+    a: { x: number; y: number },
+    b: { x: number; y: number },
+    offset: number
+  ) {
+    const segmentLength = Math.sqrt(
+      Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2)
+    );
+    const factor = offset / segmentLength;
+    return { x: a.x + (b.x - a.x) * factor, y: a.y + (b.y - a.y) * factor };
   }
+
   private segments(points: { x: number; y: number }[], radius: number) {
     return points.reduce((acc, point, i) => {
       if (points[i - 1]) {
@@ -73,19 +59,43 @@ export class Line {
       return acc;
     }, []);
   }
-  private pointInLine(
-    a: { x: number; y: number },
-    b: { x: number; y: number },
-    offset: number
-  ) {
-    const segmentLength = Math.sqrt(
-      Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2)
-    );
-    const factor = offset / segmentLength;
-    return { x: a.x + (b.x - a.x) * factor, y: a.y + (b.y - a.y) * factor };
+
+  private setup() {
+    this._line.clear();
+    this._line.lineStyle(this._props.width, this._color, 1);
+    this.segments(this._props.points, this._props.radius).forEach((segment) => {
+      if (!segment.bazier) {
+        this._line.moveTo(segment.start.x, segment.start.y);
+        this._line.lineTo(segment.end.x, segment.end.y);
+        return;
+      }
+      this._line.bezierCurveTo(
+        segment.start.x,
+        segment.start.y,
+        segment.bazier.x,
+        segment.bazier.y,
+        segment.end.x,
+        segment.end.y
+      );
+    });
+    this._line.lineStyle(1, this._color, 0);
+    this._line.beginFill(this._color, 0.01);
+    this._line.moveTo(this._props.points[0].x, this._props.points[0].y);
+    this._props.points.forEach((point) => {
+      this._line.lineTo(point.x + 20, point.y);
+    });
+    this._props.points.forEach((point, i, arr) => {
+      this._line.lineTo(
+        arr[arr.length - 1 - i].x - 20,
+        arr[arr.length - 1 - i].y
+      );
+    });
+    this._line.endFill();
+    this._line.closePath();
   }
-  private addPoints(points: { x: number; y: number }[]) {
-    points.forEach((point) => {
+  private addPoints() {
+    this.container.removeChildren(1, this._props.points.length + 1);
+    this._props.points.forEach((point) => {
       const p = new Graphics();
       p.position.set(point.x, point.y);
       p.lineStyle(1, this._color, 0.5);
@@ -94,30 +104,24 @@ export class Line {
       p.endFill();
       p.interactive = true;
       p.buttonMode = true;
-      window.muup.stage.addChild(p);
+      this.container.addChild(p);
     });
+    console.log(this._props.points.length);
   }
-  private dragging() {
-    this.container.interactive = true;
-    this.container
-      .on("pointerdown", onDragStart)
-      .on("pointerup", onDragEnd)
-      .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMoveStep);
+
+  set props(props: LineProps) {
+    this._props = props;
+    this.addPoints();
+    if (this._line) this.setup();
   }
-  select() {
-    window.muup.selected = this;
+
+  get props() {
+    return this._props;
   }
   set color(color: string) {
     this._color = utils.string2hex(color);
-    this.draw();
-  }
-  set width(width: number) {
-    this._width = width;
-    this.draw();
-  }
-  set points(points: { x: number; y: number }[]) {
-    this._points = points;
-    this.draw();
+    if (this._line) {
+      this.setup();
+    }
   }
 }

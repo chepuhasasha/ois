@@ -1,61 +1,51 @@
-import {
-  Graphics,
-  TextStyle,
-  utils,
-  Text,
-  Container,
-  TextStyleFontWeight,
-} from "pixi.js";
-import { ISchemeText } from "../interfaces/scheme.interface";
-import { onDragStart, onDragEnd, onDragMove } from "./move.service";
+import { utils, Text, TextStyleFontWeight } from "pixi.js";
+import { Base, BaseOptions } from "./base.service";
 
-export class MuupText extends Container {
-  private Text: Text;
-  container = new Container();
+export interface TextProps {
+  fontWidth: string;
+  fontSize: number;
+  skew: boolean;
+  text: string;
+}
+export interface TextConfig extends BaseOptions {
+  props: TextProps;
+}
+export class TEXT extends Base {
+  private _text = new Text("");
+  private _props: TextProps;
+  constructor(options: BaseOptions) {
+    super(options);
+  }
 
-  constructor({ text, x, y, color, fontSize, skew, fontWidth }: ISchemeText) {
-    super();
-    this.Text = new Text(text);
-    if (skew) {
-      this.Text.skew.set(-1.03, (31 * Math.PI) / 180);
+  private setup() {
+    if (this._props.skew) {
+      this._text.skew.set(-1.03, (31 * Math.PI) / 180);
     }
-    this.Text.style.fontWeight = fontWidth as TextStyleFontWeight;
-    this.x = x;
-    this.y = y;
-    this.color = color;
-    this.fontSize = fontSize;
-    this.text = text;
-    this.Text.interactive = true;
-    this.Text.buttonMode = true;
-    if (window.muup.editable) this.dragging();
-    this.container.addChild(this.Text);
-    window.muup.container.addChild(this.container);
-  }
-  setup() {}
-  private dragging() {
-    this.Text.on("pointerdown", onDragStart)
-      .on("pointerup", onDragEnd)
-      .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMove);
-  }
-  select() {
-    window.muup.selected = this;
+    this._text.style.fontWeight = this._props.fontWidth as TextStyleFontWeight;
+    this._text.style.fontSize = this._props.fontSize;
+    this._text.style.fill = this._color;
+    this._text.text = this._props.text;
+    this.container.addChild(this._text);
   }
 
+  set props(props: TextProps) {
+    this._props = props;
+    this.container.removeChildren();
+    this.setup();
+  }
   set text(text: string) {
-    this.Text.text = text;
+    if (this._text) {
+      this._text.text = text;
+    }
   }
 
-  set x(x: number) {
-    this.container.position.x = x;
-  }
-  set y(y: number) {
-    this.container.position.y = y;
+  get props() {
+    return this._props;
   }
   set color(color: string) {
-    this.Text.style.fill = utils.string2hex(color);
-  }
-  set fontSize(size: number) {
-    this.Text.style.fontSize = size;
+    this._color = utils.string2hex(color);
+    if (this._text) {
+      this._text.style.fill = this._color;
+    }
   }
 }

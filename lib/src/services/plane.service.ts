@@ -1,77 +1,51 @@
-import { Container, Graphics, utils } from "pixi.js";
-import { ISchemePlane } from "../interfaces/scheme.interface";
-import { onDragStart, onDragEnd, onDragMoveStep } from "./move.service";
-export class Plane {
-  container = new Container();
-  private plane: Graphics = new Graphics();
-  private _color: number;
-  private _x: number;
-  private _y: number;
-  private _w: number;
-  private _h: number;
-  constructor(options: ISchemePlane) {
-    this.setup(options);
-    this.container.addChild(this.plane);
-    this.container.on("pointerup", () => (window.muup.selected = this));
-    window.muup.container.addChild(this.container);
+import { Base, BaseOptions } from "./base.service";
+import { Graphics, utils } from "pixi.js";
+export interface PlaneProps {
+  h: number;
+  w: number;
+}
+export interface PlaneConfig extends BaseOptions {
+  props: PlaneProps;
+}
+export class PLANE extends Base {
+  private _plane: Graphics = new Graphics();
+  private _props: PlaneProps;
+
+  constructor(options: BaseOptions) {
+    super(options);
+    this.container.addChild(this._plane);
   }
-  private setup({ x, y, w, h, color }: ISchemePlane) {
-    this.color = color;
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.draw();
-    if (window.muup.editable) this.dragging();
-  }
-  private draw() {
+
+  private setup() {
     const rad = (31 * Math.PI) / 180;
-    const a = this._h * Math.sin(rad);
-    const b = this._h * Math.cos(rad);
-    const A = this._w * Math.sin(rad);
-    const B = this._w * Math.cos(rad);
-    this.plane.clear();
-    this.plane.beginFill(this._color, 0.1);
-    this.plane.lineStyle(2, this._color, 0.5);
-    this.plane.moveTo(0, 0);
-    this.plane.lineTo(b, -a);
-    this.plane.lineTo(b + B, -a + A);
-    this.plane.lineTo(B, A);
-    this.plane.closePath();
-    this.plane.endFill();
+    const a = this._props.h * Math.sin(rad);
+    const b = this._props.h * Math.cos(rad);
+    const A = this._props.w * Math.sin(rad);
+    const B = this._props.w * Math.cos(rad);
+    this._plane.clear();
+    this._plane.beginFill(this._color, 0.1);
+    this._plane.lineStyle(2, this._color, 0.5);
+    this._plane.moveTo(0, 0);
+    this._plane.lineTo(b, -a);
+    this._plane.lineTo(b + B, -a + A);
+    this._plane.lineTo(B, A);
+    this._plane.closePath();
+    this._plane.endFill();
   }
-  private dragging() {
-    this.container.interactive = true;
-    this.container
-      .on("pointerdown", onDragStart)
-      .on("pointerup", onDragEnd)
-      .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMoveStep);
+
+  set props(props: PlaneProps) {
+    this._props = props;
+    this.setup();
   }
-  select() {
-    window.muup.selected = this;
+
+  get props() {
+    return this._props;
   }
+
   set color(color: string) {
     this._color = utils.string2hex(color);
-    this.draw();
-  }
-  set w(width: number) {
-    this._w = width;
-    this.draw();
-  }
-  set h(height: number) {
-    this._h = height;
-    this.draw();
-  }
-  set x(x: number) {
-    this._x = x;
-    this.container.position.x = x;
-
-    this.draw();
-  }
-  set y(y: number) {
-    this._y = y;
-    this.container.position.y = y;
-    this.draw();
+    if (this._plane) {
+      this.setup();
+    }
   }
 }
