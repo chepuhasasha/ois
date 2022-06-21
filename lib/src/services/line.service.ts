@@ -106,8 +106,49 @@ export class LINE extends Base {
       p.endFill();
       p.interactive = true;
       p.buttonMode = true;
+      this.dragPoint(p, point);
       this.container.addChild(p);
     });
+  }
+
+  dragPoint(p: Graphics, point: { x: number; y: number }) {
+    let data: any;
+    let drag = false;
+    p.on("pointerdown", (e) => {
+      data = e.data;
+      drag = true;
+      window.muup.move = false;
+      point.x += 10;
+      this.setup();
+    })
+      .on("pointerup", () => {
+        drag = true;
+        window.muup.move = false;
+      })
+      .on("pointerupoutside", () => {
+        drag = false;
+        window.muup.move = true;
+      })
+      .on("pointermove", () => {
+        if (drag) {
+          const newp = data.getLocalPosition(p.parent);
+          if (newp.x - point.x >= 25) {
+            point.x += 25;
+            p.position.x += 25;
+          } else if (newp.x - point.x <= -25) {
+            point.x -= 25;
+            p.position.x -= 25;
+          }
+          if (newp.y - point.y >= 15) {
+            point.y += 15;
+            p.position.y += 15;
+          } else if (newp.y - point.y <= -15) {
+            point.y -= 15;
+            p.position.y -= 15;
+          }
+          this.setup();
+        }
+      });
   }
 
   set props(props: LineProps) {

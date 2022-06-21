@@ -41,6 +41,7 @@ export class App extends Application {
   public loader: Loader;
   public editable: boolean = false;
   public container = new Container();
+  move: boolean = true;
   public refs: {
     [key: string]: Component | LINE | TEXT | PLANE;
   } = {};
