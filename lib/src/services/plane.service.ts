@@ -56,7 +56,6 @@ export class PLANE extends Base {
   get config(): PlaneConfig {
     return {
       ref: this.ref,
-      selected: false,
       color: this.color,
       x: this.container.position.x,
       y: this.container.position.y,

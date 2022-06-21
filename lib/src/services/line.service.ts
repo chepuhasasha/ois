@@ -168,7 +168,6 @@ export class LINE extends Base {
   get config(): LineConfig {
     return {
       ref: this.ref,
-      selected: false,
       color: this.color,
       x: this.container.position.x,
       y: this.container.position.y,

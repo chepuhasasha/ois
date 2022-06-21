@@ -57,7 +57,6 @@ export class TEXT extends Base {
   get config(): TextConfig {
     return {
       ref: this.ref,
-      selected: false,
       color: this.color,
       x: this.container.position.x,
       y: this.container.position.y,

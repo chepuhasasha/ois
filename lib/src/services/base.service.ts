@@ -5,7 +5,6 @@ import { onDragEnd, onDragMoveStep, onDragStart } from "./mouse.service";
 export interface BaseOptions {
   ref: string;
   color: string;
-  selected: boolean;
   x: number;
   y: number;
 }
@@ -14,7 +13,7 @@ export class Base {
   container = new Container();
   ref: string;
   _color: number;
-  constructor({ ref, color, selected, x, y }: BaseOptions) {
+  constructor({ ref, color, x, y }: BaseOptions) {
     this.x = x;
     this.y = y;
     this.ref = ref;
@@ -27,7 +26,6 @@ export class Base {
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
       .on("pointermove", onDragMoveStep);
-    if (selected) this.select();
     this.container.on("pointerup", () => (window.muup.selected = this));
     window.muup.container.addChild(this.container);
   }

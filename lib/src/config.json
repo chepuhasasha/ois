@@ -1,4 +1,8 @@
 {
+  "offset": {
+    "x": 200,
+    "y": 0
+  },
   "libs": [
     "./assets/spritesheet.json"
   ],
@@ -6,7 +10,6 @@
     {
       "ref": "server #1",
       "color": "#c4c4c4",
-      "selected": false,
       "x": 500,
       "y": 420,
       "props": {
@@ -17,7 +20,6 @@
     {
       "ref": "server #2",
       "color": "#FAFF00",
-      "selected": true,
       "x": 800,
       "y": 600,
       "props": {
@@ -28,7 +30,6 @@
     {
       "ref": "server #3",
       "color": "#ff0000",
-      "selected": false,
       "x": 1100,
       "y": 420,
       "props": {
@@ -40,7 +41,6 @@
   "lines": [
     {
       "ref": "line #1",
-      "selected": false,
       "color": "#c4c4c4",
       "x": 500,
       "y": 420,
@@ -61,7 +61,6 @@
     },
     {
       "ref": "line #2",
-      "selected": false,
       "color": "#ff0000",
       "x": 1100,
       "y": 420,
@@ -93,7 +92,6 @@
     {
       "ref": "text #1",
       "color": "#c4c4c4",
-      "selected": false,
       "x": 350,
       "y": 420,
       "props": {
@@ -106,7 +104,6 @@
     {
       "ref": "text #2",
       "color": "#c4c4c4",
-      "selected": false,
       "x": 250,
       "y": 485,
       "props": {
@@ -121,7 +118,6 @@
     {
       "ref": "plane #1",
       "color": "#ffffff",
-      "selected": false,
       "x": 350,
       "y": 420,
       "props": {

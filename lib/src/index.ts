@@ -28,6 +28,7 @@ declare global {
 }
 
 export interface Config {
+  offset: { x: number; y: number };
   libs: string[];
   components: ComponentConfig[];
   texts: TextConfig[];
@@ -36,6 +37,7 @@ export interface Config {
 }
 
 export interface AppConfig {
+  offset: { x: number; y: number };
   libs: string[];
   components: Component[];
   texts: TEXT[];
@@ -51,6 +53,7 @@ export class App extends Application {
   public container = new Container();
   move: boolean = true;
   private _config: AppConfig = {
+    offset: { x: 0, y: 0 },
     libs: [],
     components: [],
     texts: [],
@@ -95,6 +98,8 @@ export class App extends Application {
       if (this.container.position.x != this.bg.tilePosition.x) {
         this.container.position.x = this.bg.tilePosition.x;
         this.container.position.y = this.bg.tilePosition.y;
+        this._config.offset.x = this.bg.tilePosition.x;
+        this._config.offset.y = this.bg.tilePosition.y;
       }
     });
   }
@@ -108,13 +113,15 @@ export class App extends Application {
       this.loader.add(path);
     });
     this.loader.load(() => {
-      this.config = config;
       this.setup();
+      this.config = config;
       cb(this);
     });
     return this;
   }
   set config(config: Config) {
+    this.bg.tilePosition.x = config.offset.x;
+    this.bg.tilePosition.y = config.offset.y;
     this.refs = {};
     config.planes.forEach((plane) => {
       this.add("plane", plane).props = plane.props;
@@ -201,23 +208,16 @@ export class App extends Application {
 
   makeConfig(): Config {
     return {
+      offset: {
+        x: this.bg.tilePosition.x,
+        y: this.bg.tilePosition.y,
+      },
       libs: this._config.libs,
       components: this._config.components.map((comp) => comp.config),
       texts: this._config.texts.map((text) => text.config),
       planes: this._config.planes.map((plane) => plane.config),
       lines: this._config.lines.map((line) => line.config),
     };
-    // this._scheme.components.forEach((c) => {
-    //   result.components.push({
-    //     ref: c.ref,
-    //     component: c.component,
-    //     label: c.label,
-    //     x: c.x,
-    //     y: c.y,
-    //     color: c.color,
-    //   });
-    // });
-    // console.log(result);
   }
 
   set selected(el: Base) {
@@ -242,7 +242,6 @@ create("#muup", {
 }).load(
   config,
   (muup) => {
-    console.log(muup.makeConfig());
     setInterval(() => {
       if (Math.random() > 0.5) {
         muup.refs["server #1"].color = "#8fff00";
@@ -250,15 +249,16 @@ create("#muup", {
         muup.refs["line #1"].color = "#8fff00";
         // muup.refs["server #3"].select();
         muup.refs["text #1"].color = "#8fff00";
-        // muup.refs["text #1"].text = "UP";
+        muup.refs["text #1"].text = "UP";
       } else {
         muup.refs["server #1"].color = "#ff0000";
         muup.refs["plane #1"].color = "#ff0000";
         muup.refs["line #1"].color = "#ff0000";
 
-        // muup.refs["text #1"].text = "DOWN";
+        muup.refs["text #1"].text = "DOWN";
         muup.refs["text #1"].color = "#ff0000";
       }
+      // console.log(muup.makeConfig());
     }, 1000);
   },
   true

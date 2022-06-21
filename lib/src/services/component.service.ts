@@ -76,7 +76,6 @@ export class Component extends Base {
   get config(): ComponentConfig {
     return {
       ref: this.ref,
-      selected: false,
       color: this.color,
       x: this.container.position.x,
       y: this.container.position.y,
