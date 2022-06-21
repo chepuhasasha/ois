@@ -99,10 +99,11 @@ export class LINE extends Base {
     this.container.removeChildren(1, this._props.points.length + 1);
     this._props.points.forEach((point) => {
       const p = new Graphics();
+      // p.pivot.set(3, 3 / 1.6);
       p.position.set(point.x, point.y);
       p.lineStyle(1, this._color, 0.5);
       p.beginFill(0x000000, 1);
-      p.drawEllipse(0, 0, 6, 6 / 1.6);
+      p.drawEllipse(0, 0, 10, 10 / 1.6);
       p.endFill();
       p.interactive = true;
       p.buttonMode = true;
@@ -122,8 +123,8 @@ export class LINE extends Base {
       this.setup();
     })
       .on("pointerup", () => {
-        drag = true;
-        window.muup.move = false;
+        drag = false;
+        window.muup.move = true;
       })
       .on("pointerupoutside", () => {
         drag = false;
@@ -132,20 +133,11 @@ export class LINE extends Base {
       .on("pointermove", () => {
         if (drag) {
           const newp = data.getLocalPosition(p.parent);
-          if (newp.x - point.x >= 25) {
-            point.x += 25;
-            p.position.x += 25;
-          } else if (newp.x - point.x <= -25) {
-            point.x -= 25;
-            p.position.x -= 25;
-          }
-          if (newp.y - point.y >= 15) {
-            point.y += 15;
-            p.position.y += 15;
-          } else if (newp.y - point.y <= -15) {
-            point.y -= 15;
-            p.position.y -= 15;
-          }
+          point.x = newp.x;
+          p.position.x = newp.x;
+          point.y = newp.y;
+          p.position.y = newp.y;
+
           this.setup();
         }
       });
@@ -154,7 +146,7 @@ export class LINE extends Base {
   set props(props: LineProps) {
     this._props = props;
     if (this._line) this.setup();
-    this.addPoints();
+    if (window.muup.editable) this.addPoints();
   }
 
   get props() {
