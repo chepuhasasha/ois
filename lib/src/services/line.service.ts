@@ -79,7 +79,7 @@ export class LINE extends Base {
       );
     });
     this._line.lineStyle(1, this._color, 0);
-    this._line.beginFill(this._color, 0.01);
+    this._line.beginFill(0x000000, 0.01);
     this._line.moveTo(this._props.points[0].x, this._props.points[0].y);
     this._props.points.forEach((point) => {
       this._line.lineTo(point.x + 20, point.y);
@@ -111,8 +111,8 @@ export class LINE extends Base {
 
   set props(props: LineProps) {
     this._props = props;
-    this.addPoints();
     if (this._line) this.setup();
+    this.addPoints();
   }
 
   get props() {
