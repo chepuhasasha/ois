@@ -34,6 +34,14 @@ export interface Config {
   planes: PlaneConfig[];
   lines: LineConfig[];
 }
+
+export interface AppConfig {
+  libs: string[];
+  components: Component[];
+  texts: TEXT[];
+  planes: PLANE[];
+  lines: LINE[];
+}
 export class App extends Application {
   private _selected: Base;
   private offset: { x: number; y: number } = { x: 0, y: 0 };
@@ -42,6 +50,13 @@ export class App extends Application {
   public editable: boolean = false;
   public container = new Container();
   move: boolean = true;
+  private _config: AppConfig = {
+    libs: [],
+    components: [],
+    texts: [],
+    planes: [],
+    lines: [],
+  };
   public refs: {
     [key: string]: Component | LINE | TEXT | PLANE;
   } = {};
@@ -89,6 +104,7 @@ export class App extends Application {
       this.editable = true;
     }
     config.libs.forEach((path) => {
+      this._config.libs.push(path);
       this.loader.add(path);
     });
     this.loader.load(() => {
@@ -141,22 +157,22 @@ export class App extends Application {
       switch (type) {
         case "component":
           const comp = new Component(config);
-          // this._scheme.components.push(comp);
+          this._config.components.push(comp);
           this.refs[config.ref] = comp;
           return comp;
         case "text":
           const text = new TEXT(config);
-          // this._scheme.texts.push(text);
+          this._config.texts.push(text);
           this.refs[config.ref] = text;
           return text;
         case "plane":
           const plane = new PLANE(config);
-          // this._scheme.texts.push(text);
+          this._config.planes.push(plane);
           this.refs[config.ref] = plane;
           return plane;
         case "line":
           const line = new LINE(config);
-          // this._scheme.texts.push(text);
+          this._config.lines.push(line);
           this.refs[config.ref] = line;
           return line;
 
@@ -183,14 +199,14 @@ export class App extends Application {
     plugin(this);
   }
 
-  makeConfig() {
-    // const result: IScheme = {
-    //   components: [],
-    //   lines: [],
-    //   libs: [],
-    //   texts: [],
-    //   planes: [],
-    // };
+  makeConfig(): Config {
+    return {
+      libs: this._config.libs,
+      components: this._config.components.map((comp) => comp.config),
+      texts: this._config.texts.map((text) => text.config),
+      planes: this._config.planes.map((plane) => plane.config),
+      lines: this._config.lines.map((line) => line.config),
+    };
     // this._scheme.components.forEach((c) => {
     //   result.components.push({
     //     ref: c.ref,
@@ -226,7 +242,7 @@ create("#muup", {
 }).load(
   config,
   (muup) => {
-    // muup.makeConfig();
+    console.log(muup.makeConfig());
     setInterval(() => {
       if (Math.random() > 0.5) {
         muup.refs["server #1"].color = "#8fff00";

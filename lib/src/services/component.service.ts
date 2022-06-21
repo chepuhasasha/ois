@@ -62,10 +62,25 @@ export class Component extends Base {
     return this._props;
   }
 
+  get color() {
+    return utils.hex2string(this._color);
+  }
+
   set color(color: string) {
     this._color = utils.string2hex(color);
     if (this._label) {
       this._label.color = this._color;
     }
+  }
+
+  get config(): ComponentConfig {
+    return {
+      ref: this.ref,
+      selected: false,
+      color: this.color,
+      x: this.container.position.x,
+      y: this.container.position.y,
+      props: this._props,
+    };
   }
 }

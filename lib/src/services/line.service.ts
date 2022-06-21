@@ -1,5 +1,6 @@
 import { Graphics, utils } from "pixi.js";
 import { Base, BaseOptions } from "./base.service";
+import { TextConfig } from "./text.service";
 
 export interface LineProps {
   width: number;
@@ -153,10 +154,25 @@ export class LINE extends Base {
     return this._props;
   }
 
+  get color() {
+    return utils.hex2string(this._color);
+  }
+
   set color(color: string) {
     this._color = utils.string2hex(color);
     if (this._line) {
       this.setup();
     }
+  }
+
+  get config(): LineConfig {
+    return {
+      ref: this.ref,
+      selected: false,
+      color: this.color,
+      x: this.container.position.x,
+      y: this.container.position.y,
+      props: this._props,
+    };
   }
 }

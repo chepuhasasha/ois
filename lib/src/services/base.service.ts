@@ -1,4 +1,5 @@
 import { Container, utils } from "pixi.js";
+import { util } from "webpack";
 import { onDragEnd, onDragMoveStep, onDragStart } from "./mouse.service";
 
 export interface BaseOptions {
@@ -45,9 +46,6 @@ export class Base {
   }
   set y(y: number) {
     this.container.position.y = y;
-  }
-  get color() {
-    return utils.hex2string(this._color);
   }
   set color(color: string) {
     this._color = utils.string2hex(color);
