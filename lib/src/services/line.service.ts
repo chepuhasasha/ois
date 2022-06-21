@@ -12,6 +12,7 @@ export interface LineConfig extends BaseOptions {
 export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
+
   constructor(options: BaseOptions) {
     super(options);
     this.container.addChild(this._line);
@@ -82,17 +83,18 @@ export class LINE extends Base {
     this._line.beginFill(0x000000, 0.01);
     this._line.moveTo(this._props.points[0].x, this._props.points[0].y);
     this._props.points.forEach((point) => {
-      this._line.lineTo(point.x + 20, point.y);
+      this._line.lineTo(point.x + this._props.width, point.y);
     });
     this._props.points.forEach((point, i, arr) => {
       this._line.lineTo(
-        arr[arr.length - 1 - i].x - 20,
+        arr[arr.length - 1 - i].x - this._props.width,
         arr[arr.length - 1 - i].y
       );
     });
     this._line.endFill();
     this._line.closePath();
   }
+
   private addPoints() {
     this.container.removeChildren(1, this._props.points.length + 1);
     this._props.points.forEach((point) => {
@@ -106,7 +108,6 @@ export class LINE extends Base {
       p.buttonMode = true;
       this.container.addChild(p);
     });
-    console.log(this._props.points.length);
   }
 
   set props(props: LineProps) {
@@ -118,6 +119,7 @@ export class LINE extends Base {
   get props() {
     return this._props;
   }
+
   set color(color: string) {
     this._color = utils.string2hex(color);
     if (this._line) {
