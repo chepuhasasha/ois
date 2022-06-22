@@ -2,7 +2,7 @@
   "name": "muup",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/RIS.js",
   "scripts": {
     "build": "npx webpack --mode=production --node-env=production",
     "build:dev": "npx webpack --mode=development",
