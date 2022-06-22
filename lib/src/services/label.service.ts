@@ -16,7 +16,7 @@ export class LABEL extends Container {
   constructor() {
     super();
     this._labelText = new Text("", this._style);
-    this._labelText.x = 8;
+    this._labelText.x = 16;
     this._labelText.y = 4;
     this.addChild(this._label);
     this.addChild(this._labelText);
@@ -26,14 +26,14 @@ export class LABEL extends Container {
   private draw() {
     this._label.clear();
     this._label.beginFill(this._color);
-    this._label.drawRect(0, 0, 4, this._labelText.height + 10);
+    this._label.drawRect(0, 0, 6, this._labelText.height + 10);
     this._label.endFill();
     this._label.lineStyle(1, 0xffffff, 0.1);
-    this._label.beginFill(0x11121b, 0.5);
+    this._label.beginFill(0x11121b, 1);
     this._label.drawRect(
-      4,
+      6,
       0,
-      this._labelText.width + 10,
+      this._labelText.width + 20,
       this._labelText.height + 10
     );
     this._label.endFill();

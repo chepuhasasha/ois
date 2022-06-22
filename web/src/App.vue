@@ -1,5 +1,5 @@
-<template>
-  <router-view />
+<template lang="pug">
+router-view
 </template>
 
 <style>
@@ -9,3 +9,4 @@
   background: var(--bg);
 }
 </style>
+
