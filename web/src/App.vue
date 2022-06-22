@@ -9,4 +9,3 @@
   background: var(--bg);
 }
 </style>
-

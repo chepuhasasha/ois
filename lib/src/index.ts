@@ -123,6 +123,8 @@ export class App extends Application {
     this.bg.tilePosition.x = config.offset.x;
     this.bg.tilePosition.y = config.offset.y;
     this.refs = {};
+    this.container.removeChildren();
+    console.log(this.container);
     config.planes.forEach((plane) => {
       this.add("plane", plane).props = plane.props;
     });
