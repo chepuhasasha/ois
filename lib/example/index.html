@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MUUP!</title>
+    <title>ОИС</title>
     <link rel="stylesheet" href="" />
     <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="./config.js"></script>
@@ -19,31 +19,31 @@
   </head>
 
   <body>
-    <div id="muup"></div>
+    <div id="ois"></div>
     <script>
-      OIS.create("#muup", {
+      OIS.create("#ois", {
         width: innerWidth,
         height: innerHeight,
       }).load(
         config,
-        (muup) => {
+        (ois) => {
           setInterval(() => {
             if (Math.random() > 0.5) {
-              muup.refs["server #1"].color = "#8fff00";
-              muup.refs["plane #1"].color = "#8fff00";
-              muup.refs["line #1"].color = "#8fff00";
-              // muup.refs["server #3"].select();
-              muup.refs["text #1"].color = "#8fff00";
-              muup.refs["text #1"].text = "UP";
+              ois.refs["server #1"].color = "#8fff00";
+              ois.refs["plane #1"].color = "#8fff00";
+              ois.refs["line #1"].color = "#8fff00";
+              // ois.refs["server #3"].select();
+              ois.refs["text #1"].color = "#8fff00";
+              ois.refs["text #1"].text = "UP";
             } else {
-              muup.refs["server #1"].color = "#ff0000";
-              muup.refs["plane #1"].color = "#ff0000";
-              muup.refs["line #1"].color = "#ff0000";
+              ois.refs["server #1"].color = "#ff0000";
+              ois.refs["plane #1"].color = "#ff0000";
+              ois.refs["line #1"].color = "#ff0000";
 
-              muup.refs["text #1"].text = "DOWN";
-              muup.refs["text #1"].color = "#ff0000";
+              ois.refs["text #1"].text = "DOWN";
+              ois.refs["text #1"].color = "#ff0000";
             }
-            // console.log(muup.makeConfig());
+            // console.log(ois.makeConfig());
           }, 1000);
         },
         true
@@ -51,4 +51,3 @@
     </script>
   </body>
 </html>
-
