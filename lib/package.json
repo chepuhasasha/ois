@@ -1,8 +1,9 @@
 {
-  "name": "muup",
+  "name": "ois",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/RIS.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "scripts": {
     "build": "npx webpack --mode=production",
     "dev": "npx webpack --mode=development",
@@ -11,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chepuhasasha/muup.git",
+    "url": "git+https://github.com/chepuhasasha/ois.git",
     "directory": "lib"
   },
   "author": {
@@ -20,9 +21,9 @@
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chepuhasasha/muup/issues"
+    "url": "https://github.com/chepuhasasha/ois/issues"
   },
-  "homepage": "https://github.com/chepuhasasha/muup#readme",
+  "homepage": "https://github.com/chepuhasasha/ois#readme",
   "dependencies": {
     "pixi.js": "^6.2.0"
   },
