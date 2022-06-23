@@ -21,9 +21,9 @@ export class Base {
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
     this.container
-      .on("pointerdown", () => {
-        window.ois.selected = this;
-      })
+      // .on("pointerdown", () => {
+      //   window.ois.selected = this;
+      // })
       .on("pointerdown", onDragStart)
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
