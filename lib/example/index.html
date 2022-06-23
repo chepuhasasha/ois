@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MUUP!</title>
     <link rel="stylesheet" href="" />
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="./config.js"></script>
+    <script src="../dist/RIS.js"></script>
     <style>
       * {
         margin: 0px;
@@ -17,6 +20,35 @@
 
   <body>
     <div id="muup"></div>
+    <script>
+      RIS.create("#muup", {
+        width: innerWidth,
+        height: innerHeight,
+      }).load(
+        config,
+        (muup) => {
+          setInterval(() => {
+            if (Math.random() > 0.5) {
+              muup.refs["server #1"].color = "#8fff00";
+              muup.refs["plane #1"].color = "#8fff00";
+              muup.refs["line #1"].color = "#8fff00";
+              // muup.refs["server #3"].select();
+              muup.refs["text #1"].color = "#8fff00";
+              muup.refs["text #1"].text = "UP";
+            } else {
+              muup.refs["server #1"].color = "#ff0000";
+              muup.refs["plane #1"].color = "#ff0000";
+              muup.refs["line #1"].color = "#ff0000";
+
+              muup.refs["text #1"].text = "DOWN";
+              muup.refs["text #1"].color = "#ff0000";
+            }
+            // console.log(muup.makeConfig());
+          }, 1000);
+        },
+        true
+      );
+    </script>
   </body>
 </html>
 

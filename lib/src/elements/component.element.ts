@@ -38,7 +38,7 @@ export class COMPONENT extends Base {
         rad = 0;
       }
       rad += d / 2;
-      let opacity = (this._sprite.width - rad) / this._sprite.width;
+      const opacity = (this._sprite.width - rad) / this._sprite.width;
       circle.clear();
       circle.lineStyle(2, this._color, opacity);
       circle.beginFill(this._color, opacity - 0.1);

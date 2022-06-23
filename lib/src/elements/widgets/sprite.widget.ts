@@ -2,9 +2,10 @@ import { Container, Texture, Sprite } from "pixi.js";
 
 export class SPRITE extends Container {
   private _sprite: Sprite;
-  private _offset: number = 10;
+  private _offset: number;
   constructor() {
     super();
+    this._offset = 10;
     this.swing();
   }
 

@@ -60,7 +60,7 @@ export class App extends Application {
   }
   setup() {
     this.bg = new TilingSprite(
-      Texture.from("bg.png"),
+      Texture.from("bg"),
       this.screen.width,
       this.screen.height
     );
@@ -106,7 +106,6 @@ export class App extends Application {
     this.bg.tilePosition.y = config.offset.y;
     this.refs = {};
     this.container.removeChildren();
-    console.log(this.container);
     config.planes.forEach((plane) => {
       this.add("plane", plane).props = plane.props;
     });

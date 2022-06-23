@@ -1,4 +1,4 @@
-import { Graphics, TextStyle, utils, Text, Container } from "pixi.js";
+import { Graphics, TextStyle, Text, Container } from "pixi.js";
 
 export class LABEL extends Container {
   private _color: number;

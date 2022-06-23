@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
-    "target": "es6",
-    "resolveJsonModule": true,
-    "allowJs": true
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   }
 }
 
