@@ -1,40 +1,34 @@
 import { Application, Loader, IApplicationOptions, TilingSprite, Container } from "pixi.js";
-import type { BaseOptions } from "./interfaces/base.interface";
 import type { Config } from "./interfaces/config.interface";
-import { COMPONENT } from "./elements/component.element";
-import { LINE } from "./elements/line.element";
-import { PLANE } from "./elements/plane.element";
-import { TEXT } from "./elements/text.element";
 import { Base } from "./elements/base.element";
 declare global {
     interface Window {
-        muup: App;
+        ois: App;
     }
     interface Container {
         interactive: boolean;
     }
 }
 export declare class App extends Application {
+    container: Container;
+    private elementsService;
+    private mouseService;
+    private configService;
     private _selected;
     private offset;
     bg: TilingSprite;
     loader: Loader;
     editable: boolean;
-    container: Container;
     move: boolean;
-    private _config;
-    refs: {
-        [key: string]: COMPONENT | LINE | TEXT | PLANE;
-    };
     constructor(selector: string, options: IApplicationOptions);
     setup(): void;
-    load(config: Config, cb: (muup: App) => void, editable?: boolean): this;
-    set config(config: Config);
+    load(config: Config, cb: (ois: App) => void, editable?: boolean): this;
     private scrollToSelected;
-    add(type: string, config: BaseOptions): COMPONENT | TEXT | PLANE | LINE;
-    remove(ref: string): void;
-    use(plugin: (muup: App) => void): void;
-    makeConfig(): Config;
+    set config(config: Config);
     set selected(el: Base);
+    get refs(): {
+        [key: string]: import("./elements/component.element").COMPONENT | import("./elements/line.element").LINE | import("./elements/text.element").TEXT | import("./elements/plane.element").PLANE;
+    };
+    use(plugin: (ois: App) => void): void;
 }
 export declare function create(selector: string, options: IApplicationOptions): App;

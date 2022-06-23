@@ -8,6 +8,7 @@ import {
 
 export class Base {
   container = new Container();
+  type: string;
   ref: string;
   _color: number;
   [key: string]: unknown;
@@ -24,11 +25,11 @@ export class Base {
       .on("pointerup", onDragEnd)
       .on("pointerupoutside", onDragEnd)
       .on("pointermove", onDragMoveStep);
-    this.container.on("pointerup", () => (window.muup.selected = this));
-    window.muup.container.addChild(this.container);
+    this.container.on("pointerup", () => (window.ois.selected = this));
+    window.ois.container.addChild(this.container);
   }
   select() {
-    window.muup.selected = this;
+    window.ois.selected = this;
   }
 
   get x() {

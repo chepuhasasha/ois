@@ -21,7 +21,7 @@ export function onDragMove() {
   }
 }
 export function onDragMoveStep() {
-  if (this.dragging && window.muup.move) {
+  if (this.dragging && window.ois.move) {
     const newPosition = this.data.getLocalPosition(this.parent);
     if (newPosition.x - this.x >= 25) {
       this.x += 25;

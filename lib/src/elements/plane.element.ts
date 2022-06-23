@@ -10,6 +10,7 @@ export class PLANE extends Base {
   constructor(options: BaseOptions) {
     super(options);
     this.container.addChild(this._plane);
+    this.type = "plane";
   }
 
   private setup() {

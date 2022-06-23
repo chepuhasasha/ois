@@ -14,6 +14,7 @@ export class COMPONENT extends Base {
   private _label = new LABEL();
   constructor(options: BaseOptions) {
     super(options);
+    this.type = "component";
   }
 
   private setup() {
@@ -33,7 +34,7 @@ export class COMPONENT extends Base {
   private circle(x: number, y: number, offset: number = 0) {
     const circle = new Graphics();
     let rad = offset;
-    window.muup.ticker.add((d) => {
+    window.ois.ticker.add((d) => {
       if (rad >= this._sprite.width) {
         rad = 0;
       }

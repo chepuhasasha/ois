@@ -10,6 +10,7 @@ export class LINE extends Base {
   constructor(options: BaseOptions) {
     super(options);
     this.container.addChild(this._line);
+    this.type = "line";
   }
 
   private pointInLine(
@@ -112,17 +113,17 @@ export class LINE extends Base {
     p.on("pointerdown", (e) => {
       data = e.data;
       drag = true;
-      window.muup.move = false;
+      window.ois.move = false;
       point.x += 10;
       this.setup();
     })
       .on("pointerup", () => {
         drag = false;
-        window.muup.move = true;
+        window.ois.move = true;
       })
       .on("pointerupoutside", () => {
         drag = false;
-        window.muup.move = true;
+        window.ois.move = true;
       })
       .on("pointermove", () => {
         if (drag) {
@@ -140,7 +141,7 @@ export class LINE extends Base {
   set props(props: LineProps) {
     this._props = props;
     if (this._line) this.setup();
-    if (window.muup.editable) this.addPoints();
+    if (window.ois.editable) this.addPoints();
   }
 
   get props() {

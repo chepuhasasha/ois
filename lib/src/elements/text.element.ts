@@ -8,6 +8,7 @@ export class TEXT extends Base {
   private _props: TextProps;
   constructor(options: BaseOptions) {
     super(options);
+    this.type = "text";
   }
 
   private setup() {

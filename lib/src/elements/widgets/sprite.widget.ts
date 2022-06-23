@@ -11,7 +11,7 @@ export class SPRITE extends Container {
 
   swing() {
     let flag = false;
-    window.muup.ticker.add((d) => {
+    window.ois.ticker.add((d) => {
       if (this._sprite) {
         if (this._sprite.position.y >= this._offset) flag = false;
         else if (this._sprite.position.y <= 0) flag = true;
