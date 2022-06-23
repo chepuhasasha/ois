@@ -9,7 +9,7 @@ import type { TextConfig } from "./text.interface";
 
 export interface Config {
   offset: { x: number; y: number };
-  libs: string[];
+  assets: { name: string; data: string }[];
   components: ComponentConfig[];
   texts: TextConfig[];
   planes: PlaneConfig[];
@@ -18,7 +18,7 @@ export interface Config {
 
 export interface AppConfig {
   offset: { x: number; y: number };
-  libs: string[];
+  assets: { name: string; data: string }[];
   components: COMPONENT[];
   texts: TEXT[];
   planes: PLANE[];

@@ -50,7 +50,7 @@ export class COMPONENT extends Base {
 
   set props(props: ComponentProps) {
     this._props = props;
-    this._sprite.texture = Texture.from(`${props.name}.png`);
+    this._sprite.texture = Texture.from(`${props.name}`);
     this._label.text = props.label;
     this.container.removeChildren();
     this.setup();

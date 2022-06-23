@@ -36,7 +36,7 @@ export class App extends Application {
   move: boolean = true;
   private _config: AppConfig = {
     offset: { x: 0, y: 0 },
-    libs: [],
+    assets: [],
     components: [],
     texts: [],
     planes: [],
@@ -90,9 +90,9 @@ export class App extends Application {
     if (editable) {
       this.editable = true;
     }
-    config.libs.forEach((path) => {
-      this._config.libs.push(path);
-      this.loader.add(path);
+    config.assets.forEach((sprite) => {
+      this._config.assets.push(sprite);
+      this.loader.add(sprite.name, sprite.data);
     });
     this.loader.load(() => {
       this.setup();
@@ -196,7 +196,7 @@ export class App extends Application {
         x: this.bg.tilePosition.x,
         y: this.bg.tilePosition.y,
       },
-      libs: this._config.libs,
+      assets: this._config.assets,
       components: this._config.components.map((comp) => comp.config),
       texts: this._config.texts.map((text) => text.config),
       planes: this._config.planes.map((plane) => plane.config),
