@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    // "rootDir": "./src/",
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
@@ -8,7 +9,10 @@
     "target": "es5",
     "allowJs": true,
     "skipLibCheck": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "declaration": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
 
