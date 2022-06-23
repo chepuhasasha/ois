@@ -1,7 +1,8 @@
-import { Container } from "pixi.js";
+import { Base } from "../elements/base.element";
 export declare class MouseService {
+    private _selected;
     private container;
-    private selected;
     tool: string;
-    constructor(container: Container);
+    constructor();
+    set selected(selected: Base);
 }

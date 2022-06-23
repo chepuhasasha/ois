@@ -15,7 +15,6 @@ import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
 import { ConfigService } from "./services/config.service";
-import { MouseService } from "./services/newmouse.service";
 declare global {
   interface Window {
     ois: App;
@@ -27,7 +26,6 @@ declare global {
 export class App extends Application {
   public container = new Container();
   private elementsService = new ElementsService();
-  private mouseService = new MouseService(this.container);
   private configService = new ConfigService();
   private _selected: Base;
   private offset: { x: number; y: number } = { x: 0, y: 0 };

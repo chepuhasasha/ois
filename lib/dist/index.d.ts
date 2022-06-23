@@ -12,7 +12,6 @@ declare global {
 export declare class App extends Application {
     container: Container;
     private elementsService;
-    private mouseService;
     private configService;
     private _selected;
     private offset;
