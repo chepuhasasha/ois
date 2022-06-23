@@ -10,7 +10,7 @@ export interface ComponentProps {
 export interface ComponentConfig extends BaseOptions {
   props: ComponentProps;
 }
-export class Component extends Base {
+export class COMPONENT extends Base {
   private _props: ComponentProps;
   private _sprite = new SPRITE();
   private _label = new LABEL();

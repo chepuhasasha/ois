@@ -11,7 +11,7 @@ import {
   onDragEnd,
   onDragMoveMap,
 } from "./services/mouse.service";
-import { Component, ComponentConfig } from "./services/component.service";
+import { COMPONENT, ComponentConfig } from "./services/component.service";
 import { LINE, LineConfig } from "./services/line.service";
 import { PLANE, PlaneConfig } from "./services/plane.service";
 import { TEXT, TextConfig } from "./services/text.service";
@@ -37,7 +37,7 @@ export interface Config {
 export interface AppConfig {
   offset: { x: number; y: number };
   libs: string[];
-  components: Component[];
+  components: COMPONENT[];
   texts: TEXT[];
   planes: PLANE[];
   lines: LINE[];
@@ -59,7 +59,7 @@ export class App extends Application {
     lines: [],
   };
   public refs: {
-    [key: string]: Component | LINE | TEXT | PLANE;
+    [key: string]: COMPONENT | LINE | TEXT | PLANE;
   } = {};
 
   constructor(selector: string, options: IApplicationOptions) {
@@ -163,7 +163,7 @@ export class App extends Application {
     if (!this.refs[config.ref]) {
       switch (type) {
         case "component":
-          const comp = new Component(config);
+          const comp = new COMPONENT(config);
           this._config.components.push(comp);
           this.refs[config.ref] = comp;
           return comp;
