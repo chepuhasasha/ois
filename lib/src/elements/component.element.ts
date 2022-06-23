@@ -1,15 +1,13 @@
-import { Base, BaseOptions } from "./base.service";
+import { Base } from "./base.element";
 import { Texture, Graphics, utils } from "pixi.js";
-import { LABEL } from "./label.service";
-import { SPRITE } from "./sprite.service";
+import { LABEL } from "./widgets/label.widget";
+import { SPRITE } from "./widgets/sprite.widget";
+import { BaseOptions } from "../interfaces/base.interface";
+import {
+  ComponentProps,
+  ComponentConfig,
+} from "../interfaces/component.interface";
 
-export interface ComponentProps {
-  name: string;
-  label: string;
-}
-export interface ComponentConfig extends BaseOptions {
-  props: ComponentProps;
-}
 export class COMPONENT extends Base {
   private _props: ComponentProps;
   private _sprite = new SPRITE();

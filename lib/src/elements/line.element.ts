@@ -1,15 +1,8 @@
 import { Graphics, utils } from "pixi.js";
-import { Base, BaseOptions } from "./base.service";
-import { TextConfig } from "./text.service";
+import { BaseOptions } from "../interfaces/base.interface";
+import { LineProps, LineConfig } from "../interfaces/line.interface";
+import { Base } from "./base.element";
 
-export interface LineProps {
-  width: number;
-  radius: number;
-  points: { x: number; y: number }[];
-}
-export interface LineConfig extends BaseOptions {
-  props: LineProps;
-}
 export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;

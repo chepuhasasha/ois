@@ -1,15 +1,8 @@
 import { utils, Text, TextStyleFontWeight } from "pixi.js";
-import { Base, BaseOptions } from "./base.service";
+import { BaseOptions } from "../interfaces/base.interface";
+import { TextConfig, TextProps } from "../interfaces/text.interface";
+import { Base } from "./base.element";
 
-export interface TextProps {
-  fontWidth: string;
-  fontSize: number;
-  skew: boolean;
-  text: string;
-}
-export interface TextConfig extends BaseOptions {
-  props: TextProps;
-}
 export class TEXT extends Base {
   private _text = new Text("");
   private _props: TextProps;

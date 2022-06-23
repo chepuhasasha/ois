@@ -1,12 +1,8 @@
-import { Base, BaseOptions } from "./base.service";
+import { Base } from "./base.element";
 import { Graphics, utils } from "pixi.js";
-export interface PlaneProps {
-  h: number;
-  w: number;
-}
-export interface PlaneConfig extends BaseOptions {
-  props: PlaneProps;
-}
+import { BaseOptions } from "../interfaces/base.interface";
+import { PlaneProps, PlaneConfig } from "../interfaces/plane.interface";
+
 export class PLANE extends Base {
   private _plane: Graphics = new Graphics();
   private _props: PlaneProps;

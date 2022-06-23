@@ -11,11 +11,13 @@ import {
   onDragEnd,
   onDragMoveMap,
 } from "./services/mouse.service";
-import { COMPONENT, ComponentConfig } from "./services/component.service";
-import { LINE, LineConfig } from "./services/line.service";
-import { PLANE, PlaneConfig } from "./services/plane.service";
-import { TEXT, TextConfig } from "./services/text.service";
-import { Base, BaseOptions } from "./services/base.service";
+import type { BaseOptions } from "./interfaces/base.interface";
+import type { AppConfig, Config } from "./interfaces/config.interface";
+import { COMPONENT } from "./elements/component.element";
+import { LINE } from "./elements/line.element";
+import { PLANE } from "./elements/plane.element";
+import { TEXT } from "./elements/text.element";
+import { Base } from "./elements/base.element";
 declare global {
   interface Window {
     muup: App;
@@ -23,24 +25,6 @@ declare global {
   interface Container {
     interactive: boolean;
   }
-}
-
-export interface Config {
-  offset: { x: number; y: number };
-  libs: string[];
-  components: ComponentConfig[];
-  texts: TextConfig[];
-  planes: PlaneConfig[];
-  lines: LineConfig[];
-}
-
-export interface AppConfig {
-  offset: { x: number; y: number };
-  libs: string[];
-  components: COMPONENT[];
-  texts: TEXT[];
-  planes: PLANE[];
-  lines: LINE[];
 }
 export class App extends Application {
   private _selected: Base;

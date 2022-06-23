@@ -1,13 +1,10 @@
 import { Container, utils } from "pixi.js";
-import { util } from "webpack";
-import { onDragEnd, onDragMoveStep, onDragStart } from "./mouse.service";
-
-export interface BaseOptions {
-  ref: string;
-  color: string;
-  x: number;
-  y: number;
-}
+import { BaseOptions } from "../interfaces/base.interface";
+import {
+  onDragEnd,
+  onDragMoveStep,
+  onDragStart,
+} from "../services/mouse.service";
 
 export class Base {
   container = new Container();
