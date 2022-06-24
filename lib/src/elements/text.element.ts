@@ -1,4 +1,5 @@
 import { utils, Text, TextStyleFontWeight } from "pixi.js";
+import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { TextConfig, TextProps } from "../interfaces/text.interface";
 import { Base } from "./base.element";
@@ -6,8 +7,8 @@ import { Base } from "./base.element";
 export class TEXT extends Base {
   private _text = new Text("");
   private _props: TextProps;
-  constructor(options: BaseOptions) {
-    super(options);
+  constructor(options: BaseOptions, app: App) {
+    super(options, app);
     this.type = "text";
   }
 

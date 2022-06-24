@@ -2,13 +2,14 @@ import { Base } from "./base.element";
 import { Graphics, utils } from "pixi.js";
 import { BaseOptions } from "../interfaces/base.interface";
 import { PlaneProps, PlaneConfig } from "../interfaces/plane.interface";
+import { App } from "..";
 
 export class PLANE extends Base {
   private _plane: Graphics = new Graphics();
   private _props: PlaneProps;
 
-  constructor(options: BaseOptions) {
-    super(options);
+  constructor(options: BaseOptions, app: App) {
+    super(options, app);
     this.container.addChild(this._plane);
     this.type = "plane";
   }

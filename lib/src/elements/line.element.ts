@@ -1,4 +1,5 @@
 import { Graphics, utils } from "pixi.js";
+import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
 import { Base } from "./base.element";
@@ -7,8 +8,8 @@ export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
 
-  constructor(options: BaseOptions) {
-    super(options);
+  constructor(options: BaseOptions, app: App) {
+    super(options, app);
     this.container.addChild(this._line);
     this.type = "line";
   }
@@ -141,7 +142,7 @@ export class LINE extends Base {
   set props(props: LineProps) {
     this._props = props;
     if (this._line) this.setup();
-    if (window.ois.editable) this.addPoints();
+    this.addPoints();
   }
 
   get props() {

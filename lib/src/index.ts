@@ -15,6 +15,7 @@ import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
 import { ConfigService } from "./services/config.service";
+import { Background } from "./elements/background.element";
 declare global {
   interface Window {
     ois: App;
@@ -24,58 +25,41 @@ declare global {
   }
 }
 export class App extends Application {
+  private elementsService = new ElementsService(this);
+  private configService = new ConfigService(this);
   public container = new Container();
-  private elementsService = new ElementsService();
-  private configService = new ConfigService();
+  public background: Background;
+  private div: Element;
   private _selected: Base;
   private offset: { x: number; y: number } = { x: 0, y: 0 };
-  public bg: TilingSprite;
   public loader: Loader;
-  public editable: boolean = false;
   move: boolean = true;
 
-  constructor(selector: string, options: IApplicationOptions) {
-    super({
-      antialias: true,
-      backgroundColor: 0x0a0c13,
-      ...options,
-    });
-    const container = document.querySelector(selector);
-    if (!container) document.body.appendChild(this.view);
-    else container.appendChild(this.view);
+  events: {
+    select: (() => void)[];
+  } = { select: [] };
+
+  constructor(selector: string) {
+    super({ antialias: true, backgroundColor: 0x000000 });
+    this.div = document.querySelector(selector);
+    if (!this.div) {
+      this.div = document.createElement("div");
+      document.body.appendChild(this.div);
+    }
+    this.div.appendChild(this.view);
     this.loader = Loader.shared;
     return this;
   }
+
   setup() {
-    this.bg = new TilingSprite(
-      Texture.from("bg"),
-      this.screen.width,
-      this.screen.height
-    );
-    this.bg.interactive = true;
-    this.bg
-      .on("pointerdown", (e) => {
-        this.selected = null;
-      })
-      .on("pointerdown", onDragStart)
-      .on("pointerup", onDragEnd)
-      .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMoveMap);
-    this.stage.addChild(this.bg);
+    this.background = new Background(this);
     this.stage.addChild(this.container);
-    this.ticker.add((d) => {
-      this.scrollToSelected(d);
-      if (this.container.position.x != this.bg.tilePosition.x) {
-        this.container.position.x = this.bg.tilePosition.x;
-        this.container.position.y = this.bg.tilePosition.y;
-      }
+    this.ticker.add(() => {
+      this.sizing();
     });
   }
 
-  load(config: Config, cb: (ois: App) => void, editable?: boolean) {
-    if (editable) {
-      this.editable = true;
-    }
+  load(config: Config, cb: (ois: App) => void) {
     config.assets.forEach((sprite) => {
       this.loader.add(sprite.name, sprite.data);
     });
@@ -87,32 +71,42 @@ export class App extends Application {
     return this;
   }
 
-  private scrollToSelected(d: number) {
-    if (this._selected && this.bg.tilePosition.x > this.offset.x) {
-      this.bg.tilePosition.x -= d * 20;
-      if (this.bg.tilePosition.x < this.offset.x)
-        this.bg.tilePosition.x = this.offset.x;
+  public scrollToSelected(d: number) {
+    if (this._selected && this.background.tile.tilePosition.x > this.offset.x) {
+      this.background.tile.tilePosition.x -= d * 20;
+      if (this.background.tile.tilePosition.x < this.offset.x)
+        this.background.tile.tilePosition.x = this.offset.x;
     }
-    if (this._selected && this.bg.tilePosition.x < this.offset.x) {
-      this.bg.tilePosition.x += d * 20;
-      if (this.bg.tilePosition.x > this.offset.x)
-        this.bg.tilePosition.x = this.offset.x;
+    if (this._selected && this.background.tile.tilePosition.x < this.offset.x) {
+      this.background.tile.tilePosition.x += d * 20;
+      if (this.background.tile.tilePosition.x > this.offset.x)
+        this.background.tile.tilePosition.x = this.offset.x;
     }
-    if (this._selected && this.bg.tilePosition.y > this.offset.y) {
-      this.bg.tilePosition.y -= d * 20;
-      if (this.bg.tilePosition.y < this.offset.y)
-        this.bg.tilePosition.y = this.offset.y;
+    if (this._selected && this.background.tile.tilePosition.y > this.offset.y) {
+      this.background.tile.tilePosition.y -= d * 20;
+      if (this.background.tile.tilePosition.y < this.offset.y)
+        this.background.tile.tilePosition.y = this.offset.y;
     }
-    if (this._selected && this.bg.tilePosition.y < this.offset.y) {
-      this.bg.tilePosition.y += d * 20;
-      if (this.bg.tilePosition.y > this.offset.y)
-        this.bg.tilePosition.y = this.offset.y;
+    if (this._selected && this.background.tile.tilePosition.y < this.offset.y) {
+      this.background.tile.tilePosition.y += d * 20;
+      if (this.background.tile.tilePosition.y > this.offset.y)
+        this.background.tile.tilePosition.y = this.offset.y;
     }
   }
 
+  private sizing() {
+    const rect = this.div.getBoundingClientRect();
+    this.view.width = rect.width;
+    this.view.height = rect.height;
+    this.screen.width = rect.width;
+    this.screen.height = rect.height;
+    this.background.tile.width = rect.width;
+    this.background.tile.height = rect.height;
+  }
+
   set config(config: Config) {
-    this.bg.tilePosition.x = config.offset.x;
-    this.bg.tilePosition.y = config.offset.y;
+    this.background.tile.tilePosition.x = config.offset.x;
+    this.background.tile.tilePosition.y = config.offset.y;
     this.elementsService.refs = {};
     this.container.removeChildren();
     config.planes.forEach((plane) => {
@@ -137,18 +131,21 @@ export class App extends Application {
         y: this.screen.height / 2 - el.container.position.y,
       };
     } else this._selected = null;
+    this.events.select.forEach((cb) => {
+      cb();
+    });
   }
 
   get refs() {
     return this.elementsService.refs;
   }
 
-  use(plugin: (ois: App) => void) {
-    plugin(this);
+  on(event: "select", cb: () => void) {
+    this.events[event].push(cb);
   }
 }
 
-export function create(selector: string, options: IApplicationOptions) {
-  window.ois = new App(selector, options);
+export function create(selector: string) {
+  window.ois = new App(selector);
   return window.ois;
 }

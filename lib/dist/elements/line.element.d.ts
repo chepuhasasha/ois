@@ -1,11 +1,12 @@
 import { Graphics } from "pixi.js";
+import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
 import { Base } from "./base.element";
 export declare class LINE extends Base {
     private _line;
     private _props;
-    constructor(options: BaseOptions);
+    constructor(options: BaseOptions, app: App);
     private pointInLine;
     private segments;
     private setup;

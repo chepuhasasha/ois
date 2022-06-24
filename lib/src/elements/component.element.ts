@@ -7,13 +7,14 @@ import {
   ComponentProps,
   ComponentConfig,
 } from "../interfaces/component.interface";
+import { App } from "..";
 
 export class COMPONENT extends Base {
   private _props: ComponentProps;
   private _sprite = new SPRITE();
   private _label = new LABEL();
-  constructor(options: BaseOptions) {
-    super(options);
+  constructor(options: BaseOptions, app: App) {
+    super(options, app);
     this.type = "component";
   }
 

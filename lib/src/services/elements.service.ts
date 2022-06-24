@@ -1,3 +1,4 @@
+import { App } from "..";
 import { COMPONENT } from "../elements/component.element";
 import { LINE } from "../elements/line.element";
 import { PLANE } from "../elements/plane.element";
@@ -14,6 +15,10 @@ export class ElementsService {
   public refs: {
     [key: string]: COMPONENT | LINE | TEXT | PLANE;
   } = {};
+  public app: App;
+  constructor(app: App) {
+    this.app = app;
+  }
 
   public add(
     type: string,
@@ -23,19 +28,19 @@ export class ElementsService {
       let el: COMPONENT | LINE | TEXT | PLANE;
       switch (type) {
         case "component":
-          el = new COMPONENT(config);
+          el = new COMPONENT(config, this.app);
           el.props = config.props as ComponentProps;
           break;
         case "text":
-          el = new TEXT(config);
+          el = new TEXT(config, this.app);
           el.props = config.props as TextProps;
           break;
         case "plane":
-          el = new PLANE(config);
+          el = new PLANE(config, this.app);
           el.props = config.props as PlaneProps;
           break;
         case "line":
-          el = new LINE(config);
+          el = new LINE(config, this.app);
           el.props = config.props as LineProps;
           break;
         default:

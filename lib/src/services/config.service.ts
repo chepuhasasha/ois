@@ -1,7 +1,12 @@
+import { App } from "..";
 import { Config } from "../interfaces/config.interface";
 import { ElementsService } from "./elements.service";
 
 export class ConfigService {
+  public app: App;
+  constructor(app: App) {
+    this.app = app;
+  }
   public makeConfig(refs: ElementsService["refs"]) {
     const result: Config = {
       components: [],
