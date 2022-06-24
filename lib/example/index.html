@@ -32,9 +32,10 @@
       OIS.create("#ois").load(
         config,
         (ois) => {
-          ois.on("select", () => {
-            console.log("ldldldldl");
-          });
+          // ois.on("select", (e) => {
+          //   console.log(e);
+          // });
+          // ois.tools.move = true;
           setInterval(() => {
             if (Math.random() > 0.5) {
               ois.refs["server #1"].color = "#8fff00";

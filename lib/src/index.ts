@@ -1,16 +1,4 @@
-import {
-  Application,
-  Loader,
-  IApplicationOptions,
-  Texture,
-  TilingSprite,
-  Container,
-} from "pixi.js";
-import {
-  onDragStart,
-  onDragEnd,
-  onDragMoveMap,
-} from "./services/mouse.service";
+import { Application, Loader, Container } from "pixi.js";
 import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
@@ -25,19 +13,14 @@ declare global {
   }
 }
 export class App extends Application {
-  private elementsService = new ElementsService(this);
+  private offset: { x: number; y: number } = { x: 0, y: 0 };
+  public elementsService = new ElementsService(this);
   private configService = new ConfigService(this);
   public container = new Container();
-  public background: Background;
-  private div: Element;
   private _selected: Base;
-  private offset: { x: number; y: number } = { x: 0, y: 0 };
   public loader: Loader;
-  move: boolean = true;
-
-  events: {
-    select: (() => void)[];
-  } = { select: [] };
+  private div: Element;
+  public background: Background;
 
   constructor(selector: string) {
     super({ antialias: true, backgroundColor: 0x000000 });
@@ -72,22 +55,22 @@ export class App extends Application {
   }
 
   public scrollToSelected(d: number) {
-    if (this._selected && this.background.tile.tilePosition.x > this.offset.x) {
+    if (this.background.tile.tilePosition.x > this.offset.x) {
       this.background.tile.tilePosition.x -= d * 20;
       if (this.background.tile.tilePosition.x < this.offset.x)
         this.background.tile.tilePosition.x = this.offset.x;
     }
-    if (this._selected && this.background.tile.tilePosition.x < this.offset.x) {
+    if (this.background.tile.tilePosition.x < this.offset.x) {
       this.background.tile.tilePosition.x += d * 20;
       if (this.background.tile.tilePosition.x > this.offset.x)
         this.background.tile.tilePosition.x = this.offset.x;
     }
-    if (this._selected && this.background.tile.tilePosition.y > this.offset.y) {
+    if (this.background.tile.tilePosition.y > this.offset.y) {
       this.background.tile.tilePosition.y -= d * 20;
       if (this.background.tile.tilePosition.y < this.offset.y)
         this.background.tile.tilePosition.y = this.offset.y;
     }
-    if (this._selected && this.background.tile.tilePosition.y < this.offset.y) {
+    if (this.background.tile.tilePosition.y < this.offset.y) {
       this.background.tile.tilePosition.y += d * 20;
       if (this.background.tile.tilePosition.y > this.offset.y)
         this.background.tile.tilePosition.y = this.offset.y;
@@ -125,24 +108,35 @@ export class App extends Application {
 
   set selected(el: Base) {
     if (el) {
+      if (this.selected) {
+        this._selected.unselect();
+      }
       this._selected = el;
       this.offset = {
         x: this.screen.width / 2 - el.container.position.x,
         y: this.screen.height / 2 - el.container.position.y,
       };
-    } else this._selected = null;
-    this.events.select.forEach((cb) => {
-      cb();
-    });
+      el.select();
+    } else {
+      this._selected = null;
+    }
+  }
+
+  get selected() {
+    return this._selected;
   }
 
   get refs() {
     return this.elementsService.refs;
   }
 
-  on(event: "select", cb: () => void) {
-    this.events[event].push(cb);
-  }
+  // get tools() {
+  //   return this.mouseService.tools;
+  // }
+
+  // on(event: keyof MouseService["events"], cb: (e: Base) => void) {
+  //   this.mouseService.events[event].push(cb);
+  // }
 }
 
 export function create(selector: string) {

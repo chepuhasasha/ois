@@ -4,6 +4,7 @@ import { PlaneProps, PlaneConfig } from "../interfaces/plane.interface";
 import { App } from "..";
 export declare class PLANE extends Base {
     private _plane;
+    private _planeTile;
     private _props;
     constructor(options: BaseOptions, app: App);
     private setup;

@@ -7,6 +7,7 @@ import { Base } from "./base.element";
 export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
+  private selected: boolean = false;
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);
@@ -76,7 +77,7 @@ export class LINE extends Base {
       );
     });
     this._line.lineStyle(1, this._color, 0);
-    this._line.beginFill(0x000000, 0.01);
+    this._line.beginFill(0x000000, this.selected ? 1 : 0.01);
     this._line.moveTo(this._props.points[0].x, this._props.points[0].y);
     this._props.points.forEach((point) => {
       this._line.lineTo(point.x + this._props.width, point.y);
@@ -114,17 +115,17 @@ export class LINE extends Base {
     p.on("pointerdown", (e) => {
       data = e.data;
       drag = true;
-      window.ois.move = false;
+      // this.app.mouseService.tools.move = false;
       point.x += 10;
       this.setup();
     })
       .on("pointerup", () => {
         drag = false;
-        window.ois.move = true;
+        // this.app.mouseService.tools.move = true;
       })
       .on("pointerupoutside", () => {
         drag = false;
-        window.ois.move = true;
+        // this.app.mouseService.tools.move = true;
       })
       .on("pointermove", () => {
         if (drag) {

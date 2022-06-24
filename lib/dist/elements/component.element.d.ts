@@ -1,14 +1,22 @@
 import { Base } from "./base.element";
+import { InteractionEvent } from "pixi.js";
 import { BaseOptions } from "../interfaces/base.interface";
 import { ComponentProps, ComponentConfig } from "../interfaces/component.interface";
 import { App } from "..";
 export declare class COMPONENT extends Base {
+    private selectTile;
     private _props;
     private _sprite;
     private _label;
     constructor(options: BaseOptions, app: App);
     private setup;
+    select(): void;
+    unselect(): void;
     private circle;
+    pointerDown(e: InteractionEvent): void;
+    pointerUp(e: InteractionEvent): void;
+    pointerOut(e: InteractionEvent): void;
+    pointerMove(e: InteractionEvent): void;
     set props(props: ComponentProps);
     get props(): ComponentProps;
     get color(): string;

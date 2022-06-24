@@ -1,5 +1,11 @@
 import { Base } from "./base.element";
-import { Texture, Graphics, utils } from "pixi.js";
+import {
+  Texture,
+  Graphics,
+  utils,
+  InteractionEvent,
+  TilingSprite,
+} from "pixi.js";
 import { LABEL } from "./widgets/label.widget";
 import { SPRITE } from "./widgets/sprite.widget";
 import { BaseOptions } from "../interfaces/base.interface";
@@ -10,12 +16,22 @@ import {
 import { App } from "..";
 
 export class COMPONENT extends Base {
+  private selectTile = new TilingSprite(Texture.from("select"));
   private _props: ComponentProps;
   private _sprite = new SPRITE();
   private _label = new LABEL();
   constructor(options: BaseOptions, app: App) {
     super(options, app);
     this.type = "component";
+    this.container
+      .on("pointerdown", (e) => this.pointerDown(e))
+      .on("pointerup", (e) => this.pointerUp(e))
+      .on("pointerupoutside", (e) => this.pointerOut(e))
+      .on("pointermove", (e) => this.pointerMove(e));
+    this.app.ticker.add((d) => {
+      this.selectTile.tilePosition.x += d / 6;
+      this.selectTile.tilePosition.y += d / 6;
+    });
   }
 
   private setup() {
@@ -32,10 +48,23 @@ export class COMPONENT extends Base {
     this.container.pivot.set(0, this.container.height + 20);
   }
 
+  public select() {
+    this.selectTile.width = this._sprite.width + 20;
+    this.selectTile.height = this._sprite.height + 20;
+    this.selectTile.position.x = -this._sprite.width / 2 - 10;
+    this.selectTile.position.y = this._sprite.y - 10;
+    this.selectTile.tint = this._color;
+    this.selectTile.alpha = 0.5;
+    this.container.addChild(this.selectTile);
+  }
+  public unselect() {
+    this.container.removeChild(this.selectTile);
+  }
+
   private circle(x: number, y: number, offset: number = 0) {
     const circle = new Graphics();
     let rad = offset;
-    window.ois.ticker.add((d) => {
+    this.app.ticker.add((d) => {
       if (rad >= this._sprite.width) {
         rad = 0;
       }
@@ -48,6 +77,35 @@ export class COMPONENT extends Base {
     });
     circle.zIndex = 0;
     this.container.addChild(circle);
+  }
+
+  pointerDown(e: InteractionEvent) {
+    this.start = e.data.getLocalPosition(this.container.parent);
+    this.container.alpha = 0.8;
+    this.dragging = true;
+  }
+  pointerUp(e: InteractionEvent) {
+    this.container.alpha = 1;
+    this.dragging = false;
+  }
+  pointerOut(e: InteractionEvent) {
+    this.container.alpha = 1;
+    this.dragging = false;
+  }
+  pointerMove(e: InteractionEvent) {
+    if (this.dragging) {
+      const newPosition = e.data.getLocalPosition(this.container.parent);
+      if (newPosition.x - this.x >= 25) {
+        this.x += 25;
+      } else if (newPosition.x - this.x <= -25) {
+        this.x -= 25;
+      }
+      if (newPosition.y - this.y >= 15) {
+        this.y += 15;
+      } else if (newPosition.y - this.y <= -15) {
+        this.y -= 15;
+      }
+    }
   }
 
   set props(props: ComponentProps) {
@@ -70,6 +128,7 @@ export class COMPONENT extends Base {
     this._color = utils.string2hex(color);
     if (this._label) {
       this._label.color = this._color;
+      this.selectTile.tint = this._color;
     }
   }
 

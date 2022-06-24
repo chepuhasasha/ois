@@ -14,7 +14,10 @@ export class Background {
     this.tile.interactive = true;
     this.tile
       .on("pointerdown", (e) => {
-        this.app.selected = null;
+        if (this.app.selected) {
+          this.app.selected.unselect();
+          this.app.selected = null;
+        }
       })
       .on("pointerdown", (e) => this.pointerDown(e))
       .on("pointerup", (e) => this.pointerUp(e))
@@ -22,9 +25,13 @@ export class Background {
       .on("pointermove", (e) => this.pointerMove(e));
     this.app.stage.addChild(this.tile);
     this.app.ticker.add((d) => {
-      this.app.scrollToSelected(d);
+      if (this.app.selected && this.app.selected.type === "component") {
+        this.app.scrollToSelected(d);
+      }
       if (this.app.container.position.x != this.tile.tilePosition.x) {
         this.app.container.position.x = this.tile.tilePosition.x;
+      }
+      if (this.app.container.position.y != this.tile.tilePosition.y) {
         this.app.container.position.y = this.tile.tilePosition.y;
       }
     });

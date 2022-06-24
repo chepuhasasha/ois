@@ -1,15 +1,11 @@
 import { Container, utils } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
-import {
-  onDragEnd,
-  onDragMoveStep,
-  onDragStart,
-} from "../services/mouse.service";
 
 export class Base {
   app: App;
   container = new Container();
+  isSelected: boolean = false;
   type: string;
   ref: string;
   _color: number;
@@ -23,16 +19,16 @@ export class Base {
     this.container.interactive = true;
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
-    this.container
-      .on("pointerdown", onDragStart)
-      .on("pointerup", onDragEnd)
-      .on("pointerupoutside", onDragEnd)
-      .on("pointermove", onDragMoveStep);
-    this.container.on("pointerup", () => (this.app.selected = this));
+    this.container.on("pointerup", () => {
+      this.app.selected = this;
+    });
+    this.container.on("pointerupoutside", () => {
+      this.app.selected = this;
+    });
     this.app.container.addChild(this.container);
   }
   select() {
-    window.ois.selected = this;
+    this.app.selected = this;
   }
 
   get x() {

@@ -4,6 +4,7 @@ import { BaseOptions } from "../interfaces/base.interface";
 export declare class Base {
     app: App;
     container: Container;
+    isSelected: boolean;
     type: string;
     ref: string;
     _color: number;
