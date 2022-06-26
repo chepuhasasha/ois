@@ -77,7 +77,7 @@ export class LINE extends Base {
       );
     });
     this._line.lineStyle(1, this._color, 0);
-    this._line.beginFill(0x000000, this.selected ? 1 : 0.01);
+    this._line.beginFill(0xffffff, 0.01);
     this._line.moveTo(this._props.points[0].x, this._props.points[0].y);
     this._props.points.forEach((point) => {
       this._line.lineTo(point.x + this._props.width, point.y);
@@ -93,14 +93,16 @@ export class LINE extends Base {
   }
 
   private addPoints() {
-    this.container.removeChildren(1, this._props.points.length + 1);
     this._props.points.forEach((point) => {
       const p = new Graphics();
       // p.pivot.set(3, 3 / 1.6);
       p.position.set(point.x, point.y);
-      p.lineStyle(1, this._color, 0.5);
-      p.beginFill(0x000000, 1);
-      p.drawEllipse(0, 0, 10, 10 / 1.6);
+      p.lineStyle(2, 0xffffff, 0.3);
+      p.moveTo(0, 0);
+      p.lineTo(0, -20);
+      p.lineStyle(0, 0);
+      p.beginFill(0xffffff, 0.2);
+      p.drawEllipse(0, 0, 8, 8 / 1.6);
       p.endFill();
       p.interactive = true;
       p.buttonMode = true;
@@ -140,10 +142,17 @@ export class LINE extends Base {
       });
   }
 
+  select() {
+    this.app.selected = this;
+    this.addPoints();
+  }
+  unselect() {
+    this.container.removeChildren(1, this._props.points.length + 1);
+  }
+
   set props(props: LineProps) {
     this._props = props;
     if (this._line) this.setup();
-    this.addPoints();
   }
 
   get props() {

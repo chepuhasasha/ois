@@ -40,6 +40,11 @@ export class App extends Application {
     }
     this.div.appendChild(this.view);
     this.loader = Loader.shared;
+    document.addEventListener("keydown", (e) => {
+      if (this.tools.edit && e.code === "Delete" && this.selected) {
+        this.elementsService.remove(this.selected.ref);
+      }
+    });
     return this;
   }
 
