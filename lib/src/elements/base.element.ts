@@ -1,4 +1,4 @@
-import { Container, utils } from "pixi.js";
+import { Container, InteractionEvent, utils } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 
@@ -19,16 +19,40 @@ export class Base {
     this.container.interactive = true;
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
-    this.container.on("pointerup", () => {
-      this.app.selected = this;
-    });
-    this.container.on("pointerupoutside", () => {
-      this.app.selected = this;
-    });
+    this.container
+      .on("pointerdown", (e) => this.pointerDown(e))
+      .on("pointerup", () => this.pointerUp())
+      .on("pointerupoutside", () => this.pointerOut())
+      .on("pointermove", (e) => this.pointerMove(e));
     this.app.container.addChild(this.container);
   }
   select() {
     this.app.selected = this;
+  }
+  unselect() {
+    this.app.selected = null;
+  }
+  pointerDown(e: InteractionEvent) {
+    this.start = e.data.getLocalPosition(this.container.parent);
+    this.container.alpha = 0.8;
+    this.dragging = true;
+  }
+  pointerUp() {
+    this.select();
+    this.container.alpha = 1;
+    this.dragging = false;
+  }
+  pointerOut() {
+    this.select();
+    this.container.alpha = 1;
+    this.dragging = false;
+  }
+  pointerMove(e: InteractionEvent) {
+    if (this.dragging) {
+      const newPosition = e.data.getLocalPosition(this.container.parent);
+      this.x = newPosition.x;
+      this.y = newPosition.y;
+    }
   }
 
   get x() {

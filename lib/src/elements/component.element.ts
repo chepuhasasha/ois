@@ -23,11 +23,6 @@ export class COMPONENT extends Base {
   constructor(options: BaseOptions, app: App) {
     super(options, app);
     this.type = "component";
-    this.container
-      .on("pointerdown", (e) => this.pointerDown(e))
-      .on("pointerup", (e) => this.pointerUp(e))
-      .on("pointerupoutside", (e) => this.pointerOut(e))
-      .on("pointermove", (e) => this.pointerMove(e));
     this.app.ticker.add((d) => {
       this.selectTile.tilePosition.x += d / 6;
       this.selectTile.tilePosition.y += d / 6;
@@ -49,6 +44,7 @@ export class COMPONENT extends Base {
   }
 
   public select() {
+    this.app.selected = this;
     this.selectTile.width = this._sprite.width + 20;
     this.selectTile.height = this._sprite.height + 20;
     this.selectTile.position.x = -this._sprite.width / 2 - 10;
@@ -57,6 +53,7 @@ export class COMPONENT extends Base {
     this.selectTile.alpha = 0.5;
     this.container.addChild(this.selectTile);
   }
+
   public unselect() {
     this.container.removeChild(this.selectTile);
   }
@@ -79,19 +76,6 @@ export class COMPONENT extends Base {
     this.container.addChild(circle);
   }
 
-  pointerDown(e: InteractionEvent) {
-    this.start = e.data.getLocalPosition(this.container.parent);
-    this.container.alpha = 0.8;
-    this.dragging = true;
-  }
-  pointerUp(e: InteractionEvent) {
-    this.container.alpha = 1;
-    this.dragging = false;
-  }
-  pointerOut(e: InteractionEvent) {
-    this.container.alpha = 1;
-    this.dragging = false;
-  }
   pointerMove(e: InteractionEvent) {
     if (this.dragging) {
       const newPosition = e.data.getLocalPosition(this.container.parent);

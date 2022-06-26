@@ -13,9 +13,6 @@ export declare class COMPONENT extends Base {
     select(): void;
     unselect(): void;
     private circle;
-    pointerDown(e: InteractionEvent): void;
-    pointerUp(e: InteractionEvent): void;
-    pointerOut(e: InteractionEvent): void;
     pointerMove(e: InteractionEvent): void;
     set props(props: ComponentProps);
     get props(): ComponentProps;

@@ -116,7 +116,6 @@ export class App extends Application {
         x: this.screen.width / 2 - el.container.position.x,
         y: this.screen.height / 2 - el.container.position.y,
       };
-      el.select();
     } else {
       this._selected = null;
     }
