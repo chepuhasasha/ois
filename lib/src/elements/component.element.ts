@@ -17,6 +17,7 @@ import { App } from "..";
 
 export class COMPONENT extends Base {
   private selectTile = new TilingSprite(Texture.from("select"));
+  private selectGraphics = new Graphics();
   private _props: ComponentProps;
   private _sprite = new SPRITE();
   private _label = new LABEL();
@@ -51,11 +52,26 @@ export class COMPONENT extends Base {
     this.selectTile.position.y = this._sprite.y - 10;
     this.selectTile.tint = this._color;
     this.selectTile.alpha = 0.5;
+    this.cross(this.selectTile.position.x, this.selectTile.position.y);
+    this.cross(
+      this.selectTile.position.x + this.selectTile.width,
+      this.selectTile.position.y
+    );
+    this.cross(
+      this.selectTile.position.x,
+      this.selectTile.position.y + this.selectTile.height
+    );
+    this.cross(
+      this.selectTile.position.x + this.selectTile.width,
+      this.selectTile.position.y + this.selectTile.height
+    );
     this.container.addChild(this.selectTile);
+    this.container.addChild(this.selectGraphics);
   }
 
   public unselect() {
     this.container.removeChild(this.selectTile);
+    this.container.removeChild(this.selectGraphics);
   }
 
   private circle(x: number, y: number, offset: number = 0) {
@@ -74,6 +90,14 @@ export class COMPONENT extends Base {
     });
     circle.zIndex = 0;
     this.container.addChild(circle);
+  }
+  private cross(x: number, y: number) {
+    this.selectGraphics.lineStyle(1, 0xffffff, 1);
+    this.selectGraphics.moveTo(x - 6, y);
+    this.selectGraphics.lineTo(x + 6, y);
+    this.selectGraphics.moveTo(x, y - 6);
+    this.selectGraphics.lineTo(x, y + 6);
+    this.selectGraphics.tint = this._color;
   }
 
   pointerMove(e: InteractionEvent) {
@@ -113,6 +137,7 @@ export class COMPONENT extends Base {
     if (this._label) {
       this._label.color = this._color;
       this.selectTile.tint = this._color;
+      this.selectGraphics.tint = this._color;
     }
   }
 

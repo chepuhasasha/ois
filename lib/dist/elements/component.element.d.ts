@@ -5,6 +5,7 @@ import { ComponentProps, ComponentConfig } from "../interfaces/component.interfa
 import { App } from "..";
 export declare class COMPONENT extends Base {
     private selectTile;
+    private selectGraphics;
     private _props;
     private _sprite;
     private _label;
@@ -13,6 +14,7 @@ export declare class COMPONENT extends Base {
     select(): void;
     unselect(): void;
     private circle;
+    private cross;
     pointerMove(e: InteractionEvent): void;
     set props(props: ComponentProps);
     get props(): ComponentProps;

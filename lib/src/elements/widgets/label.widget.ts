@@ -28,8 +28,8 @@ export class LABEL extends Container {
     this._label.beginFill(this._color);
     this._label.drawRect(0, 0, 6, this._labelText.height + 10);
     this._label.endFill();
-    this._label.lineStyle(1, 0xffffff, 0.1);
-    this._label.beginFill(0x11121b, 1);
+    this._label.lineStyle(1, 0xffffff, 0.05);
+    this._label.beginFill(0x000000, 1);
     this._label.drawRect(
       6,
       0,
