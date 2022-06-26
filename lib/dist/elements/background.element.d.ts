@@ -7,7 +7,6 @@ export declare class Background {
     private dragging;
     constructor(app: App);
     pointerDown(e: InteractionEvent): void;
-    pointerUp(e: InteractionEvent): void;
-    pointerOut(e: InteractionEvent): void;
+    pointerUp(): void;
     pointerMove(e: InteractionEvent): void;
 }

@@ -1,4 +1,4 @@
-import { Graphics, utils } from "pixi.js";
+import { Graphics, InteractionData, utils } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
@@ -110,22 +110,22 @@ export class LINE extends Base {
   }
 
   dragPoint(p: Graphics, point: { x: number; y: number }) {
-    let data: any;
+    let data: InteractionData;
     let drag = false;
     p.on("pointerdown", (e) => {
       data = e.data;
       drag = true;
-      // this.app.mouseService.tools.move = false;
+      this.app.tools.move = false;
       point.x += 10;
       this.setup();
     })
       .on("pointerup", () => {
         drag = false;
-        // this.app.mouseService.tools.move = true;
+        this.app.tools.move = true;
       })
       .on("pointerupoutside", () => {
         drag = false;
-        // this.app.mouseService.tools.move = true;
+        this.app.tools.move = true;
       })
       .on("pointermove", () => {
         if (drag) {

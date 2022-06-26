@@ -1,5 +1,5 @@
 import { App } from "..";
-import { Config } from "../interfaces/config.interface";
+// import { Config } from "../interfaces/config.interface";
 import { ElementsService } from "./elements.service";
 
 export class ConfigService {
@@ -8,14 +8,14 @@ export class ConfigService {
     this.app = app;
   }
   public makeConfig(refs: ElementsService["refs"]) {
-    const result: Config = {
-      components: [],
-      texts: [],
-      planes: [],
-      lines: [],
-      offset: { x: 0, y: 0 },
-      assets: [],
-    };
+    // const result: Config = {
+    //   components: [],
+    //   texts: [],
+    //   planes: [],
+    //   lines: [],
+    //   offset: { x: 0, y: 0 },
+    //   assets: [],
+    // };
     Object.keys(refs).forEach((key) => {
       switch (refs[key].type) {
         case "component":

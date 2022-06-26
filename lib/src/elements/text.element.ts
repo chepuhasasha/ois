@@ -1,4 +1,4 @@
-import { utils, Text, TextStyleFontWeight, InteractionEvent } from "pixi.js";
+import { utils, Text, TextStyleFontWeight } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { TextConfig, TextProps } from "../interfaces/text.interface";

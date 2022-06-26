@@ -20,6 +20,11 @@ export declare class App extends Application {
     loader: Loader;
     private div;
     background: Background;
+    tools: {
+        edit: boolean;
+        move: boolean;
+        line: boolean;
+    };
     constructor(selector: string);
     setup(): void;
     load(config: Config, cb: (ois: App) => void): this;

@@ -48,7 +48,7 @@ export class Base {
     this.dragging = false;
   }
   pointerMove(e: InteractionEvent) {
-    if (this.dragging) {
+    if (this.dragging && this.app.tools.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       this.x = newPosition.x;
       this.y = newPosition.y;

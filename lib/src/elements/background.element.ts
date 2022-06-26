@@ -13,15 +13,9 @@ export class Background {
     );
     this.tile.interactive = true;
     this.tile
-      .on("pointerdown", (e) => {
-        if (this.app.selected) {
-          this.app.selected.unselect();
-          this.app.selected = null;
-        }
-      })
       .on("pointerdown", (e) => this.pointerDown(e))
-      .on("pointerup", (e) => this.pointerUp(e))
-      .on("pointerupoutside", (e) => this.pointerOut(e))
+      .on("pointerup", () => this.pointerUp())
+      // .on("pointerupoutside", () => this.pointerOut())
       .on("pointermove", (e) => this.pointerMove(e));
     this.app.stage.addChild(this.tile);
     this.app.ticker.add((d) => {
@@ -38,15 +32,17 @@ export class Background {
   }
 
   pointerDown(e: InteractionEvent) {
+    if (this.app.selected) {
+      this.app.selected.unselect();
+      this.app.selected = null;
+    }
     this.start = e.data.getLocalPosition(this.tile.parent);
     this.dragging = true;
   }
-  pointerUp(e: InteractionEvent) {
+  pointerUp() {
     this.dragging = false;
   }
-  pointerOut(e: InteractionEvent) {
-    console.log(e);
-  }
+  // pointerOut() {}
   pointerMove(e: InteractionEvent) {
     if (this.dragging) {
       const newPosition = e.data.getLocalPosition(this.tile.parent);

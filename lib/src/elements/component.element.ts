@@ -77,7 +77,7 @@ export class COMPONENT extends Base {
   }
 
   pointerMove(e: InteractionEvent) {
-    if (this.dragging) {
+    if (this.dragging && this.app.tools.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       if (newPosition.x - this.x >= 25) {
         this.x += 25;

@@ -21,6 +21,15 @@ export class App extends Application {
   public loader: Loader;
   private div: Element;
   public background: Background;
+  public tools: {
+    edit: boolean;
+    move: boolean;
+    line: boolean;
+  } = {
+    edit: true,
+    move: true,
+    line: false,
+  };
 
   constructor(selector: string) {
     super({ antialias: true, backgroundColor: 0x000000 });
