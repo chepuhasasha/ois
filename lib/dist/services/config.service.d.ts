@@ -1,7 +1,11 @@
 import { App } from "..";
-import { ElementsService } from "./elements.service";
+import { Config } from "../interfaces/config.interface";
 export declare class ConfigService {
     app: App;
+    history: Config[];
+    private index;
     constructor(app: App);
-    makeConfig(refs: ElementsService["refs"]): void;
+    do(): void;
+    undo(): void;
+    get config(): Config;
 }

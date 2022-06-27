@@ -6,7 +6,6 @@ import { Base } from "./base.element";
 export declare class LINE extends Base {
     private _line;
     private _props;
-    private selected;
     constructor(options: BaseOptions, app: App);
     private pointInLine;
     private segments;

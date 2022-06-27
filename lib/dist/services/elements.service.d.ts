@@ -15,4 +15,13 @@ export declare class ElementsService {
     constructor(app: App);
     add(type: string, config: ComponentConfig | TextConfig | PlaneConfig | LineConfig): COMPONENT | LINE | TEXT | PLANE;
     remove(ref: string): void;
+    private getElementsOfType;
+    get components(): ComponentConfig[];
+    get lines(): LineConfig[];
+    get texts(): TextConfig[];
+    get planes(): PlaneConfig[];
+    get assets(): {
+        name: string;
+        data: string;
+    }[];
 }

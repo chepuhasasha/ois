@@ -4,6 +4,8 @@ import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
 import { ConfigService } from "./services/config.service";
 import { Background } from "./elements/background.element";
+import { ComponentConfig } from "./interfaces/component.interface";
+import { baseAssets } from "./assets/base";
 declare global {
   interface Window {
     ois: App;
@@ -18,6 +20,7 @@ export class App extends Application {
   private configService = new ConfigService(this);
   public container = new Container();
   private _selected: Base;
+  private copy: Base;
   public loader: Loader;
   private div: Element;
   public background: Background;
@@ -40,11 +43,7 @@ export class App extends Application {
     }
     this.div.appendChild(this.view);
     this.loader = Loader.shared;
-    document.addEventListener("keydown", (e) => {
-      if (this.tools.edit && e.code === "Delete" && this.selected) {
-        this.elementsService.remove(this.selected.ref);
-      }
-    });
+    this.keyboard();
     return this;
   }
 
@@ -56,7 +55,29 @@ export class App extends Application {
     });
   }
 
+  private keyboard() {
+    document.addEventListener("keydown", (e) => {
+      if (this.tools.edit && e.code === "Delete" && this.selected) {
+        this.elementsService.remove(this.selected.ref);
+      }
+      if (e.key === "c" && e.ctrlKey && this._selected) {
+        this.copy = this.selected;
+      }
+      if (e.key === "v" && e.ctrlKey && this._selected) {
+        this.selected = this.elementsService.add(this.copy.type, {
+          ...(this.copy.config as ComponentConfig),
+          x: this.copy.x + 100,
+          ref: this.copy.ref + Date.now(),
+        });
+        this.copy = this.selected;
+      }
+    });
+  }
+
   load(config: Config, cb: (ois: App) => void) {
+    baseAssets.forEach((sprite) => {
+      this.loader.add(sprite.name, sprite.data);
+    });
     config.assets.forEach((sprite) => {
       this.loader.add(sprite.name, sprite.data);
     });
@@ -118,6 +139,7 @@ export class App extends Application {
     config.texts.forEach((text) => {
       this.elementsService.add("text", text);
     });
+    console.log(this.configService.config);
   }
 
   set selected(el: Base) {

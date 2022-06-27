@@ -36,8 +36,10 @@ export class Background {
       this.app.selected.unselect();
       this.app.selected = null;
     }
-    this.start = e.data.getLocalPosition(this.tile.parent);
-    this.dragging = true;
+    if (!this.app.tools.line) {
+      this.start = e.data.getLocalPosition(this.tile.parent);
+      this.dragging = true;
+    }
   }
   pointerUp() {
     this.dragging = false;

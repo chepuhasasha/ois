@@ -7,7 +7,6 @@ import { Base } from "./base.element";
 export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
-  private selected: boolean = false;
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);

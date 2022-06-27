@@ -1,3 +1,4 @@
+import { Texture, utils } from "pixi.js";
 import { App } from "..";
 import { COMPONENT } from "../elements/component.element";
 import { LINE } from "../elements/line.element";
@@ -62,5 +63,42 @@ export class ElementsService {
       window.ois.container.removeChild(this.refs[ref].container);
       delete this.refs[ref];
     }
+  }
+
+  private getElementsOfType(type: "component" | "line" | "text" | "plane") {
+    return Object.keys(this.refs)
+      .filter((key) => {
+        return this.refs[key].type === type;
+      })
+      .map((key) => this.refs[key].config);
+  }
+
+  get components(): ComponentConfig[] {
+    return this.getElementsOfType("component") as ComponentConfig[];
+  }
+
+  get lines(): LineConfig[] {
+    return this.getElementsOfType("line") as LineConfig[];
+  }
+
+  get texts(): TextConfig[] {
+    return this.getElementsOfType("text") as TextConfig[];
+  }
+
+  get planes(): PlaneConfig[] {
+    return this.getElementsOfType("plane") as PlaneConfig[];
+  }
+
+  get assets(): { name: string; data: string }[] {
+    const keys: string[] = [];
+    this.components.forEach((component) => {
+      if (!keys.includes(component.props.name)) {
+        keys.push(component.props.name);
+      }
+    });
+    return keys.map((name) => ({
+      name: name,
+      data: utils.TextureCache["server"].baseTexture.resource.url,
+    }));
   }
 }
