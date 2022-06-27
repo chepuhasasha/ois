@@ -1,4 +1,4 @@
-import { Container, InteractionEvent } from "pixi.js";
+import { Container, InteractionEvent, IPointData } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 export declare class Base {
@@ -12,13 +12,15 @@ export declare class Base {
     };
     ref: string;
     _color: number;
+    start: IPointData;
+    end: IPointData;
     [key: string]: unknown;
     constructor({ ref, color, x, y }: BaseOptions, app: App);
     select(): void;
     unselect(): void;
     pointerDown(e: InteractionEvent): void;
-    pointerUp(): void;
-    pointerOut(): void;
+    pointerUp(e: InteractionEvent): void;
+    pointerOut(e: InteractionEvent): void;
     pointerMove(e: InteractionEvent): void;
     get x(): number;
     set x(x: number);

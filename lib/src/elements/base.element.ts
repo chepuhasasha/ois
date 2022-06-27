@@ -1,4 +1,4 @@
-import { Container, InteractionEvent, utils } from "pixi.js";
+import { Container, InteractionEvent, IPointData, utils } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 
@@ -10,6 +10,8 @@ export class Base {
   cursor: { x: number; y: number } = { x: 0, y: 0 };
   ref: string;
   _color: number;
+  start: IPointData;
+  end: IPointData;
   [key: string]: unknown;
   constructor({ ref, color, x, y }: BaseOptions, app: App) {
     this.app = app;
@@ -22,8 +24,8 @@ export class Base {
     this.container.sortableChildren = true;
     this.container
       .on("pointerdown", (e) => this.pointerDown(e))
-      .on("pointerup", () => this.pointerUp())
-      .on("pointerupoutside", () => this.pointerOut())
+      .on("pointerup", (e) => this.pointerUp(e))
+      .on("pointerupoutside", (e) => this.pointerOut(e))
       .on("pointermove", (e) => this.pointerMove(e));
     this.app.container.addChild(this.container);
   }
@@ -40,17 +42,23 @@ export class Base {
     this.cursor = e.data.getLocalPosition(this.container);
     // this.container.zIndex = Object.keys(this.app.elementsService.refs).length;
   }
-  pointerUp() {
-    this.select();
+  pointerUp(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
     this.app.configService.do();
+    this.end = e.data.getLocalPosition(this.container.parent);
+    if (this.start.x === this.end.x && this.start.y === this.end.y) {
+      this.select();
+    }
   }
-  pointerOut() {
-    this.select();
+  pointerOut(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
     this.app.configService.do();
+    this.end = e.data.getLocalPosition(this.container.parent);
+    if (this.start.x === this.end.x && this.start.y === this.end.y) {
+      this.select();
+    }
   }
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {
