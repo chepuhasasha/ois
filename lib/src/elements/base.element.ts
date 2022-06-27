@@ -41,11 +41,13 @@ export class Base {
     this.select();
     this.container.alpha = 1;
     this.dragging = false;
+    this.app.configService.do();
   }
   pointerOut() {
     this.select();
     this.container.alpha = 1;
     this.dragging = false;
+    this.app.configService.do();
   }
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {

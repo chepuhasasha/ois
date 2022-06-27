@@ -13,7 +13,10 @@ declare global {
     }
 }
 export declare class App extends Application {
-    private offset;
+    offset: {
+        x: number;
+        y: number;
+    };
     elementsService: ElementsService;
     configService: ConfigService;
     container: Container;

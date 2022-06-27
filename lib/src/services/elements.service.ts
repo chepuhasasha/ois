@@ -62,6 +62,7 @@ export class ElementsService {
     if (this.refs[ref]) {
       this.app.container.removeChild(this.refs[ref].container);
       this.app.configService.do();
+      this.app.selected = null;
       delete this.refs[ref];
     }
   }

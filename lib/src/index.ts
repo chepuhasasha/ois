@@ -15,7 +15,7 @@ declare global {
   }
 }
 export class App extends Application {
-  private offset: { x: number; y: number } = { x: 0, y: 0 };
+  public offset: { x: number; y: number } = { x: 0, y: 0 };
   public elementsService = new ElementsService(this);
   public configService = new ConfigService(this);
   public container = new Container();
@@ -60,20 +60,18 @@ export class App extends Application {
       if (this.tools.edit && e.code === "Delete" && this.selected) {
         this.elementsService.remove(this.selected.ref);
       }
-      if (e.key === "c" && e.ctrlKey && this._selected) {
+      if (e.code === "KeyC" && e.ctrlKey && this._selected) {
         this.copy = this.selected;
       }
-      if (e.key === "v" && e.ctrlKey && this._selected && this.copy) {
-        this.selected = this.elementsService.add(this.copy.type, {
+      if (e.code === "KeyV" && e.ctrlKey && this.copy) {
+        this.copy = this.elementsService.add(this.copy.type, {
           ...(this.copy.config as ComponentConfig),
           x: this.copy.x + 100,
           ref: this.copy.ref + Date.now(),
         });
-        this.copy = this.selected;
-        this.copy.select();
         this.configService.do();
       }
-      if (e.key === "z" && e.ctrlKey) {
+      if (e.code === "KeyZ" && e.ctrlKey) {
         this.configService.undo();
       }
     });
@@ -129,8 +127,9 @@ export class App extends Application {
   }
 
   set config(config: Config) {
-    this.background.tile.tilePosition.x = config.offset.x;
-    this.background.tile.tilePosition.y = config.offset.y;
+    this.offset = config.offset;
+    // this.background.tile.tilePosition.x = config.offset.x;
+    // this.background.tile.tilePosition.y = config.offset.y;
     this.elementsService.refs = {};
     this.container.removeChildren();
     config.planes.forEach((plane) => {
@@ -149,14 +148,24 @@ export class App extends Application {
 
   set selected(el: Base) {
     if (el) {
-      if (this.selected) {
-        this._selected.unselect();
-      }
-      this._selected = el;
       this.offset = {
         x: this.screen.width / 2 - el.container.position.x,
         y: this.screen.height / 2 - el.container.position.y,
       };
+      if (this._selected) {
+        this._selected.unselect();
+        if (this._selected.ref != el.ref) {
+          this._selected = el;
+        }
+      } else {
+        this._selected = el;
+      }
+
+      // if (this.selected != el) {
+      //   console.log(el.ref);
+      //   if (this._selected != null) this._selected.unselect();
+      //   this._selected = el;
+      // }
     } else {
       this._selected = null;
     }

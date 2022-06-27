@@ -123,10 +123,12 @@ export class LINE extends Base {
       .on("pointerup", () => {
         drag = false;
         this.app.tools.move = true;
+        this.app.configService.do();
       })
       .on("pointerupoutside", () => {
         drag = false;
         this.app.tools.move = true;
+        this.app.configService.do();
       })
       .on("pointermove", () => {
         if (drag) {
