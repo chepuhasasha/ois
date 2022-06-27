@@ -7,6 +7,7 @@ export class Base {
   container = new Container();
   isSelected: boolean = false;
   type: string;
+  cursor: { x: number; y: number } = { x: 0, y: 0 };
   ref: string;
   _color: number;
   [key: string]: unknown;
@@ -36,6 +37,8 @@ export class Base {
     this.start = e.data.getLocalPosition(this.container.parent);
     this.container.alpha = 0.8;
     this.dragging = true;
+    this.cursor = e.data.getLocalPosition(this.container);
+    // this.container.zIndex = Object.keys(this.app.elementsService.refs).length;
   }
   pointerUp() {
     this.select();
@@ -52,8 +55,8 @@ export class Base {
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
-      this.x = newPosition.x;
-      this.y = newPosition.y;
+      this.x = newPosition.x - this.cursor.x;
+      this.y = newPosition.y - this.cursor.y;
     }
   }
 

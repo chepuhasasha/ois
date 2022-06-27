@@ -6,6 +6,10 @@ export declare class Base {
     container: Container;
     isSelected: boolean;
     type: string;
+    cursor: {
+        x: number;
+        y: number;
+    };
     ref: string;
     _color: number;
     [key: string]: unknown;

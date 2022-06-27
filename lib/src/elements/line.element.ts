@@ -83,7 +83,7 @@ export class LINE extends Base {
     });
     this._props.points.forEach((point, i, arr) => {
       this._line.lineTo(
-        arr[arr.length - 1 - i].x - this._props.width,
+        arr[arr.length - 1 - i].x - this._props.width - 20,
         arr[arr.length - 1 - i].y
       );
     });
@@ -101,7 +101,7 @@ export class LINE extends Base {
       p.lineTo(0, -20);
       p.lineStyle(0, 0);
       p.beginFill(0xffffff, 0.2);
-      p.drawEllipse(0, 0, 8, 8 / 1.6);
+      p.drawEllipse(0, 0, 25, 25 / 1.6);
       p.endFill();
       p.interactive = true;
       p.buttonMode = true;

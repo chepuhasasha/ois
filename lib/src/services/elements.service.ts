@@ -100,6 +100,8 @@ export class ElementsService {
     });
     return keys.map((name) => ({
       name: name,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       data: utils.TextureCache["server"].baseTexture.resource.url,
     }));
   }

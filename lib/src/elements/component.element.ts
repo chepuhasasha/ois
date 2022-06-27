@@ -103,6 +103,10 @@ export class COMPONENT extends Base {
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
+      newPosition.x = newPosition.x - this.cursor.x;
+      newPosition.y =
+        newPosition.y +
+        (this._label.height + this._sprite.height + 30 - this.cursor.y);
       if (newPosition.x - this.x >= 25) {
         this.x += 25;
       } else if (newPosition.x - this.x <= -25) {

@@ -43,6 +43,7 @@ export class App extends Application {
     }
     this.div.appendChild(this.view);
     this.loader = Loader.shared;
+    this.container.sortableChildren = true;
     this.keyboard();
     return this;
   }
@@ -128,8 +129,8 @@ export class App extends Application {
 
   set config(config: Config) {
     this.offset = config.offset;
-    // this.background.tile.tilePosition.x = config.offset.x;
-    // this.background.tile.tilePosition.y = config.offset.y;
+    this.background.tile.tilePosition.x = config.offset.x;
+    this.background.tile.tilePosition.y = config.offset.y;
     this.elementsService.refs = {};
     this.container.removeChildren();
     config.planes.forEach((plane) => {
@@ -148,24 +149,20 @@ export class App extends Application {
 
   set selected(el: Base) {
     if (el) {
-      this.offset = {
-        x: this.screen.width / 2 - el.container.position.x,
-        y: this.screen.height / 2 - el.container.position.y,
-      };
-      if (this._selected) {
-        this._selected.unselect();
-        if (this._selected.ref != el.ref) {
+      if (this.selected) {
+        if (this.selected.ref != el.ref) {
+          this.selected.unselect();
           this._selected = el;
+        } else {
+          this.selected.unselect();
         }
       } else {
         this._selected = el;
       }
-
-      // if (this.selected != el) {
-      //   console.log(el.ref);
-      //   if (this._selected != null) this._selected.unselect();
-      //   this._selected = el;
-      // }
+      this.offset = {
+        x: this.screen.width / 2 - el.container.position.x,
+        y: this.screen.height / 2 - el.container.position.y,
+      };
     } else {
       this._selected = null;
     }
