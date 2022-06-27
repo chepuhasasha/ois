@@ -2,6 +2,7 @@ import { Application, Loader, Container } from "pixi.js";
 import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
+import { ConfigService } from "./services/config.service";
 import { Background } from "./elements/background.element";
 declare global {
     interface Window {
@@ -14,7 +15,7 @@ declare global {
 export declare class App extends Application {
     private offset;
     elementsService: ElementsService;
-    private configService;
+    configService: ConfigService;
     container: Container;
     private _selected;
     private copy;

@@ -3,20 +3,23 @@ import { Config } from "../interfaces/config.interface";
 
 export class ConfigService {
   public app: App;
-  public history: Config[];
-  private index: number = 0;
+  public history: Config[] = [];
 
   constructor(app: App) {
     this.app = app;
   }
 
   do() {
-    this.history.push(this.config);
+    if (this.history.length <= 20) {
+      this.history.push(this.config);
+    }
   }
 
   undo() {
-    this.index += 1;
-    this.app.config = this.history[this.history.length - 1 - this.index];
+    if (this.history.length >= 2) {
+      this.history.pop();
+      this.app.config = this.history[this.history.length - 1];
+    }
   }
 
   get config(): Config {

@@ -17,7 +17,7 @@ declare global {
 export class App extends Application {
   private offset: { x: number; y: number } = { x: 0, y: 0 };
   public elementsService = new ElementsService(this);
-  private configService = new ConfigService(this);
+  public configService = new ConfigService(this);
   public container = new Container();
   private _selected: Base;
   private copy: Base;
@@ -63,13 +63,18 @@ export class App extends Application {
       if (e.key === "c" && e.ctrlKey && this._selected) {
         this.copy = this.selected;
       }
-      if (e.key === "v" && e.ctrlKey && this._selected) {
+      if (e.key === "v" && e.ctrlKey && this._selected && this.copy) {
         this.selected = this.elementsService.add(this.copy.type, {
           ...(this.copy.config as ComponentConfig),
           x: this.copy.x + 100,
           ref: this.copy.ref + Date.now(),
         });
         this.copy = this.selected;
+        this.copy.select();
+        this.configService.do();
+      }
+      if (e.key === "z" && e.ctrlKey) {
+        this.configService.undo();
       }
     });
   }
@@ -84,6 +89,7 @@ export class App extends Application {
     this.loader.load(() => {
       this.setup();
       this.config = config;
+      this.configService.do();
       cb(this);
     });
     return this;
@@ -139,7 +145,6 @@ export class App extends Application {
     config.texts.forEach((text) => {
       this.elementsService.add("text", text);
     });
-    console.log(this.configService.config);
   }
 
   set selected(el: Base) {

@@ -60,7 +60,8 @@ export class ElementsService {
 
   public remove(ref: string) {
     if (this.refs[ref]) {
-      window.ois.container.removeChild(this.refs[ref].container);
+      this.app.container.removeChild(this.refs[ref].container);
+      this.app.configService.do();
       delete this.refs[ref];
     }
   }
