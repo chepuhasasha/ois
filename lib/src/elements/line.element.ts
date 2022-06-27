@@ -117,7 +117,6 @@ export class LINE extends Base {
       data = e.data;
       drag = true;
       this.app.tools.move = false;
-      point.x += 10;
       this.setup();
     })
       .on("pointerup", () => {
@@ -133,11 +132,12 @@ export class LINE extends Base {
       .on("pointermove", () => {
         if (drag) {
           const newp = data.getLocalPosition(p.parent);
+          // newp.x = newp.x - (newp.x % 25);
+          // newp.y = newp.y - (newp.y % 15);
           point.x = newp.x;
           p.position.x = newp.x;
           point.y = newp.y;
           p.position.y = newp.y;
-
           this.setup();
         }
       });

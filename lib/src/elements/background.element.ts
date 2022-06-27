@@ -44,7 +44,9 @@ export class Background {
   pointerUp() {
     this.dragging = false;
   }
-  // pointerOut() {}
+  // pointerOut() {
+  //   this.dragging = false;
+  // }
   pointerMove(e: InteractionEvent) {
     if (this.dragging) {
       const newPosition = e.data.getLocalPosition(this.tile.parent);
