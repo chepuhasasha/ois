@@ -53,8 +53,9 @@ export class TEXT extends Base {
     return {
       ref: this.ref,
       color: this.color,
-      x: this.container.position.x,
-      y: this.container.position.y,
+      x: this.x,
+      y: this.y,
+      zIndex: this.zIndex,
       props: this._props,
     };
   }

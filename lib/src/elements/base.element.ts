@@ -15,12 +15,13 @@ export class Base {
   start: IPointData;
   end: IPointData;
   [key: string]: unknown;
-  constructor({ ref, color, x, y }: BaseOptions, app: App) {
+  constructor({ ref, color, x, y, zIndex }: BaseOptions, app: App) {
     this.app = app;
     this.x = x;
     this.y = y;
     this.ref = ref;
     this.color = color;
+    this.zIndex = zIndex;
     this.container.interactive = true;
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
@@ -87,5 +88,11 @@ export class Base {
   }
   set color(color: string) {
     this._color = utils.string2hex(color);
+  }
+  set zIndex(i: number) {
+    this.container.zIndex = i;
+  }
+  get zIndex() {
+    return this.container.zIndex;
   }
 }

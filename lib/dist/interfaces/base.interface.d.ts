@@ -3,4 +3,5 @@ export interface BaseOptions {
     color: string;
     x: number;
     y: number;
+    zIndex: number;
 }

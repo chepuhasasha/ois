@@ -5,6 +5,8 @@ export declare class MENU extends Container {
     private copy;
     private point;
     private settings;
+    private up;
+    private down;
     private el;
     constructor(offset: number, el: Base);
     hover(e: Sprite): void;

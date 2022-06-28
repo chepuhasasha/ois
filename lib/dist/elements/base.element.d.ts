@@ -17,7 +17,7 @@ export declare class Base {
     start: IPointData;
     end: IPointData;
     [key: string]: unknown;
-    constructor({ ref, color, x, y }: BaseOptions, app: App);
+    constructor({ ref, color, x, y, zIndex }: BaseOptions, app: App);
     select(): void;
     unselect(): void;
     pointerDown(e: InteractionEvent): void;
@@ -29,4 +29,6 @@ export declare class Base {
     get y(): number;
     set y(y: number);
     set color(color: string);
+    set zIndex(i: number);
+    get zIndex(): number;
 }

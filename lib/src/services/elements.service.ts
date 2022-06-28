@@ -1,4 +1,4 @@
-import { Texture, utils } from "pixi.js";
+import { utils } from "pixi.js";
 import { App } from "..";
 import { COMPONENT } from "../elements/component.element";
 import { LINE } from "../elements/line.element";

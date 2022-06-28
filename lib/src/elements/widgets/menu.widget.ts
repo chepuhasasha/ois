@@ -6,6 +6,8 @@ export class MENU extends Container {
   private copy: Sprite = new Sprite(Texture.from("copyBTN"));
   private point: Sprite = new Sprite(Texture.from("pointBTN"));
   private settings: Sprite = new Sprite(Texture.from("settingsBTN"));
+  private up: Sprite = new Sprite(Texture.from("upBTN"));
+  private down: Sprite = new Sprite(Texture.from("downBTN"));
   private el: Base;
   constructor(offset: number = 20, el: Base) {
     super();
@@ -17,19 +19,27 @@ export class MENU extends Container {
     this.delete.anchor.set(0.5, 0.5);
     this.copy.anchor.set(0.5, 0.5);
     this.settings.anchor.set(0.5, 0.5);
+    this.up.anchor.set(0.5, 0.5);
+    this.down.anchor.set(0.5, 0.5);
     this.point.interactive = true;
     this.delete.interactive = true;
     this.copy.interactive = true;
     this.settings.interactive = true;
+    this.up.interactive = true;
+    this.down.interactive = true;
 
     this.point.on("pointerover", () => this.hover(this.point));
-    this.delete.on("pointerover", () => this.hover(this.delete));
-    this.copy.on("pointerover", () => this.hover(this.copy));
-    this.settings.on("pointerover", () => this.hover(this.settings));
     this.point.on("pointerout", () => this.unhover(this.point));
+    this.delete.on("pointerover", () => this.hover(this.delete));
     this.delete.on("pointerout", () => this.unhover(this.delete));
     this.copy.on("pointerout", () => this.unhover(this.copy));
+    this.copy.on("pointerover", () => this.hover(this.copy));
+    this.settings.on("pointerover", () => this.hover(this.settings));
     this.settings.on("pointerout", () => this.unhover(this.settings));
+    this.up.on("pointerover", () => this.hover(this.up));
+    this.up.on("pointerout", () => this.unhover(this.up));
+    this.down.on("pointerover", () => this.hover(this.down));
+    this.down.on("pointerout", () => this.unhover(this.down));
 
     this.point.on("pointerup", () => {
       this.el.app.offset = {
@@ -46,10 +56,22 @@ export class MENU extends Container {
       this.el.app.setCopy();
       this.el.app.paste();
     });
+    this.up.on("pointerup", () => {
+      this.el.zIndex += 1;
+    });
+    this.down.on("pointerup", () => {
+      this.el.zIndex -= 1;
+    });
 
-    this.copy.y = this.point.height;
-    this.settings.y = this.point.height * 2;
-    this.delete.y = this.point.height * 3;
+    this.copy.y = 0;
+    this.settings.y = this.point.height;
+    this.delete.y = this.point.height * 2;
+    this.point.y = 0;
+    this.point.x = -this.point.height;
+    this.up.y = this.point.height;
+    this.up.x = -this.point.height;
+    this.down.y = this.point.height * 2;
+    this.down.x = -this.point.height;
   }
 
   hover(e: Sprite) {
@@ -63,11 +85,15 @@ export class MENU extends Container {
     this.removeChild(this.delete);
     this.removeChild(this.copy);
     this.removeChild(this.settings);
+    this.removeChild(this.up);
+    this.removeChild(this.down);
   }
   open() {
     this.addChild(this.point);
     this.addChild(this.delete);
     this.addChild(this.copy);
     this.addChild(this.settings);
+    this.addChild(this.up);
+    this.addChild(this.down);
   }
 }
