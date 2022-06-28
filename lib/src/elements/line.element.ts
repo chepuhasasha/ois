@@ -132,8 +132,8 @@ export class LINE extends Base {
       .on("pointermove", () => {
         if (drag) {
           const newp = data.getLocalPosition(p.parent);
-          // newp.x = newp.x - (newp.x % 25);
-          // newp.y = newp.y - (newp.y % 15);
+          newp.x = newp.x - (newp.x % 25);
+          newp.y = newp.y - (newp.y % 15);
           point.x = newp.x;
           p.position.x = newp.x;
           point.y = newp.y;

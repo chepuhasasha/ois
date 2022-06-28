@@ -55,7 +55,7 @@ export class Base {
   pointerUp(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
-    if (this.start.x != this.x && this.start.y != this.y) {
+    if (this.start && this.start.x != this.x && this.start.y != this.y) {
       this.app.configService.do();
     }
     this.end = e.data.getLocalPosition(this.container.parent);
@@ -71,8 +71,20 @@ export class Base {
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
-      this.x = newPosition.x - this.cursor.x;
-      this.y = newPosition.y - this.cursor.y;
+      // this.x = newPosition.x - this.cursor.x;
+      // this.y = newPosition.y - this.cursor.y;
+      newPosition.x = newPosition.x - this.cursor.x;
+      newPosition.y = newPosition.y - this.cursor.y;
+      if (newPosition.x - this.x >= 25) {
+        this.x += 25;
+      } else if (newPosition.x - this.x <= -25) {
+        this.x -= 25;
+      }
+      if (newPosition.y - this.y >= 15) {
+        this.y += 15;
+      } else if (newPosition.y - this.y <= -15) {
+        this.y -= 15;
+      }
       this.menu.position.set(this.x, this.y);
     }
   }
