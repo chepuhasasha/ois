@@ -15,7 +15,7 @@ export declare class LINE extends Base {
         x: number;
         y: number;
     }): void;
-    select(): void;
+    select(): boolean;
     unselect(): void;
     set props(props: LineProps);
     get props(): LineProps;

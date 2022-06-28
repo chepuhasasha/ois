@@ -11,7 +11,7 @@ export declare class COMPONENT extends Base {
     private _label;
     constructor(options: BaseOptions, app: App);
     private setup;
-    select(): void;
+    select(): boolean;
     unselect(): void;
     private circle;
     private cross;

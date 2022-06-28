@@ -9,11 +9,9 @@ export class MENU extends Container {
   private up: Sprite = new Sprite(Texture.from("upBTN"));
   private down: Sprite = new Sprite(Texture.from("downBTN"));
   private el: Base;
-  constructor(offset: number = 20, el: Base) {
+  constructor(el: Base) {
     super();
     this.el = el;
-    this.zIndex = 10;
-    this.pivot.set(this.delete.width / 2 + offset, -this.delete.height);
 
     this.point.anchor.set(0.5, 0.5);
     this.delete.anchor.set(0.5, 0.5);
@@ -95,5 +93,8 @@ export class MENU extends Container {
     this.addChild(this.settings);
     this.addChild(this.up);
     this.addChild(this.down);
+    this.zIndex = this.el.app.container.children.length;
+    this.pivot.set(this.point.height / 2, this.height - 20);
+    this.position.set(this.el.x, this.el.y);
   }
 }

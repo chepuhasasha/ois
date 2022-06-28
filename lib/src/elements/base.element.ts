@@ -30,15 +30,17 @@ export class Base {
       .on("pointerup", (e) => this.pointerUp(e))
       .on("pointerupoutside", (e) => this.pointerOut(e))
       .on("pointermove", (e) => this.pointerMove(e));
-    this.menu = new MENU(20, this);
-    this.container.addChild(this.menu);
+    this.menu = new MENU(this);
+    this.app.container.addChild(this.menu);
     this.app.container.addChild(this.container);
   }
   select() {
     if (this.app.selected != this) {
       this.app.selected = this;
       this.menu.open();
+      return true;
     }
+    return false;
   }
   unselect() {
     this.menu.close();
@@ -71,6 +73,7 @@ export class Base {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       this.x = newPosition.x - this.cursor.x;
       this.y = newPosition.y - this.cursor.y;
+      this.menu.position.set(this.x, this.y);
     }
   }
 

@@ -38,9 +38,6 @@ export class COMPONENT extends Base {
     this._sprite.position.y = this._label.height + 20;
     this.container.addChild(this._sprite);
 
-    this.menu.x = -this._sprite.width / 2;
-    this.container.addChild(this.menu);
-
     this.circle(0, this.container.height + 20);
     this.circle(0, this.container.height + 20, this._sprite.width / 4);
     this.circle(0, this.container.height + 20, this._sprite.width / 2);
@@ -48,9 +45,7 @@ export class COMPONENT extends Base {
   }
 
   public select() {
-    if (this.app.selected != this) {
-      this.menu.open();
-      this.app.selected = this;
+    if (super.select()) {
       this.selectTile.width = this._sprite.width + 20;
       this.selectTile.height = this._sprite.height + 20;
       this.selectTile.position.x = -this._sprite.width / 2 - 10;
@@ -72,11 +67,13 @@ export class COMPONENT extends Base {
       );
       this.container.addChild(this.selectTile);
       this.container.addChild(this.selectGraphics);
+      return true;
     }
+    return false;
   }
 
   public unselect() {
-    this.menu.close();
+    super.unselect();
     this.container.removeChild(this.selectTile);
     this.container.removeChild(this.selectGraphics);
   }
@@ -124,6 +121,7 @@ export class COMPONENT extends Base {
       } else if (newPosition.y - this.y <= -15) {
         this.y -= 15;
       }
+      this.menu.position.set(this.x, this.y);
     }
   }
 
