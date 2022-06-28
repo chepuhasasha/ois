@@ -27,9 +27,9 @@ export class ConfigService {
       this.history.pop();
       const point = this.history[this.history.length - 1];
       this.app.config = point.config;
-      if (point.selected) {
-        this.app.elementsService.refs[point.selected].select();
-      }
+      // if (point.selected) {
+      //   this.app.elementsService.refs[point.selected].select();
+      // }
     }
   }
 

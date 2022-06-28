@@ -52,7 +52,9 @@ export class Base {
   pointerUp(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
-    // this.app.configService.do();
+    if (this.start.x != this.x && this.start.y != this.y) {
+      this.app.configService.do();
+    }
     this.end = e.data.getLocalPosition(this.container.parent);
     this.select();
   }

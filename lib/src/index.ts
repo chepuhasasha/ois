@@ -112,8 +112,8 @@ export class App extends Application {
 
   set config(config: Config) {
     this.offset = config.offset;
-    this.background.tile.tilePosition.x = config.offset.x;
-    this.background.tile.tilePosition.y = config.offset.y;
+    // this.background.tile.tilePosition.x = config.offset.x;
+    // this.background.tile.tilePosition.y = config.offset.y;
     this.elementsService.refs = {};
     this.container.removeChildren();
     config.planes.forEach((plane) => {

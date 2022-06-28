@@ -83,7 +83,7 @@ export class LINE extends Base {
     });
     this._props.points.forEach((point, i, arr) => {
       this._line.lineTo(
-        arr[arr.length - 1 - i].x - this._props.width - 20,
+        arr[arr.length - 1 - i].x - this._props.width - 40,
         arr[arr.length - 1 - i].y
       );
     });

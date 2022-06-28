@@ -25,7 +25,7 @@ export class TEXT extends Base {
 
   set props(props: TextProps) {
     this._props = props;
-    this.container.removeChildren();
+    // this.container.removeChildren();
     this.setup();
   }
   set text(text: string) {
