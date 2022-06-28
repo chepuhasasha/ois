@@ -20,7 +20,7 @@ export class App extends Application {
   public configService = new ConfigService(this);
   public container = new Container();
   private _selected: Base;
-  private copy: Base;
+  public copy: Base;
   public loader: Loader;
   private div: Element;
   public background: Background;
@@ -62,20 +62,26 @@ export class App extends Application {
         this.elementsService.remove(this.selected.ref);
       }
       if (e.code === "KeyC" && e.ctrlKey && this._selected) {
-        this.copy = this.selected;
+        this.setCopy();
       }
       if (e.code === "KeyV" && e.ctrlKey && this.copy) {
-        this.copy = this.elementsService.add(this.copy.type, {
-          ...(this.copy.config as ComponentConfig),
-          x: this.copy.x + 100,
-          ref: this.copy.ref + Date.now(),
-        });
-        this.configService.do();
+        this.paste();
       }
       if (e.code === "KeyZ" && e.ctrlKey) {
         this.configService.undo();
       }
     });
+  }
+  setCopy() {
+    this.copy = this.selected;
+  }
+  paste() {
+    this.copy = this.elementsService.add(this.copy.type, {
+      ...(this.copy.config as ComponentConfig),
+      x: this.copy.x + 100,
+      ref: this.copy.ref + Date.now(),
+    });
+    this.configService.do();
   }
 
   load(config: Config, cb: (ois: App) => void) {
@@ -92,29 +98,6 @@ export class App extends Application {
       cb(this);
     });
     return this;
-  }
-
-  public scrollToSelected(d: number) {
-    if (this.background.tile.tilePosition.x > this.offset.x) {
-      this.background.tile.tilePosition.x -= d * 20;
-      if (this.background.tile.tilePosition.x < this.offset.x)
-        this.background.tile.tilePosition.x = this.offset.x;
-    }
-    if (this.background.tile.tilePosition.x < this.offset.x) {
-      this.background.tile.tilePosition.x += d * 20;
-      if (this.background.tile.tilePosition.x > this.offset.x)
-        this.background.tile.tilePosition.x = this.offset.x;
-    }
-    if (this.background.tile.tilePosition.y > this.offset.y) {
-      this.background.tile.tilePosition.y -= d * 20;
-      if (this.background.tile.tilePosition.y < this.offset.y)
-        this.background.tile.tilePosition.y = this.offset.y;
-    }
-    if (this.background.tile.tilePosition.y < this.offset.y) {
-      this.background.tile.tilePosition.y += d * 20;
-      if (this.background.tile.tilePosition.y > this.offset.y)
-        this.background.tile.tilePosition.y = this.offset.y;
-    }
   }
 
   private sizing() {
@@ -148,21 +131,9 @@ export class App extends Application {
   }
 
   set selected(el: Base) {
+    if (this._selected) this._selected.unselect();
     if (el) {
-      if (this.selected) {
-        if (this.selected.ref != el.ref) {
-          this.selected.unselect();
-          this._selected = el;
-        } else {
-          this.selected.unselect();
-        }
-      } else {
-        this._selected = el;
-      }
-      this.offset = {
-        x: this.screen.width / 2 - el.container.position.x,
-        y: this.screen.height / 2 - el.container.position.y,
-      };
+      this._selected = el;
     } else {
       this._selected = null;
     }

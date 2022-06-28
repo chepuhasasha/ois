@@ -1,11 +1,13 @@
 import { Container, InteractionEvent, IPointData, utils } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
+import { MENU } from "./widgets/menu.widget";
 
 export class Base {
   app: App;
   container = new Container();
   isSelected: boolean = false;
+  menu: MENU;
   type: string;
   cursor: { x: number; y: number } = { x: 0, y: 0 };
   ref: string;
@@ -27,13 +29,18 @@ export class Base {
       .on("pointerup", (e) => this.pointerUp(e))
       .on("pointerupoutside", (e) => this.pointerOut(e))
       .on("pointermove", (e) => this.pointerMove(e));
+    this.menu = new MENU(20, this);
+    this.container.addChild(this.menu);
     this.app.container.addChild(this.container);
   }
   select() {
-    this.app.selected = this;
+    if (this.app.selected != this) {
+      this.app.selected = this;
+      this.menu.open();
+    }
   }
   unselect() {
-    this.app.selected = null;
+    this.menu.close();
   }
   pointerDown(e: InteractionEvent) {
     this.start = e.data.getLocalPosition(this.container.parent);
@@ -45,20 +52,16 @@ export class Base {
   pointerUp(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
-    this.app.configService.do();
+    // this.app.configService.do();
     this.end = e.data.getLocalPosition(this.container.parent);
-    if (this.start.x === this.end.x && this.start.y === this.end.y) {
-      this.select();
-    }
+    this.select();
   }
   pointerOut(e: InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
-    this.app.configService.do();
+    // this.app.configService.do();
     this.end = e.data.getLocalPosition(this.container.parent);
-    if (this.start.x === this.end.x && this.start.y === this.end.y) {
-      this.select();
-    }
+    this.select();
   }
   pointerMove(e: InteractionEvent) {
     if (this.dragging && this.app.tools.move) {

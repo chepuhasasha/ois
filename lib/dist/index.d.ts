@@ -21,7 +21,7 @@ export declare class App extends Application {
     configService: ConfigService;
     container: Container;
     private _selected;
-    private copy;
+    copy: Base;
     loader: Loader;
     private div;
     background: Background;
@@ -33,8 +33,9 @@ export declare class App extends Application {
     constructor(selector: string);
     setup(): void;
     private keyboard;
+    setCopy(): void;
+    paste(): void;
     load(config: Config, cb: (ois: App) => void): this;
-    scrollToSelected(d: number): void;
     private sizing;
     set config(config: Config);
     set selected(el: Base);

@@ -38,6 +38,9 @@ export class COMPONENT extends Base {
     this._sprite.position.y = this._label.height + 20;
     this.container.addChild(this._sprite);
 
+    this.menu.x = -this._sprite.width / 2;
+    this.container.addChild(this.menu);
+
     this.circle(0, this.container.height + 20);
     this.circle(0, this.container.height + 20, this._sprite.width / 4);
     this.circle(0, this.container.height + 20, this._sprite.width / 2);
@@ -45,31 +48,35 @@ export class COMPONENT extends Base {
   }
 
   public select() {
-    this.app.selected = this;
-    this.selectTile.width = this._sprite.width + 20;
-    this.selectTile.height = this._sprite.height + 20;
-    this.selectTile.position.x = -this._sprite.width / 2 - 10;
-    this.selectTile.position.y = this._sprite.y - 10;
-    this.selectTile.tint = this._color;
-    this.selectTile.alpha = 0.5;
-    this.cross(this.selectTile.position.x, this.selectTile.position.y);
-    this.cross(
-      this.selectTile.position.x + this.selectTile.width,
-      this.selectTile.position.y
-    );
-    this.cross(
-      this.selectTile.position.x,
-      this.selectTile.position.y + this.selectTile.height
-    );
-    this.cross(
-      this.selectTile.position.x + this.selectTile.width,
-      this.selectTile.position.y + this.selectTile.height
-    );
-    this.container.addChild(this.selectTile);
-    this.container.addChild(this.selectGraphics);
+    if (this.app.selected != this) {
+      this.menu.open();
+      this.app.selected = this;
+      this.selectTile.width = this._sprite.width + 20;
+      this.selectTile.height = this._sprite.height + 20;
+      this.selectTile.position.x = -this._sprite.width / 2 - 10;
+      this.selectTile.position.y = this._sprite.y - 10;
+      this.selectTile.tint = this._color;
+      this.selectTile.alpha = 0.5;
+      this.cross(this.selectTile.position.x, this.selectTile.position.y);
+      this.cross(
+        this.selectTile.position.x + this.selectTile.width,
+        this.selectTile.position.y
+      );
+      this.cross(
+        this.selectTile.position.x,
+        this.selectTile.position.y + this.selectTile.height
+      );
+      this.cross(
+        this.selectTile.position.x + this.selectTile.width,
+        this.selectTile.position.y + this.selectTile.height
+      );
+      this.container.addChild(this.selectTile);
+      this.container.addChild(this.selectGraphics);
+    }
   }
 
   public unselect() {
+    this.menu.close();
     this.container.removeChild(this.selectTile);
     this.container.removeChild(this.selectGraphics);
   }

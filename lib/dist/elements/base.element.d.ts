@@ -1,10 +1,12 @@
 import { Container, InteractionEvent, IPointData } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
+import { MENU } from "./widgets/menu.widget";
 export declare class Base {
     app: App;
     container: Container;
     isSelected: boolean;
+    menu: MENU;
     type: string;
     cursor: {
         x: number;

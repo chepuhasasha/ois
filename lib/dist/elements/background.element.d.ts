@@ -6,6 +6,7 @@ export declare class Background {
     private start;
     private dragging;
     constructor(app: App);
+    moveToOffset(d: number): void;
     pointerDown(e: InteractionEvent): void;
     pointerUp(): void;
     pointerMove(e: InteractionEvent): void;

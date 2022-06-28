@@ -146,9 +146,11 @@ export class LINE extends Base {
   select() {
     this.app.selected = this;
     this.addPoints();
+    this.menu.open();
   }
   unselect() {
     this.container.removeChildren(1, this._props.points.length + 1);
+    this.menu.close();
   }
 
   set props(props: LineProps) {

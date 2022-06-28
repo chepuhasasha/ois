@@ -19,22 +19,45 @@ export class Background {
       .on("pointermove", (e) => this.pointerMove(e));
     this.app.stage.addChild(this.tile);
     this.app.ticker.add((d) => {
-      if (this.app.selected && this.app.selected.type === "component") {
-        this.app.scrollToSelected(d);
-      }
-      if (this.app.container.position.x != this.tile.tilePosition.x) {
+      if (
+        this.app.offset.x != this.tile.tilePosition.x ||
+        this.app.offset.y != this.tile.tilePosition.y
+      )
+        this.moveToOffset(d);
+      if (this.app.container.position.x != this.tile.tilePosition.x)
         this.app.container.position.x = this.tile.tilePosition.x;
-      }
-      if (this.app.container.position.y != this.tile.tilePosition.y) {
+      if (this.app.container.position.y != this.tile.tilePosition.y)
         this.app.container.position.y = this.tile.tilePosition.y;
-      }
     });
+  }
+
+  moveToOffset(d: number) {
+    if (this.tile.tilePosition.x > this.app.offset.x) {
+      this.tile.tilePosition.x -= d * 20;
+      if (this.tile.tilePosition.x < this.app.offset.x)
+        this.tile.tilePosition.x = this.app.offset.x;
+    }
+    if (this.tile.tilePosition.x < this.app.offset.x) {
+      this.tile.tilePosition.x += d * 20;
+      if (this.tile.tilePosition.x > this.app.offset.x)
+        this.tile.tilePosition.x = this.app.offset.x;
+    }
+    if (this.tile.tilePosition.y > this.app.offset.y) {
+      this.tile.tilePosition.y -= d * 20;
+      if (this.tile.tilePosition.y < this.app.offset.y)
+        this.tile.tilePosition.y = this.app.offset.y;
+    }
+    if (this.tile.tilePosition.y < this.app.offset.y) {
+      this.tile.tilePosition.y += d * 20;
+      if (this.tile.tilePosition.y > this.app.offset.y)
+        this.tile.tilePosition.y = this.app.offset.y;
+    }
   }
 
   pointerDown(e: InteractionEvent) {
     if (this.app.selected) {
-      this.app.selected.unselect();
       this.app.selected = null;
+      // this.app.selected.unselect();
     }
     if (!this.app.tools.line) {
       this.start = e.data.getLocalPosition(this.tile.parent);
@@ -56,6 +79,8 @@ export class Background {
       this.tile.tilePosition.y += y;
       this.start.x += x;
       this.start.y += y;
+      this.app.offset.x += x;
+      this.app.offset.y += y;
     }
   }
 }
