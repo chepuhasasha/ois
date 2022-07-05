@@ -26,6 +26,11 @@ export class App extends Application {
   public background: Background;
   public _edit: boolean = true;
   public move: boolean = true;
+  public events: {
+    select: ((el: Base) => void)[];
+  } = {
+    select: [],
+  };
 
   constructor(selector: string) {
     super({ antialias: true, backgroundColor: 0x000000 });
@@ -149,6 +154,10 @@ export class App extends Application {
 
   get edit() {
     return this._edit;
+  }
+
+  on(event: keyof App["events"], cb: (el: Base) => void) {
+    if (this.events[event]) this.events[event].push(cb);
   }
 }
 

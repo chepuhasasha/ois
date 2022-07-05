@@ -27,6 +27,9 @@ export declare class App extends Application {
     background: Background;
     _edit: boolean;
     move: boolean;
+    events: {
+        select: ((el: Base) => void)[];
+    };
     constructor(selector: string);
     setup(): void;
     private keyboard;
@@ -42,5 +45,6 @@ export declare class App extends Application {
     };
     set edit(edit: boolean);
     get edit(): boolean;
+    on(event: keyof App["events"], cb: (el: Base) => void): void;
 }
 export declare function create(selector: string): App;

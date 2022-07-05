@@ -38,6 +38,7 @@ export class Base {
     if (this.app.selected != this) {
       this.app.selected = this;
       this.menu.open();
+      this.app.events["select"].forEach((cb) => cb(this));
       return true;
     }
     return false;
