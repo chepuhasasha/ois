@@ -1,19 +1,19 @@
-import { Container, InteractionEvent, IPointData, utils } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { MENU } from "./widgets/menu.widget";
 
 export class Base {
   app: App;
-  container = new Container();
+  container = new PIXI.Container();
   isSelected: boolean = false;
   menu: MENU;
   type: string;
   cursor: { x: number; y: number } = { x: 0, y: 0 };
   ref: string;
   _color: number;
-  start: IPointData;
-  end: IPointData;
+  start: PIXI.IPointData;
+  end: PIXI.IPointData;
   [key: string]: unknown;
   constructor({ ref, color, x, y, zIndex }: BaseOptions, app: App) {
     this.app = app;
@@ -45,14 +45,14 @@ export class Base {
   unselect() {
     this.menu.close();
   }
-  pointerDown(e: InteractionEvent) {
+  pointerDown(e: PIXI.InteractionEvent) {
     this.start = e.data.getLocalPosition(this.container.parent);
     this.container.alpha = 0.8;
     this.dragging = true;
     this.cursor = e.data.getLocalPosition(this.container);
     // this.container.zIndex = Object.keys(this.app.elementsService.refs).length;
   }
-  pointerUp(e: InteractionEvent) {
+  pointerUp(e: PIXI.InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
     if (this.start && this.start.x != this.x && this.start.y != this.y) {
@@ -61,14 +61,14 @@ export class Base {
     this.end = e.data.getLocalPosition(this.container.parent);
     this.select();
   }
-  pointerOut(e: InteractionEvent) {
+  pointerOut(e: PIXI.InteractionEvent) {
     this.container.alpha = 1;
     this.dragging = false;
     // this.app.configService.do();
     this.end = e.data.getLocalPosition(this.container.parent);
     this.select();
   }
-  pointerMove(e: InteractionEvent) {
+  pointerMove(e: PIXI.InteractionEvent) {
     if (this.dragging && this.app.move && this.app.edit) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       // this.x = newPosition.x - this.cursor.x;
@@ -102,7 +102,7 @@ export class Base {
     this.container.position.y = y;
   }
   set color(color: string) {
-    this._color = utils.string2hex(color);
+    this._color = PIXI.utils.string2hex(color);
   }
   set zIndex(i: number) {
     this.container.zIndex = i;

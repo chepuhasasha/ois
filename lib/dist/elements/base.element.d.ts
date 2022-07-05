@@ -1,10 +1,10 @@
-import { Container, InteractionEvent, IPointData } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { MENU } from "./widgets/menu.widget";
 export declare class Base {
     app: App;
-    container: Container;
+    container: PIXI.Container;
     isSelected: boolean;
     menu: MENU;
     type: string;
@@ -14,16 +14,16 @@ export declare class Base {
     };
     ref: string;
     _color: number;
-    start: IPointData;
-    end: IPointData;
+    start: PIXI.IPointData;
+    end: PIXI.IPointData;
     [key: string]: unknown;
     constructor({ ref, color, x, y, zIndex }: BaseOptions, app: App);
     select(): boolean;
     unselect(): void;
-    pointerDown(e: InteractionEvent): void;
-    pointerUp(e: InteractionEvent): void;
-    pointerOut(e: InteractionEvent): void;
-    pointerMove(e: InteractionEvent): void;
+    pointerDown(e: PIXI.InteractionEvent): void;
+    pointerUp(e: PIXI.InteractionEvent): void;
+    pointerOut(e: PIXI.InteractionEvent): void;
+    pointerMove(e: PIXI.InteractionEvent): void;
     get x(): number;
     set x(x: number);
     get y(): number;

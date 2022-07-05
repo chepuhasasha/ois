@@ -1,13 +1,15 @@
-import { Container, Texture, Sprite } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { Base } from "../base.element";
 
-export class MENU extends Container {
-  private delete: Sprite = new Sprite(Texture.from("deleteBTN"));
-  private copy: Sprite = new Sprite(Texture.from("copyBTN"));
-  private point: Sprite = new Sprite(Texture.from("pointBTN"));
-  private settings: Sprite = new Sprite(Texture.from("settingsBTN"));
-  private up: Sprite = new Sprite(Texture.from("upBTN"));
-  private down: Sprite = new Sprite(Texture.from("downBTN"));
+export class MENU extends PIXI.Container {
+  private delete: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.from("deleteBTN"));
+  private copy: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.from("copyBTN"));
+  private point: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.from("pointBTN"));
+  private settings: PIXI.Sprite = new PIXI.Sprite(
+    PIXI.Texture.from("settingsBTN")
+  );
+  private up: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.from("upBTN"));
+  private down: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.from("downBTN"));
   private el: Base;
   constructor(el: Base) {
     super();
@@ -78,10 +80,10 @@ export class MENU extends Container {
     this.down.x = -this.point.height;
   }
 
-  hover(e: Sprite) {
+  hover(e: PIXI.Sprite) {
     e.scale.set(0.9, 0.9);
   }
-  unhover(e: Sprite) {
+  unhover(e: PIXI.Sprite) {
     e.scale.set(1, 1);
   }
   close() {

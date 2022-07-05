@@ -1,8 +1,8 @@
-import { Container, Texture } from "pixi.js";
-export declare class SPRITE extends Container {
+import * as PIXI from "pixi.js";
+export declare class SPRITE extends PIXI.Container {
     private _sprite;
     private _offset;
     constructor();
     swing(): void;
-    set texture(texture: Texture);
+    set texture(texture: PIXI.Texture);
 }

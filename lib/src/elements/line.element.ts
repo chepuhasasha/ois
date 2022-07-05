@@ -1,11 +1,11 @@
-import { Graphics, InteractionData, utils } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
 import { Base } from "./base.element";
 
 export class LINE extends Base {
-  private _line: Graphics = new Graphics();
+  private _line: PIXI.Graphics = new PIXI.Graphics();
   private _props: LineProps;
 
   constructor(options: BaseOptions, app: App) {
@@ -93,7 +93,7 @@ export class LINE extends Base {
 
   private addPoints() {
     this._props.points.forEach((point) => {
-      const p = new Graphics();
+      const p = new PIXI.Graphics();
       // p.pivot.set(3, 3 / 1.6);
       p.position.set(point.x, point.y);
       p.lineStyle(2, 0xffffff, 0.3);
@@ -110,8 +110,8 @@ export class LINE extends Base {
     });
   }
 
-  dragPoint(p: Graphics, point: { x: number; y: number }) {
-    let data: InteractionData;
+  dragPoint(p: PIXI.Graphics, point: { x: number; y: number }) {
+    let data: PIXI.InteractionData;
     let drag = false;
     p.on("pointerdown", (e) => {
       data = e.data;
@@ -165,11 +165,11 @@ export class LINE extends Base {
   }
 
   get color() {
-    return utils.hex2string(this._color);
+    return PIXI.utils.hex2string(this._color);
   }
 
   set color(color: string) {
-    this._color = utils.string2hex(color);
+    this._color = PIXI.utils.string2hex(color);
     if (this._line) {
       this.setup();
     }

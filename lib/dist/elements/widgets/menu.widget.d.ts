@@ -1,6 +1,6 @@
-import { Container, Sprite } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { Base } from "../base.element";
-export declare class MENU extends Container {
+export declare class MENU extends PIXI.Container {
     private delete;
     private copy;
     private point;
@@ -9,8 +9,8 @@ export declare class MENU extends Container {
     private down;
     private el;
     constructor(el: Base);
-    hover(e: Sprite): void;
-    unhover(e: Sprite): void;
+    hover(e: PIXI.Sprite): void;
+    unhover(e: PIXI.Sprite): void;
     close(): void;
     open(): void;
 }

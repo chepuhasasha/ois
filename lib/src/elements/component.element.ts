@@ -1,11 +1,5 @@
 import { Base } from "./base.element";
-import {
-  Texture,
-  Graphics,
-  utils,
-  InteractionEvent,
-  TilingSprite,
-} from "pixi.js";
+import * as PIXI from "pixi.js";
 import { LABEL } from "./widgets/label.widget";
 import { SPRITE } from "./widgets/sprite.widget";
 import { BaseOptions } from "../interfaces/base.interface";
@@ -16,8 +10,8 @@ import {
 import { App } from "..";
 
 export class COMPONENT extends Base {
-  private selectTile = new TilingSprite(Texture.from("select"));
-  private selectGraphics = new Graphics();
+  private selectTile = new PIXI.TilingSprite(PIXI.Texture.from("select"));
+  private selectGraphics = new PIXI.Graphics();
   private _props: ComponentProps;
   private _sprite = new SPRITE();
   private _label = new LABEL();
@@ -79,7 +73,7 @@ export class COMPONENT extends Base {
   }
 
   private circle(x: number, y: number, offset: number = 0) {
-    const circle = new Graphics();
+    const circle = new PIXI.Graphics();
     let rad = offset;
     this.app.ticker.add((d) => {
       if (rad >= this._sprite.width) {
@@ -104,7 +98,7 @@ export class COMPONENT extends Base {
     this.selectGraphics.tint = this._color;
   }
 
-  pointerMove(e: InteractionEvent) {
+  pointerMove(e: PIXI.InteractionEvent) {
     if (this.dragging && this.app.move && this.app.edit) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       newPosition.x = newPosition.x - this.cursor.x;
@@ -127,7 +121,7 @@ export class COMPONENT extends Base {
 
   set props(props: ComponentProps) {
     this._props = props;
-    this._sprite.texture = Texture.from(`${props.name}`);
+    this._sprite.texture = PIXI.Texture.from(`${props.name}`);
     this._label.text = props.label;
     this.container.removeChildren();
     this.setup();
@@ -138,11 +132,11 @@ export class COMPONENT extends Base {
   }
 
   get color() {
-    return utils.hex2string(this._color);
+    return PIXI.utils.hex2string(this._color);
   }
 
   set color(color: string) {
-    this._color = utils.string2hex(color);
+    this._color = PIXI.utils.string2hex(color);
     if (this._label) {
       this._label.color = this._color;
       this.selectTile.tint = this._color;

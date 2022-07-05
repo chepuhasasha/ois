@@ -1,4 +1,4 @@
-import { Graphics } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
@@ -11,7 +11,7 @@ export declare class LINE extends Base {
     private segments;
     private setup;
     private addPoints;
-    dragPoint(p: Graphics, point: {
+    dragPoint(p: PIXI.Graphics, point: {
         x: number;
         y: number;
     }): void;
