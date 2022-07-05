@@ -4,13 +4,9 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import * as PIXI from "pixi.js";
 import { create } from "../../../../lib";
 import { config } from "./config";
 
-const scheme = ref<HTMLDivElement | null>(null);
-const selected = ref<string>("test");
-const test = computed(() => selected.value);
 onMounted(() => {
   const ois = create("#ois").load(config, (ois) => {
     // ois.on("select", (e) => {
@@ -50,4 +46,6 @@ onMounted(() => {
 #ois
   width: 100%,
   height: 100%
+  max-width: 100%,
+  max-height: 100%
 </style>
