@@ -101,12 +101,13 @@ export class MENU extends Container {
       this.addChild(this.up);
       this.addChild(this.down);
       this.point.x = -this.point.height;
+      this.pivot.set(this.point.height / 2, this.height - 20);
     } else {
       this.addChild(this.point);
       this.point.x = 0;
+      this.pivot.set(0, 0);
     }
     this.zIndex = this.el.app.container.children.length;
-    this.pivot.set(this.point.height / 2, this.height - 20);
     this.position.set(this.el.x, this.el.y);
   }
 }
