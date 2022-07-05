@@ -1,5 +1,11 @@
 import { Base } from "./base.element";
-import { Graphics, Texture, TilingSprite, utils } from "pixi.js";
+import {
+  Graphics,
+  InteractionData,
+  Texture,
+  TilingSprite,
+  utils,
+} from "pixi.js";
 import { BaseOptions } from "../interfaces/base.interface";
 import { PlaneProps, PlaneConfig } from "../interfaces/plane.interface";
 import { App } from "..";
@@ -8,14 +14,17 @@ export class PLANE extends Base {
   private _plane: Graphics = new Graphics();
   private _planeTile = new TilingSprite(Texture.from("select"));
   private _props: PlaneProps;
+  private point = new Graphics();
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);
     this.container.addChild(this._plane);
+    this.point.interactive = true;
     this.type = "plane";
     this.app.ticker.add((d) => {
       this._planeTile.tilePosition.x += d / 2;
     });
+    this.dragPoint();
   }
 
   private setup() {
@@ -42,6 +51,69 @@ export class PLANE extends Base {
     this._planeTile.alpha = 0.4;
     this._planeTile.skew.set(-1.03, (31 * Math.PI) / 180);
     this.container.addChild(this._planeTile);
+    this.point.position.set(b + B, -a + A);
+  }
+
+  select() {
+    if (super.select()) {
+      this.container.addChild(this.point);
+      return true;
+    }
+    return false;
+  }
+  unselect() {
+    super.unselect();
+    this.container.removeChild(this.point);
+  }
+
+  dragPoint() {
+    this.point.lineStyle(2, 0xffffff, 0.3);
+    this.point.moveTo(0, 0);
+    this.point.lineTo(0, -20);
+    this.point.lineStyle(0, 0);
+    this.point.beginFill(0xffffff, 0.2);
+    this.point.drawEllipse(0, 0, 25, 25 / 1.6);
+    this.point.endFill();
+    let data: InteractionData;
+    let drag = false;
+    let start: { x: number; y: number } = { x: 0, y: 0 };
+    this.point
+      .on("pointerdown", (e) => {
+        data = e.data;
+        drag = true;
+        this.app.move = false;
+        this.start = data.getLocalPosition(this.point.parent);
+        this.setup();
+      })
+      .on("pointerup", () => {
+        drag = false;
+        this.app.move = true;
+        this.app.configService.do();
+      })
+      .on("pointerupoutside", () => {
+        drag = false;
+        this.app.move = true;
+        this.app.configService.do();
+      })
+      .on("pointermove", () => {
+        if (drag) {
+          const end = data.getLocalPosition(this.point.parent);
+          if (end.x - start.x > 0 || end.y - start.y > 0) {
+            this.props.h += 1;
+            this.props.w += 1;
+          } else {
+            this.props.h -= 1;
+            this.props.w -= 1;
+          }
+          start = end;
+          // newp.x = newp.x - (newp.x % 25);
+          // newp.y = newp.y - (newp.y % 15);
+          // const rad = (31 * Math.PI) / 180;
+          // this.props.w += 1;
+          // this.props.h += 1;
+          this.setup();
+        }
+      });
   }
 
   set props(props: PlaneProps) {

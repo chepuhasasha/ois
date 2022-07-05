@@ -69,7 +69,7 @@ export class Base {
     this.select();
   }
   pointerMove(e: InteractionEvent) {
-    if (this.dragging && this.app.tools.move) {
+    if (this.dragging && this.app.move) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       // this.x = newPosition.x - this.cursor.x;
       // this.y = newPosition.y - this.cursor.y;

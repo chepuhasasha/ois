@@ -1,4 +1,4 @@
-import { Container, Texture, Sprite, InteractionEvent } from "pixi.js";
+import { Container, Texture, Sprite } from "pixi.js";
 import { Base } from "../base.element";
 
 export class MENU extends Container {
@@ -25,6 +25,12 @@ export class MENU extends Container {
     this.settings.interactive = true;
     this.up.interactive = true;
     this.down.interactive = true;
+    this.point.buttonMode = true;
+    this.delete.buttonMode = true;
+    this.copy.buttonMode = true;
+    this.settings.buttonMode = true;
+    this.up.buttonMode = true;
+    this.down.buttonMode = true;
 
     this.point.on("pointerover", () => this.hover(this.point));
     this.point.on("pointerout", () => this.unhover(this.point));

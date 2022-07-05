@@ -24,15 +24,8 @@ export class App extends Application {
   public loader: Loader;
   private div: Element;
   public background: Background;
-  public tools: {
-    edit: boolean;
-    move: boolean;
-    line: boolean;
-  } = {
-    edit: true,
-    move: true,
-    line: false,
-  };
+  public edit: boolean = true;
+  public move: boolean = true;
 
   constructor(selector: string) {
     super({ antialias: true, backgroundColor: 0x000000 });
@@ -58,7 +51,7 @@ export class App extends Application {
 
   private keyboard() {
     document.addEventListener("keydown", (e) => {
-      if (this.tools.edit && e.code === "Delete" && this.selected) {
+      if (this.edit && e.code === "Delete" && this.selected) {
         this.elementsService.remove(this.selected.ref);
       }
       if (e.code === "KeyC" && e.ctrlKey && this._selected) {

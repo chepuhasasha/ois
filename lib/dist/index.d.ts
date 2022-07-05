@@ -25,11 +25,8 @@ export declare class App extends Application {
     loader: Loader;
     private div;
     background: Background;
-    tools: {
-        edit: boolean;
-        move: boolean;
-        line: boolean;
-    };
+    edit: boolean;
+    move: boolean;
     constructor(selector: string);
     setup(): void;
     private keyboard;

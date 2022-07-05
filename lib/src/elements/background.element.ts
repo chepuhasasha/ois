@@ -57,12 +57,10 @@ export class Background {
   pointerDown(e: InteractionEvent) {
     if (this.app.selected) {
       this.app.selected = null;
-      // this.app.selected.unselect();
     }
-    if (!this.app.tools.line) {
-      this.start = e.data.getLocalPosition(this.tile.parent);
-      this.dragging = true;
-    }
+
+    this.start = e.data.getLocalPosition(this.tile.parent);
+    this.dragging = true;
   }
   pointerUp() {
     this.dragging = false;

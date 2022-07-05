@@ -116,17 +116,17 @@ export class LINE extends Base {
     p.on("pointerdown", (e) => {
       data = e.data;
       drag = true;
-      this.app.tools.move = false;
+      this.app.move = false;
       this.setup();
     })
       .on("pointerup", () => {
         drag = false;
-        this.app.tools.move = true;
+        this.app.move = true;
         this.app.configService.do();
       })
       .on("pointerupoutside", () => {
         drag = false;
-        this.app.tools.move = true;
+        this.app.move = true;
         this.app.configService.do();
       })
       .on("pointermove", () => {
