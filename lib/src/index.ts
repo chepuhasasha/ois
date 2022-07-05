@@ -24,7 +24,7 @@ export class App extends Application {
   public loader: Loader;
   private div: Element;
   public background: Background;
-  public edit: boolean = true;
+  public edit: boolean = false;
   public move: boolean = true;
 
   constructor(selector: string) {

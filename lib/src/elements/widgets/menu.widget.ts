@@ -93,12 +93,18 @@ export class MENU extends Container {
     this.removeChild(this.down);
   }
   open() {
-    this.addChild(this.point);
-    this.addChild(this.delete);
-    this.addChild(this.copy);
-    this.addChild(this.settings);
-    this.addChild(this.up);
-    this.addChild(this.down);
+    if (this.el.app.edit) {
+      this.addChild(this.point);
+      this.addChild(this.delete);
+      this.addChild(this.copy);
+      this.addChild(this.settings);
+      this.addChild(this.up);
+      this.addChild(this.down);
+      this.point.x = -this.point.height;
+    } else {
+      this.addChild(this.point);
+      this.point.x = 0;
+    }
     this.zIndex = this.el.app.container.children.length;
     this.pivot.set(this.point.height / 2, this.height - 20);
     this.position.set(this.el.x, this.el.y);

@@ -105,7 +105,7 @@ export class COMPONENT extends Base {
   }
 
   pointerMove(e: InteractionEvent) {
-    if (this.dragging && this.app.move) {
+    if (this.dragging && this.app.move && this.app.edit) {
       const newPosition = e.data.getLocalPosition(this.container.parent);
       newPosition.x = newPosition.x - this.cursor.x;
       newPosition.y =
