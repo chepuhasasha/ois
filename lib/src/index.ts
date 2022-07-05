@@ -24,7 +24,7 @@ export class App extends Application {
   public loader: Loader;
   private div: Element;
   public background: Background;
-  public edit: boolean = false;
+  public _edit: boolean = true;
   public move: boolean = true;
 
   constructor(selector: string) {
@@ -140,13 +140,16 @@ export class App extends Application {
     return this.elementsService.refs;
   }
 
-  // get tools() {
-  //   return this.mouseService.tools;
-  // }
+  set edit(edit: boolean) {
+    this._edit = edit;
+    if (this.selected) {
+      this.selected.menu.close();
+    }
+  }
 
-  // on(event: keyof MouseService["events"], cb: (e: Base) => void) {
-  //   this.mouseService.events[event].push(cb);
-  // }
+  get edit() {
+    return this._edit;
+  }
 }
 
 export function create(selector: string) {

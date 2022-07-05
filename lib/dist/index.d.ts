@@ -25,7 +25,7 @@ export declare class App extends Application {
     loader: Loader;
     private div;
     background: Background;
-    edit: boolean;
+    _edit: boolean;
     move: boolean;
     constructor(selector: string);
     setup(): void;
@@ -40,5 +40,7 @@ export declare class App extends Application {
     get refs(): {
         [key: string]: import("./elements/component.element").COMPONENT | import("./elements/line.element").LINE | import("./elements/text.element").TEXT | import("./elements/plane.element").PLANE;
     };
+    set edit(edit: boolean);
+    get edit(): boolean;
 }
 export declare function create(selector: string): App;
