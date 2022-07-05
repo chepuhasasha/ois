@@ -1,4 +1,4 @@
-const config = {
+export const config = {
   offset: {
     x: 200,
     y: 0,

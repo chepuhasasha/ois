@@ -1,13 +1,13 @@
-import * as PIXI from "pixi.js";
+import { InteractionEvent, Texture, TilingSprite } from "pixi.js";
 import { App } from "..";
 
 export class Background {
-  public tile: PIXI.TilingSprite;
+  public tile: TilingSprite;
   private start: { x: number; y: number };
   private dragging: boolean;
   constructor(private app: App) {
-    this.tile = new PIXI.TilingSprite(
-      PIXI.Texture.from("bg"),
+    this.tile = new TilingSprite(
+      Texture.from("bg"),
       this.app.screen.width,
       this.app.screen.height
     );
@@ -54,7 +54,7 @@ export class Background {
     }
   }
 
-  pointerDown(e: PIXI.InteractionEvent) {
+  pointerDown(e: InteractionEvent) {
     if (this.app.selected) {
       this.app.selected = null;
     }
@@ -68,7 +68,7 @@ export class Background {
   // pointerOut() {
   //   this.dragging = false;
   // }
-  pointerMove(e: PIXI.InteractionEvent) {
+  pointerMove(e: InteractionEvent) {
     if (this.dragging) {
       const newPosition = e.data.getLocalPosition(this.tile.parent);
       const x = newPosition.x - this.start.x;

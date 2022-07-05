@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application, Container, Loader } from "pixi.js";
 import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
@@ -12,17 +12,17 @@ declare global {
         interactive: boolean;
     }
 }
-export declare class App extends PIXI.Application {
+export declare class App extends Application {
     offset: {
         x: number;
         y: number;
     };
     elementsService: ElementsService;
     configService: ConfigService;
-    container: PIXI.Container;
+    container: Container;
     private _selected;
     copy: Base;
-    loader: PIXI.Loader;
+    loader: Loader;
     private div;
     background: Background;
     _edit: boolean;

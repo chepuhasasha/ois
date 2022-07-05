@@ -1,7 +1,7 @@
-import * as PIXI from "pixi.js";
+import { Container, Sprite, Texture } from "pixi.js";
 
-export class SPRITE extends PIXI.Container {
-  private _sprite: PIXI.Sprite;
+export class SPRITE extends Container {
+  private _sprite: Sprite;
   private _offset: number;
   constructor() {
     super();
@@ -21,9 +21,9 @@ export class SPRITE extends PIXI.Container {
     });
   }
 
-  set texture(texture: PIXI.Texture) {
+  set texture(texture: Texture) {
     this.removeChildren();
-    this._sprite = new PIXI.Sprite(texture);
+    this._sprite = new Sprite(texture);
     this.addChild(this._sprite);
     this.pivot.set(this._sprite.width / 2, 0);
   }

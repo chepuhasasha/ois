@@ -1,13 +1,13 @@
-import * as PIXI from "pixi.js";
+import { InteractionEvent, TilingSprite } from "pixi.js";
 import { App } from "..";
 export declare class Background {
     private app;
-    tile: PIXI.TilingSprite;
+    tile: TilingSprite;
     private start;
     private dragging;
     constructor(app: App);
     moveToOffset(d: number): void;
-    pointerDown(e: PIXI.InteractionEvent): void;
+    pointerDown(e: InteractionEvent): void;
     pointerUp(): void;
-    pointerMove(e: PIXI.InteractionEvent): void;
+    pointerMove(e: InteractionEvent): void;
 }

@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import { Graphics, Text, TextStyle, Container } from "pixi.js";
 
-export class LABEL extends PIXI.Container {
+export class LABEL extends Container {
   private _color: number;
   private _text: string = "";
-  private _labelText: PIXI.Text;
-  private _label = new PIXI.Graphics();
-  private _style = new PIXI.TextStyle({
+  private _labelText: Text;
+  private _label = new Graphics();
+  private _style = new TextStyle({
     letterSpacing: 1,
     fontSize: 14,
     fill: "#A2A3A7",
@@ -15,7 +15,7 @@ export class LABEL extends PIXI.Container {
   });
   constructor() {
     super();
-    this._labelText = new PIXI.Text("", this._style);
+    this._labelText = new Text("", this._style);
     this._labelText.x = 16;
     this._labelText.y = 4;
     this.addChild(this._label);

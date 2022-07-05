@@ -1,5 +1,5 @@
-import * as PIXI from "pixi.js";
-export declare class LABEL extends PIXI.Container {
+import { Container } from "pixi.js";
+export declare class LABEL extends Container {
     private _color;
     private _text;
     private _labelText;

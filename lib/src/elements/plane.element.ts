@@ -1,14 +1,20 @@
 import { Base } from "./base.element";
-import * as PIXI from "pixi.js";
+import {
+  Graphics,
+  InteractionData,
+  Texture,
+  TilingSprite,
+  utils,
+} from "pixi.js";
 import { BaseOptions } from "../interfaces/base.interface";
 import { PlaneProps, PlaneConfig } from "../interfaces/plane.interface";
 import { App } from "..";
 
 export class PLANE extends Base {
-  private _plane: PIXI.Graphics = new PIXI.Graphics();
-  private _planeTile = new PIXI.TilingSprite(PIXI.Texture.from("select"));
+  private _plane: Graphics = new Graphics();
+  private _planeTile = new TilingSprite(Texture.from("select"));
   private _props: PlaneProps;
-  private point = new PIXI.Graphics();
+  private point = new Graphics();
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);
@@ -68,7 +74,7 @@ export class PLANE extends Base {
     this.point.beginFill(0xffffff, 0.2);
     this.point.drawEllipse(0, 0, 25, 25 / 1.6);
     this.point.endFill();
-    let data: PIXI.InteractionData;
+    let data: InteractionData;
     let drag = false;
     let start: { x: number; y: number } = { x: 0, y: 0 };
     this.point
@@ -120,11 +126,11 @@ export class PLANE extends Base {
   }
 
   get color() {
-    return PIXI.utils.hex2string(this._color);
+    return utils.hex2string(this._color);
   }
 
   set color(color: string) {
-    this._color = PIXI.utils.string2hex(color);
+    this._color = utils.string2hex(color);
     if (this._plane) {
       this.setup();
     }

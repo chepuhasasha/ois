@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import { utils, Text, TextStyleFontWeight } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { TextConfig, TextProps } from "../interfaces/text.interface";
 import { Base } from "./base.element";
 
 export class TEXT extends Base {
-  private _text = new PIXI.Text("");
+  private _text = new Text("");
   private _props: TextProps;
   constructor(options: BaseOptions, app: App) {
     super(options, app);
@@ -16,8 +16,7 @@ export class TEXT extends Base {
     if (this._props.skew) {
       this._text.skew.set(-1.03, (31 * Math.PI) / 180);
     }
-    this._text.style.fontWeight = this._props
-      .fontWidth as PIXI.TextStyleFontWeight;
+    this._text.style.fontWeight = this._props.fontWidth as TextStyleFontWeight;
     this._text.style.fontSize = this._props.fontSize;
     this._text.style.fill = this._color;
     this._text.text = this._props.text;
@@ -40,11 +39,11 @@ export class TEXT extends Base {
   }
 
   get color() {
-    return PIXI.utils.hex2string(this._color);
+    return utils.hex2string(this._color);
   }
 
   set color(color: string) {
-    this._color = PIXI.utils.string2hex(color);
+    this._color = utils.string2hex(color);
     if (this._text) {
       this._text.style.fill = this._color;
     }

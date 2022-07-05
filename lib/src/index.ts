@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application, Container, Loader } from "pixi.js";
 import type { Config } from "./interfaces/config.interface";
 import { Base } from "./elements/base.element";
 import { ElementsService } from "./services/elements.service";
@@ -14,14 +14,14 @@ declare global {
     interactive: boolean;
   }
 }
-export class App extends PIXI.Application {
+export class App extends Application {
   public offset: { x: number; y: number } = { x: 0, y: 0 };
   public elementsService = new ElementsService(this);
   public configService = new ConfigService(this);
-  public container = new PIXI.Container();
+  public container = new Container();
   private _selected: Base;
   public copy: Base;
-  public loader: PIXI.Loader;
+  public loader: Loader;
   private div: Element;
   public background: Background;
   public _edit: boolean = true;
@@ -35,7 +35,7 @@ export class App extends PIXI.Application {
       document.body.appendChild(this.div);
     }
     this.div.appendChild(this.view);
-    this.loader = PIXI.Loader.shared;
+    this.loader = Loader.shared;
     this.container.sortableChildren = true;
     this.keyboard();
     return this;
