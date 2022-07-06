@@ -6,15 +6,17 @@ import { Base } from "./base.element";
 export declare class LINE extends Base {
     private _line;
     private _props;
+    private editPoints;
     constructor(options: BaseOptions, app: App);
     private pointInLine;
     private segments;
     private setup;
     private addPoints;
+    private point;
     dragPoint(p: Graphics, point: {
         x: number;
         y: number;
-    }): void;
+    }, furcateIndex?: number): void;
     select(): boolean;
     unselect(): void;
     set props(props: LineProps);
