@@ -16,6 +16,7 @@ export class LINE extends Base {
   private _props: LineProps;
   private editPoints: Graphics[] = [];
   private deleteBTN = new Sprite(Texture.from("deleteBTN"));
+  private plusBTN = new Sprite(Texture.from("plusBTN"));
   private selectedPoint: {
     graphics: Graphics;
     point: { x: number; y: number };
@@ -31,6 +32,30 @@ export class LINE extends Base {
     this.deleteBTN.buttonMode = true;
     this.deleteBTN.alpha = 0.5;
     this.deleteBTN.scale.set(0.8, 0.8);
+    this.plusBTN.interactive = true;
+    this.plusBTN.buttonMode = true;
+    this.plusBTN.alpha = 0.5;
+    this.plusBTN.scale.set(0.8, 0.8);
+    this.plusBTN.on("pointerdown", (e) => {
+      this._props.points.push({ x: this.plusBTN.x, y: this.plusBTN.y });
+      this.removePoints();
+      this.addEditPoints();
+      this.drawLine();
+      this.editPoints[this.editPoints.length - 1].emit(
+        "pointerdown",
+        e,
+        this.editPoints[this.editPoints.length - 1],
+        this._props.points[this._props.points.length - 1]
+      );
+      // this.selectPoint(this.editPoints.pop(), this._props.points.pop(), e);
+      this.container.removeChild(this.plusBTN);
+    });
+    this.plusBTN.on("pointerover", () => {
+      this.plusBTN.alpha = 1;
+    });
+    this.plusBTN.on("pointerout", () => {
+      this.plusBTN.alpha = 0.5;
+    });
     this.deleteBTN.on("pointerdown", () => {
       if (this.selectedPoint) {
         this.deletePoint(this.selectedPoint.point);
@@ -140,7 +165,7 @@ export class LINE extends Base {
       const p = this.point(point.x, point.y);
       this.container.addChild(p);
       this.editPoints.push(p);
-      p.on("pointerdown", (e) => this.pointDown(p, point, e));
+      p.on("pointerdown", (e) => this.pointDown(e, p, point));
       p.on("pointerup", () => this.pointUp());
       p.on("pointerupoutside", () => this.pointUp());
       p.on("pointermove", () => this.pointMove());
@@ -194,26 +219,38 @@ export class LINE extends Base {
     this.removePoints();
     this.addEditPoints();
     this.drawLine();
+    this.menu.position.set(
+      this._props.points[0].x + this.x - 20,
+      this._props.points[0].y + this.y - 20
+    );
   }
 
   private pointDown(
+    e: InteractionEvent,
     graphics: Graphics,
-    point: { x: number; y: number },
-    e: InteractionEvent
+    point: { x: number; y: number }
   ) {
+    this.menu.close();
     this.app.move = false;
     this.selectPoint(graphics, point, e);
   }
 
   private pointUp() {
+    this.container.addChild(this.deleteBTN);
     this.app.move = true;
     if (this.selectedPoint) this.selectedPoint.drag = false;
     this.removePoints();
     this.addEditPoints();
+    this.menu.open();
+    this.menu.position.set(
+      this._props.points[0].x + this.x - 20,
+      this._props.points[0].y + this.y - 20
+    );
   }
 
   private pointMove() {
     if (this.selectedPoint && this.selectedPoint.drag) {
+      this.container.removeChild(this.deleteBTN);
       const newCoords = this.selectedPoint.data.getLocalPosition(
         this.selectedPoint.graphics.parent
       );
@@ -244,10 +281,6 @@ export class LINE extends Base {
           arr[i + 1].y = this.pointInLine(arr[i + 2], newCoords).y;
         }
       });
-      this.menu.position.set(
-        this._props.points[0].x + this.x - 20,
-        this._props.points[0].y + this.y - 20
-      );
       this.deleteBTN.position.set(newCoords.x, newCoords.y);
       this.drawLine();
     }
@@ -275,6 +308,10 @@ export class LINE extends Base {
       data: e.data,
       drag: true,
     };
+    if (this._props.points.length - 1 === this._props.points.indexOf(point)) {
+      this.plusBTN.position.set(point.x + 40, point.y);
+      this.container.addChild(this.plusBTN);
+    }
     this.deleteBTN.position.set(point.x, point.y);
     this.container.addChild(this.deleteBTN);
   }
@@ -282,6 +319,7 @@ export class LINE extends Base {
   unselectPoint() {
     this.selectedPoint = null;
     this.container.removeChild(this.deleteBTN);
+    this.container.removeChild(this.plusBTN);
   }
 
   select() {

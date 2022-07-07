@@ -8,6 +8,7 @@ export declare class LINE extends Base {
     private _props;
     private editPoints;
     private deleteBTN;
+    private plusBTN;
     private selectedPoint;
     constructor(options: BaseOptions, app: App);
     private pointInLine;
