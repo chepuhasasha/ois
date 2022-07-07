@@ -1,4 +1,11 @@
-import { Graphics, InteractionData, Sprite, Texture, utils } from "pixi.js";
+import {
+  Graphics,
+  InteractionData,
+  InteractionEvent,
+  Sprite,
+  Texture,
+  utils,
+} from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
@@ -8,6 +15,11 @@ export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
   private editPoints: Graphics[] = [];
+  private selectedPoint: {
+    graphics: Graphics;
+    point: { x: number; y: number };
+    data: InteractionData;
+  } | null;
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);
@@ -72,7 +84,7 @@ export class LINE extends Base {
     }, []);
   }
 
-  private setup() {
+  private drawLine() {
     this._line.clear();
     this._line.lineStyle(this._props.width, this._color, 1);
     this.segments(this._props.points, this._props.radius).forEach((segment) => {
@@ -106,116 +118,144 @@ export class LINE extends Base {
     this._line.closePath();
   }
 
-  private addPoints() {
+  private addEditPoints() {
     this._props.points.forEach((point, i, arr) => {
       const p = this.point(point.x, point.y);
-      this.dragPoint(p, point);
       this.container.addChild(p);
       this.editPoints.push(p);
+      p.on("pointerdown", (e) => this.pointDown(p, point, e));
+      p.on("pointerup", () => this.pointUp());
+      p.on("pointerupoutside", () => this.pointOut());
+      p.on("pointermove", () => this.pointMove());
       if (arr[i + 1]) {
         const center = this.pointInLine(point, arr[i + 1]);
         const centerPoint = this.point(center.x, center.y, true);
         this.editPoints.push(centerPoint);
         this.container.addChild(centerPoint);
-        this.dragPoint(centerPoint, center, i + 1);
+        centerPoint.on("pointerdown", (e) => this.centerDown(center, e, i + 1));
       }
     });
   }
+
   private point(x: number, y: number, center?: boolean) {
     const point = new Graphics();
     point.position.set(x, y);
-    point.lineStyle(2, 0xffffff, 0.3);
-    point.moveTo(0, 0);
-    point.lineTo(0, -20);
-    point.lineStyle(0, 0);
-    point.beginFill(0xffffff, 0.2);
+    point.beginFill(0xffffff, center ? 0.05 : 0.2);
     point.drawEllipse(0, 0, center ? 16 : 25, center ? 16 / 1.6 : 25 / 1.6);
     point.endFill();
+    point.lineStyle(2, 0xffffff, 0.5);
+    if (center) {
+      point.moveTo(-10, -10 / 1.6);
+      point.lineTo(10, 10 / 1.6);
+      point.moveTo(10, -10 / 1.6);
+      point.lineTo(-10, 10 / 1.6);
+    } else {
+      point.moveTo(0, 0);
+      point.lineTo(0, -20);
+    }
+    point.lineStyle(0, 0);
     point.interactive = true;
     point.buttonMode = true;
     return point;
   }
 
-  dragPoint(
-    p: Graphics,
+  private removePoints() {
+    this.editPoints.forEach((p) => {
+      this.container.removeChild(p);
+    });
+    this.editPoints = [];
+  }
+
+  private pointDown(
+    graphics: Graphics,
     point: { x: number; y: number },
-    furcateIndex?: number
+    e: InteractionEvent
   ) {
-    let data: InteractionData;
-    let drag = false;
-    p.on("pointerdown", (e) => {
-      data = e.data;
-      drag = true;
-      this.app.move = false;
-      if (furcateIndex) {
-        this._props.points.splice(furcateIndex, 0, point);
-        this.editPoints.forEach((p) => this.container.removeChild(p));
-        this.editPoints = [];
-        this.addPoints();
-      }
-      this.setup();
-    })
-      .on("pointerup", () => {
-        drag = false;
-        this.app.move = true;
-        this.app.configService.do();
-        this.editPoints.forEach((p) => this.container.removeChild(p));
-        this.editPoints = [];
-        this.addPoints();
-      })
-      .on("pointerupoutside", () => {
-        drag = false;
-        this.app.move = true;
-        this.app.configService.do();
-      })
-      .on("pointermove", () => {
-        if (drag) {
-          const newp = data.getLocalPosition(p.parent);
-          newp.x = newp.x - (newp.x % 25);
-          newp.y = newp.y - (newp.y % 15);
-          if (furcateIndex) {
-            point = this._props.points[furcateIndex];
-          } else {
-            this.editPoints.forEach((el, i, arr) => {
-              if (el === p && i > 0 && i < arr.length - 1) {
-                arr[i - 1].x = this.pointInLine(arr[i - 2], p).x;
-                arr[i - 1].y = this.pointInLine(arr[i - 2], p).y;
-                arr[i + 1].x = this.pointInLine(arr[i + 2], p).x;
-                arr[i + 1].y = this.pointInLine(arr[i + 2], p).y;
-              } else if (el === p && i === arr.length - 1) {
-                arr[i - 1].x = this.pointInLine(arr[i - 2], p).x;
-                arr[i - 1].y = this.pointInLine(arr[i - 2], p).y;
-              } else if (el === p && i === 0) {
-                arr[i + 1].x = this.pointInLine(arr[i + 2], p).x;
-                arr[i + 1].y = this.pointInLine(arr[i + 2], p).y;
-              }
-            });
-          }
-          point.x = newp.x;
-          p.position.x = newp.x;
-          point.y = newp.y;
-          p.position.y = newp.y;
-          this.setup();
+    this.app.move = false;
+    this.selectedPoint = {
+      graphics,
+      point,
+      data: e.data,
+    };
+  }
+
+  private pointUp() {
+    this.app.move = true;
+    this.selectedPoint = null;
+    this.removePoints();
+    this.addEditPoints();
+  }
+
+  private pointMove() {
+    if (this.selectedPoint) {
+      const newCoords = this.selectedPoint.data.getLocalPosition(
+        this.selectedPoint.graphics.parent
+      );
+      newCoords.x = newCoords.x - (newCoords.x % 25);
+      newCoords.y = newCoords.y - (newCoords.y % 15);
+      this.selectedPoint.graphics.x = newCoords.x;
+      this.selectedPoint.graphics.y = newCoords.y;
+      this.selectedPoint.point.x = newCoords.x;
+      this.selectedPoint.point.y = newCoords.y;
+      this.editPoints.forEach((point, i, arr) => {
+        if (
+          point === this.selectedPoint.graphics &&
+          i > 0 &&
+          i < arr.length - 1
+        ) {
+          arr[i - 1].x = this.pointInLine(arr[i - 2], newCoords).x;
+          arr[i - 1].y = this.pointInLine(arr[i - 2], newCoords).y;
+          arr[i + 1].x = this.pointInLine(arr[i + 2], newCoords).x;
+          arr[i + 1].y = this.pointInLine(arr[i + 2], newCoords).y;
+        } else if (
+          point === this.selectedPoint.graphics &&
+          i === arr.length - 1
+        ) {
+          arr[i - 1].x = this.pointInLine(arr[i - 2], newCoords).x;
+          arr[i - 1].y = this.pointInLine(arr[i - 2], newCoords).y;
+        } else if (point === this.selectedPoint.graphics && i === 0) {
+          arr[i + 1].x = this.pointInLine(arr[i + 2], newCoords).x;
+          arr[i + 1].y = this.pointInLine(arr[i + 2], newCoords).y;
         }
       });
+      this.drawLine();
+    }
+  }
+
+  private pointOut() {
+    this.selectedPoint = null;
+    this.removePoints();
+    this.addEditPoints();
+  }
+
+  private centerDown(
+    point: { x: number; y: number },
+    e: InteractionEvent,
+    i: number
+  ) {
+    this._props.points.splice(i, 0, point);
+    this.removePoints();
+    this.addEditPoints();
+    // this.editPoints[i + 2].emit("pointerdown", e);
   }
 
   select() {
     if (super.select()) {
-      this.addPoints();
+      this.addEditPoints();
       return true;
     }
     return false;
   }
+
   unselect() {
     super.unselect();
-    this.editPoints.forEach((p) => this.container.removeChild(p));
-    this.editPoints = [];
+    this.removePoints();
+    this.app.move = true;
   }
 
   set props(props: LineProps) {
     this._props = props;
-    if (this._line) this.setup();
+    if (this._line) this.drawLine();
   }
 
   get props() {
@@ -229,7 +269,7 @@ export class LINE extends Base {
   set color(color: string) {
     this._color = utils.string2hex(color);
     if (this._line) {
-      this.setup();
+      this.drawLine();
     }
   }
 

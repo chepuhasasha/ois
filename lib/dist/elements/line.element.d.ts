@@ -1,4 +1,3 @@
-import { Graphics } from "pixi.js";
 import { App } from "..";
 import { BaseOptions } from "../interfaces/base.interface";
 import { LineProps, LineConfig } from "../interfaces/line.interface";
@@ -7,16 +6,19 @@ export declare class LINE extends Base {
     private _line;
     private _props;
     private editPoints;
+    private selectedPoint;
     constructor(options: BaseOptions, app: App);
     private pointInLine;
     private segments;
-    private setup;
-    private addPoints;
+    private drawLine;
+    private addEditPoints;
     private point;
-    dragPoint(p: Graphics, point: {
-        x: number;
-        y: number;
-    }, furcateIndex?: number): void;
+    private removePoints;
+    private pointDown;
+    private pointUp;
+    private pointMove;
+    private pointOut;
+    private centerDown;
     select(): boolean;
     unselect(): void;
     set props(props: LineProps);
