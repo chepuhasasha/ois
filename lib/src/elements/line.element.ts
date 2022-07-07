@@ -149,6 +149,9 @@ export class LINE extends Base {
       this.app.move = false;
       if (furcateIndex) {
         this._props.points.splice(furcateIndex, 0, point);
+        this.editPoints.forEach((p) => this.container.removeChild(p));
+        this.editPoints = [];
+        this.addPoints();
       }
       this.setup();
     })
@@ -172,6 +175,21 @@ export class LINE extends Base {
           newp.y = newp.y - (newp.y % 15);
           if (furcateIndex) {
             point = this._props.points[furcateIndex];
+          } else {
+            this.editPoints.forEach((el, i, arr) => {
+              if (el === p && i > 0 && i < arr.length - 1) {
+                arr[i - 1].x = this.pointInLine(arr[i - 2], p).x;
+                arr[i - 1].y = this.pointInLine(arr[i - 2], p).y;
+                arr[i + 1].x = this.pointInLine(arr[i + 2], p).x;
+                arr[i + 1].y = this.pointInLine(arr[i + 2], p).y;
+              } else if (el === p && i === arr.length - 1) {
+                arr[i - 1].x = this.pointInLine(arr[i - 2], p).x;
+                arr[i - 1].y = this.pointInLine(arr[i - 2], p).y;
+              } else if (el === p && i === 0) {
+                arr[i + 1].x = this.pointInLine(arr[i + 2], p).x;
+                arr[i + 1].y = this.pointInLine(arr[i + 2], p).y;
+              }
+            });
           }
           point.x = newp.x;
           p.position.x = newp.x;
