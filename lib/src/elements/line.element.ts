@@ -15,16 +15,33 @@ export class LINE extends Base {
   private _line: Graphics = new Graphics();
   private _props: LineProps;
   private editPoints: Graphics[] = [];
+  private deleteBTN = new Sprite(Texture.from("deleteBTN"));
   private selectedPoint: {
     graphics: Graphics;
     point: { x: number; y: number };
     data: InteractionData;
+    drag: boolean;
   } | null;
 
   constructor(options: BaseOptions, app: App) {
     super(options, app);
     this.container.addChild(this._line);
     this.type = "line";
+    this.deleteBTN.interactive = true;
+    this.deleteBTN.buttonMode = true;
+    this.deleteBTN.alpha = 0.5;
+    this.deleteBTN.scale.set(0.8, 0.8);
+    this.deleteBTN.on("pointerdown", () => {
+      if (this.selectedPoint) {
+        this.deletePoint(this.selectedPoint.point);
+      }
+    });
+    this.deleteBTN.on("pointerover", () => {
+      this.deleteBTN.alpha = 1;
+    });
+    this.deleteBTN.on("pointerout", () => {
+      this.deleteBTN.alpha = 0.5;
+    });
   }
 
   private pointInLine(
@@ -125,7 +142,7 @@ export class LINE extends Base {
       this.editPoints.push(p);
       p.on("pointerdown", (e) => this.pointDown(p, point, e));
       p.on("pointerup", () => this.pointUp());
-      p.on("pointerupoutside", () => this.pointOut());
+      p.on("pointerupoutside", () => this.pointUp());
       p.on("pointermove", () => this.pointMove());
       if (arr[i + 1]) {
         const center = this.pointInLine(point, arr[i + 1]);
@@ -166,28 +183,37 @@ export class LINE extends Base {
     this.editPoints = [];
   }
 
+  private deletePoint(point: { x: number; y: number }) {
+    if (this._props.points.length === 2) {
+      this.app.elementsService.remove(this.ref);
+      return;
+    }
+    this.unselectPoint();
+    const i = this._props.points.indexOf(point);
+    this._props.points.splice(i, 1);
+    this.removePoints();
+    this.addEditPoints();
+    this.drawLine();
+  }
+
   private pointDown(
     graphics: Graphics,
     point: { x: number; y: number },
     e: InteractionEvent
   ) {
     this.app.move = false;
-    this.selectedPoint = {
-      graphics,
-      point,
-      data: e.data,
-    };
+    this.selectPoint(graphics, point, e);
   }
 
   private pointUp() {
     this.app.move = true;
-    this.selectedPoint = null;
+    if (this.selectedPoint) this.selectedPoint.drag = false;
     this.removePoints();
     this.addEditPoints();
   }
 
   private pointMove() {
-    if (this.selectedPoint) {
+    if (this.selectedPoint && this.selectedPoint.drag) {
       const newCoords = this.selectedPoint.data.getLocalPosition(
         this.selectedPoint.graphics.parent
       );
@@ -218,14 +244,13 @@ export class LINE extends Base {
           arr[i + 1].y = this.pointInLine(arr[i + 2], newCoords).y;
         }
       });
+      this.menu.position.set(
+        this._props.points[0].x + this.x - 20,
+        this._props.points[0].y + this.y - 20
+      );
+      this.deleteBTN.position.set(newCoords.x, newCoords.y);
       this.drawLine();
     }
-  }
-
-  private pointOut() {
-    this.selectedPoint = null;
-    this.removePoints();
-    this.addEditPoints();
   }
 
   private centerDown(
@@ -239,9 +264,33 @@ export class LINE extends Base {
     // this.editPoints[i + 2].emit("pointerdown", e);
   }
 
+  selectPoint(
+    graphics: Graphics,
+    point: { x: number; y: number },
+    e: InteractionEvent
+  ) {
+    this.selectedPoint = {
+      graphics,
+      point,
+      data: e.data,
+      drag: true,
+    };
+    this.deleteBTN.position.set(point.x, point.y);
+    this.container.addChild(this.deleteBTN);
+  }
+
+  unselectPoint() {
+    this.selectedPoint = null;
+    this.container.removeChild(this.deleteBTN);
+  }
+
   select() {
     if (super.select()) {
       this.addEditPoints();
+      this.menu.position.set(
+        this._props.points[0].x + this.x - 20,
+        this._props.points[0].y + this.y - 20
+      );
       return true;
     }
     return false;
@@ -251,6 +300,7 @@ export class LINE extends Base {
     super.unselect();
     this.removePoints();
     this.app.move = true;
+    this.unselectPoint();
   }
 
   set props(props: LineProps) {
