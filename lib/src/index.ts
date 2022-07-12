@@ -33,7 +33,11 @@ export class App extends Application {
   };
 
   constructor(selector: string) {
-    super({ antialias: true, backgroundColor: 0x000000 });
+    super({
+      antialias: true,
+      backgroundColor: 0x000000,
+      resolution: window.devicePixelRatio || 0.9,
+    });
     this.div = document.querySelector(selector);
     if (!this.div) {
       this.div = document.createElement("div");

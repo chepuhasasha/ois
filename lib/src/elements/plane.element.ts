@@ -82,8 +82,9 @@ export class PLANE extends Base {
         data = e.data;
         drag = true;
         this.app.move = false;
-        this.start = data.getLocalPosition(this.point.parent);
+        start = data.getLocalPosition(this.point.parent);
         this.setup();
+        console.log(this.start);
       })
       .on("pointerup", () => {
         drag = false;
@@ -98,13 +99,17 @@ export class PLANE extends Base {
       .on("pointermove", () => {
         if (drag) {
           const end = data.getLocalPosition(this.point.parent);
-          if (end.x - start.x > 0 || end.y - start.y > 0) {
-            this.props.h += 1;
-            this.props.w += 1;
-          } else {
-            this.props.h -= 1;
-            this.props.w -= 1;
-          }
+          console.log((end.x - start.x) / Math.cos((31 * Math.PI) / 180));
+          this.props.h +=
+            (end.x - start.x) / Math.cos((31 * Math.PI) / 180) / 2;
+          this.props.w +=
+            (end.x - start.x) / Math.sin((31 * Math.PI) / 180) / 2;
+          // if (end.x - start.x > 0 || end.y - start.y > 0) {
+          //   this.props.w += 1;
+          // } else {
+          //   this.props.h -= 1;
+          //   this.props.w -= 1;
+          // }
           start = end;
           // newp.x = newp.x - (newp.x % 25);
           // newp.y = newp.y - (newp.y % 15);
