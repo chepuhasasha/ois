@@ -98,24 +98,18 @@ export class PLANE extends Base {
       })
       .on("pointermove", () => {
         if (drag) {
-          const end = data.getLocalPosition(this.point.parent);
-          console.log((end.x - start.x) / Math.cos((31 * Math.PI) / 180));
-          this.props.h +=
-            (end.x - start.x) / Math.cos((31 * Math.PI) / 180) / 2;
-          this.props.w +=
-            (end.x - start.x) / Math.sin((31 * Math.PI) / 180) / 2;
-          // if (end.x - start.x > 0 || end.y - start.y > 0) {
-          //   this.props.w += 1;
-          // } else {
-          //   this.props.h -= 1;
-          //   this.props.w -= 1;
-          // }
-          start = end;
-          // newp.x = newp.x - (newp.x % 25);
-          // newp.y = newp.y - (newp.y % 15);
-          // const rad = (31 * Math.PI) / 180;
-          // this.props.w += 1;
-          // this.props.h += 1;
+          const cursor = data.getLocalPosition(this.point.parent);
+          const dx = cursor.x;
+          const dy = cursor.y;
+          const alpha = Math.atan(dx / dy) * (180 / Math.PI);
+          const A = 120;
+          const C = alpha - 60;
+          const B = 60 - C;
+          const a = Math.sqrt(dy * dy + dx * dx);
+          this.props.w =
+            (Math.sin(B * (Math.PI / 180)) * a) / Math.sin(A * (Math.PI / 180));
+          this.props.h =
+            (Math.sin(C * (Math.PI / 180)) * a) / Math.sin(A * (Math.PI / 180));
           this.setup();
         }
       });
