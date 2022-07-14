@@ -101,11 +101,15 @@ export class PLANE extends Base {
           const cursor = data.getLocalPosition(this.point.parent);
           const dx = cursor.x;
           const dy = cursor.y;
-          const alpha = Math.atan(dx / dy) * (180 / Math.PI);
+          const alpha = Math.abs(Math.atan(dx / dy) * (180 / Math.PI));
           const A = 120;
-          const C = alpha - 60;
-          const B = 60 - C;
+          let C = alpha - 60;
+          let B = 60 - C;
           const a = Math.sqrt(dy * dy + dx * dx);
+          if (dy < 0) {
+            B = alpha - 60;
+            C = 60 - B;
+          }
           this.props.w =
             (Math.sin(B * (Math.PI / 180)) * a) / Math.sin(A * (Math.PI / 180));
           this.props.h =
