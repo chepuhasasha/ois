@@ -1,9 +1,9 @@
 import { ITheme } from "./theme.interface";
 //  TODO: Разобраться с переменными попутно переписатаь common компонеты
 const dark: ITheme = {
-  primary_100: "88, 166, 255",
-  primary_200: "88, 166, 255",
-  primary_300: "88, 166, 255",
+  primary_100: "97, 93, 255",
+  primary_200: "97, 93, 255",
+  primary_300: "97, 93, 255",
   bg_100: "13, 17, 23",
   bg_200: "22, 27, 34",
   bg_300: "33, 38, 45",

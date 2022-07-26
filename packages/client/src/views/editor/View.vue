@@ -8,12 +8,12 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { create } from "engine";
+import { create, App } from "engine";
 import { config } from "./config";
 
-const oisRefs = ref<any>(null);
+const oisRefs = ref<App | null>(null);
 const tree = computed(() => {
-  return oisRefs.value?.components;
+  return oisRefs.value?.configService.config.components;
 });
 
 onMounted(() => {
@@ -22,7 +22,7 @@ onMounted(() => {
     //   console.log(e);
     // });
     // ois.tools.move = true;
-    oisRefs.value = ois.configService.config;
+    oisRefs.value = ois;
     console.log(oisRefs);
     setInterval(() => {
       if (Math.random() > 0.5) {
