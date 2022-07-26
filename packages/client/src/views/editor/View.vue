@@ -1,21 +1,29 @@
 <template lang="pug">
 .editor
-  .editor_engine#ois(ref='container')
-  .editor_tree
-  .editor_props
-  .editor_tools
+  .editor_engine#ois
+  //- .editor_tree {{ tree }}
+  //- .editor_props
+  //- .editor_tools
+  //-   Button(:modes="['icon']" icon='hand')
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { create } from "engine";
 import { config } from "./config";
-const container = ref<HTMLDivElement | null>(null);
+
+const oisRefs = ref<any>(null);
+const tree = computed(() => {
+  return oisRefs.value?.components;
+});
+
 onMounted(() => {
   const ois = create("#ois").load(config, (ois) => {
     // ois.on("select", (e) => {
     //   console.log(e);
     // });
     // ois.tools.move = true;
+    oisRefs.value = ois.configService.config;
+    console.log(oisRefs);
     setInterval(() => {
       if (Math.random() > 0.5) {
         ois.refs["server #1"].color = "#8fff00";
@@ -46,10 +54,9 @@ onMounted(() => {
     z-index: 1
     background: rgb(var(--bg_200))
   &_tree, &_props, &_tools
-    background: rgb(var(--bg_100))
-    margin: 20px
+    background: rgb(var(--bg_200))
     z-index: 2
-    border-radius: 16px
+    // border-radius: 16px
     border: 1px solid rgba(255,255,255,0.08)
   &_tree
     grid-area: 1/1/3/2

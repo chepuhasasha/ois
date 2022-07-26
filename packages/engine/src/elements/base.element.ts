@@ -26,6 +26,7 @@ export class Base {
     this.container.buttonMode = true;
     this.container.sortableChildren = true;
     this.container
+      // TODO необходим общий сервис обработки событий, через него необходимо организовать применение инструментов
       .on("pointerdown", (e) => this.pointerDown(e))
       .on("pointerup", (e) => this.pointerUp(e))
       .on("pointerupoutside", (e) => this.pointerOut(e))
