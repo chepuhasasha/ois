@@ -1,0 +1,25 @@
+{
+  "name": "ois",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "npm run dev --workspace=engine --workspace=client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chepuhasasha/ois.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergey Batukov",
+    "email": "sashachepuha@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chepuhasasha/ois/issues"
+  },
+  "homepage": "https://github.com/chepuhasasha/ois#readme",
+  "workspaces": [
+    "packages\\client",
+    "packages\\engine"
+  ]
+}
